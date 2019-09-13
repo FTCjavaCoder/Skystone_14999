@@ -1,5 +1,5 @@
 
-package HarwareConfig;
+package Skystone_14999.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;

@@ -1,5 +1,5 @@
 
-package 14999_Skystone.HarwareConfig;
+package Skystone_14999.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import OpModes.Autonomous.BasicAuto;
+import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 /*
 * REVISION HISTORY

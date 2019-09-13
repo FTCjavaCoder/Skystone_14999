@@ -1,9 +1,9 @@
-package DriveMotion;
+package Skystone_14999.DriveMotion;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
-import OpModes.Autonomous.BasicAuto;
+import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 public class DriveMethods{
 

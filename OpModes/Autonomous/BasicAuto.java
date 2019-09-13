@@ -1,4 +1,4 @@
-package OpModes.Autonomous;
+package Skystone_14999.OpModes.Autonomous;
 
 import android.graphics.Color;
 
@@ -19,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.List;
 
-import DriveMotion.DriveMethods;
-import HarwareConfig.HardwareBilly;
-import I_Parameters.Parameters;
+import Skystone_14999.DriveMotion.DriveMethods;
+import Skystone_14999.HarwareConfig.HardwareBilly;
+import Skystone_14999.I_Parameters.Parameters;
 
 @Autonomous(name="BasicAuto", group="Autonomous")
 @Disabled

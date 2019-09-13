@@ -1,4 +1,4 @@
-package OpModes.TeleOp;
+package Skystone_14999.OpModes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import DriveMotion.DriveMethods;
-import HarwareConfig.HardwareBillyTeleOp;
-import I_Parameters.Parameters;
+import Skystone_14999.DriveMotion.DriveMethods;
+import Skystone_14999.HarwareConfig.HardwareBillyTeleOp;
+import Skystone_14999.I_Parameters.Parameters;
 
 @Autonomous(name="BasicTeleOp", group="TeleOp")
 @Disabled
