@@ -1,0 +1,42 @@
+package Skystone_14999.OpModes.Test;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import Skystone_14999.I_Parameters.Parameters;
+import Skystone_14999.OpModes.TeleOp.BasicTeleOp;
+
+
+@TeleOp(name="ServoTest", group="TeleOp")
+public class TestTeleOpMethods extends BasicTeleOp {
+
+    public Parameters prm = new Parameters();
+
+    public double StoneGrabPos;
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+            initializeTeleOp();
+
+            // Wait for the game to start (driver presses PLAY)
+            waitForStart();
+            runtime.reset();
+
+        while (opModeIsActive()) {
+
+            TestServo();
+        }
+    }
+
+
+    public void TestServo() {
+
+            if (gamepad1.b){
+                StoneGrabPos += .05;
+            }
+            if (gamepad1.x){
+                StoneGrabPos -= .05;
+            }
+
+        Billy.servoStoneGrab.setPosition(StoneGrabPos);
+    }
+}
