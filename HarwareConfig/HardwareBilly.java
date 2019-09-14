@@ -8,15 +8,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.configuration.annotations.ServoType;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-
-import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 /*
 * REVISION HISTORY
@@ -29,13 +23,13 @@ public class HardwareBilly
     public DcMotor  frontRight       = null;
     public DcMotor  backLeft         = null;
     public DcMotor  backRight        = null;
-    public DcMotor  landingSlide     = null;
-    public DcMotor  slideExtend = null;
-    public DcMotor  slideRotate = null;
+//    public DcMotor  landingSlide     = null;
+//    public DcMotor  slideExtend = null;
+//    public DcMotor  slideRotate = null;
 //    public Servo    servoSampling    = null;
-    public Servo    servoMarker   = null;
-    public CRServo    servoSweeper   = null;
-    public ColorSensor    colorSensorSampling   = null;
+//    public Servo servoPrototype = null;
+//    public CRServo    servoSweeper   = null;
+//    public ColorSensor    colorSensorSampling   = null;
     public BNO055IMU    imu = null;
     public HardwareMap hwMap           =  null;
     public ElapsedTime period  = new ElapsedTime();
@@ -66,15 +60,15 @@ public class HardwareBilly
         frontRight = hwMap.get(DcMotor.class, "motor_fr");
         backLeft  = hwMap.get(DcMotor.class, "motor_bl");
         backRight = hwMap.get(DcMotor.class, "motor_br");
-        landingSlide  = hwMap.get(DcMotor.class, "motor_slide");
-        slideExtend = hwMap.get(DcMotor.class, "motor_slide_extend");
-        slideRotate = hwMap.get(DcMotor.class, "motor_slide_rotate");
+//        landingSlide  = hwMap.get(DcMotor.class, "motor_slide");
+//        slideExtend = hwMap.get(DcMotor.class, "motor_slide_extend");
+//        slideRotate = hwMap.get(DcMotor.class, "motor_slide_rotate");
 //        mineralCollector = hwMap.get(DcMotor.class, "motor_collect");
 
         // Define and initialize ALL installed servos.
 //        servoSampling = hwMap.get(Servo.class, "sampling_servo");
-        servoMarker = hwMap.get(Servo.class, "marker_servo");
-        servoSweeper = hwMap.get(CRServo.class, "sweeper_servo");
+//        servoPrototype = hwMap.get(Servo.class, "marker_servo");
+//        servoSweeper = hwMap.get(CRServo.class, "sweeper_servo");
 //        mineralDumperR = hwMap.get(Servo.class, "mineral_servo_right");
 
         //Define all installed sensors

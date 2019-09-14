@@ -186,34 +186,34 @@ public class DriveMethods{
         om.Billy.backRight.setPower(0);
     }
 
-    public void slideMove(int distance, double powerLimit, String step, BasicAuto om){
-
-        int lsZone;
-        int lsStart;
-
-        lsStart = om.Billy.landingSlide.getCurrentPosition();
-        om.Billy.landingSlide.setPower(powerLimit);
-        om.Billy.landingSlide.setTargetPosition(lsStart + distance);
-
-        lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
-
-        while (lsZone > om.prm.SLIDE_TOL && om.opModeIsActive()) {
-            lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
-
-            om.telemetry.addData("Slide: ", step);
-            om.telemetry.addData("Motor Counts: ", "SlideArm CurrentPos (%d), Command (%d)",
-                    om.Billy.landingSlide.getCurrentPosition(), lsStart + distance);
-
-            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
-                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
-                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
-            om.telemetry.update();
-
-            om.idle();
-        }
-        om.Billy.landingSlide.setPower(0);
-
-    }
+//    public void slideMove(int distance, double powerLimit, String step, BasicAuto om){
+//
+//        int lsZone;
+//        int lsStart;
+//
+//        lsStart = om.Billy.landingSlide.getCurrentPosition();
+//        om.Billy.landingSlide.setPower(powerLimit);
+//        om.Billy.landingSlide.setTargetPosition(lsStart + distance);
+//
+//        lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
+//
+//        while (lsZone > om.prm.SLIDE_TOL && om.opModeIsActive()) {
+//            lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
+//
+//            om.telemetry.addData("Slide: ", step);
+//            om.telemetry.addData("Motor Counts: ", "SlideArm CurrentPos (%d), Command (%d)",
+//                    om.Billy.landingSlide.getCurrentPosition(), lsStart + distance);
+//
+//            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
+//                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+//                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
+//            om.telemetry.update();
+//
+//            om.idle();
+//        }
+//        om.Billy.landingSlide.setPower(0);
+//
+//    }
 
     public void driveFwdRevIMU(int distance, double powerLimit, double cmdDriveAngle, String step, BasicAuto om) { //not working
 
