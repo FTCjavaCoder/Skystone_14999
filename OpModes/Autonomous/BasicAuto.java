@@ -96,82 +96,54 @@ public class BasicAuto extends LinearOpMode {
 
     }
 
-    //commented out while hardware is missing from robot
-//    public void initialize() {
-//
-//        Billy.init(hardwareMap);
-//
-//        //Set Arm motor configuration - Do Not Edit
-//        Billy.landingSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        Billy.landingSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.landingSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        Billy.landingSlide.setPower(0);
-//        Billy.landingSlide.setTargetPosition(0);
-//
-//        //Motor configuration, recommend Not Changing - Set all motors to forward direction, positive = clockwise when viewed from shaft side
-//        Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
-//
-//        Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-//        Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-//        Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-//        Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-//
-//        //Reset all motor encoders
-//        Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        //Set all motors to position mode (assumes that all motors have encoders on them)
-//        Billy.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//
-//        Billy.frontLeft.setTargetPosition(0);
-//        Billy.frontRight.setTargetPosition(0);
-//        Billy.backLeft.setTargetPosition(0);
-//        Billy.backRight.setTargetPosition(0);
-//
-//        Billy.frontLeft.setPower(0);
-//        Billy.frontRight.setPower(0);
-//        Billy.backLeft.setPower(0);
-//        Billy.backRight.setPower(0);
-//
-//        Billy.slideExtend.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.slideExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        Billy.slideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.slideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        Billy.slideExtend.setPower(prm.SLIDE_EXTEND_POWER_LIMIT);
-//        Billy.slideExtend.setTargetPosition(0);
-//
-//        Billy.slideRotate.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.slideRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        Billy.slideRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.slideRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        Billy.slideRotate.setPower(prm.SLIDE_ROTATE_POWER_LIMIT);
-//        Billy.slideRotate.setTargetPosition(0);
-//
-//        Billy.servoPrototype.setPosition(prm.stowServoMarker);
-//
-//        initVuforia();
-//
-//        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-//            initTfod();
-//        } else {
-//            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-//        }
-//
-//        //Indicate initialization complete and provide telemetry
-//        telemetry.addData("Status: ", "Initialized");
-//        telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());
-//        telemetry.addData("Target Positions", "Forward (%d), Right (%d), Rotate (%d)", forwardPosition, rightPosition, clockwisePosition);
-//        telemetry.update();//Update telemetry to update display
-//
-//    }// sets: RUN_TO_POSITION, ZeroPowerBehaviour.FLOAT, and 0 power & targetPos
+    public void initialize() {
+
+        Billy.init(hardwareMap);
+
+        //Motor configuration, recommend Not Changing - Set all motors to forward direction, positive = clockwise when viewed from shaft side
+        Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Reset all motor encoders
+        Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        Billy.frontLeft.setTargetPosition(0);
+        Billy.frontRight.setTargetPosition(0);
+        Billy.backLeft.setTargetPosition(0);
+        Billy.backRight.setTargetPosition(0);
+
+        //Set all motors to position mode (assumes that all motors have encoders on them)
+        Billy.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        Billy.frontLeft.setPower(0);
+        Billy.frontRight.setPower(0);
+        Billy.backLeft.setPower(0);
+        Billy.backRight.setPower(0);
+
+
+        //Billy.servoPrototype.setPosition(prm.stowServoMarker);
+
+
+        //Indicate initialization complete and provide telemetry
+        telemetry.addData("Status: ", "Initialized");
+        telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());
+        telemetry.addData("Target Positions", "Forward (%d), Right (%d), Rotate (%d)", forwardPosition, rightPosition, clockwisePosition);
+        telemetry.update();//Update telemetry to update display
+
+    }// sets: RUN_TO_POSITION, ZeroPowerBehaviour.FLOAT, and 0 power & targetPos
 //
 //    public void initializeCrater() {
 //
@@ -383,7 +355,7 @@ public class BasicAuto extends LinearOpMode {
         return motorFinish;
 
     }
-
+    
 //
 //    public void pressAToContinue() {
 //
