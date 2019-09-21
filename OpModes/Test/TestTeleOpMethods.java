@@ -12,6 +12,7 @@ public class TestTeleOpMethods extends BasicTeleOp {
     public Parameters prm = new Parameters();
 
     public double StoneGrabPos;
+    boolean positive;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -23,17 +24,25 @@ public class TestTeleOpMethods extends BasicTeleOp {
 
         while (opModeIsActive()) {
 
-            TestServo();
+            if (gamepad1.b) {
+                positive = true;
+                TestServo(positive);
+                sleep(250);
+            }
+            if (gamepad1.x) {
+                positive = false;
+                TestServo(positive);
+                sleep(250);
+            }
         }
     }
 
+    public void TestServo(boolean positive) {
 
-    public void TestServo() {
-
-            if (gamepad1.b){
+            if (positive){
                 StoneGrabPos += .05;
             }
-            if (gamepad1.x){
+            if (!positive){
                 StoneGrabPos -= .05;
             }
 

@@ -4,13 +4,129 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
+import Skystone_14999.I_Parameters.Parameters;
 
 public class DriveMethods{
+    public Parameters prm = new Parameters();// call using prm.(constant DRIVE_POWER_LIMIT etc.)
+    int targetPos[] = new int[4];
 
-    
     public DriveMethods(){
         // no OpMode NOTE: still contains non driving methods
     }
+
+    public void driveGeneral(String moveType, double distanceInch, double powerLimit, String step, BasicAuto om) {
+        int countDistance = 0;
+        int[] driveDirection = new int[4];
+        int startPos[] = new int[4];
+        boolean motorsDone = false;
+
+        switch(moveType) {
+
+            case "Forward" :
+                countDistance = (int) Math.round(distanceInch * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = +1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = -1;// BL
+
+            case "Right" :
+                countDistance = (int) Math.round(distanceInch * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = +1;// FL
+                driveDirection[1] = +1;// FR
+                driveDirection[2] = -1;// BR
+                driveDirection[3] = -1;// BL
+
+            case "Rotate" :
+                countDistance = (int) Math.round(distanceInch * prm.ROBOT_DEG_TO_WHEEL_INCH * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = -1;// BR
+                driveDirection[3] = -1;// BL
+        }
+
+        startPos = motorStartPos(om);
+        setMotorPower(powerLimit, om);
+
+        for (int i=0; i<4; i++) {
+
+            targetPos[i] = startPos[i] + (driveDirection[i] * countDistance);
+        }
+
+        om.Billy.frontLeft.setTargetPosition(targetPos[0]);
+        om.Billy.frontRight.setTargetPosition(targetPos[1]);
+        om.Billy.backLeft.setTargetPosition(targetPos[2]);
+        om.Billy.backRight.setTargetPosition(targetPos[3]);
+
+        while(!motorsDone && om.opModeIsActive()) {
+
+            motorsDone = targetPosTolerence(om);
+
+            om.telemetry.addData("Driving: ", step);
+            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
+                    om.Billy.frontLeft.getTargetPosition(), om.Billy.frontRight.getTargetPosition(),
+                    om.Billy.backLeft.getTargetPosition(), om.Billy.backRight.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
+                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
+            om.telemetry.addData("Move Tolerance: ", om.prm.MOVE_TOL);
+            om.telemetry.update();
+
+            om.idle();
+        }
+
+
+    }
+
+    public int[] motorStartPos(BasicAuto om) {
+
+        int[] currentPos = new int[4];
+
+        currentPos[0]= om.Billy.frontLeft.getCurrentPosition(); //FL
+        currentPos[1]= om.Billy.frontRight.getCurrentPosition(); //FR
+        currentPos[2]= om.Billy.backRight.getCurrentPosition(); //BR
+        currentPos[3]= om.Billy.backLeft.getCurrentPosition(); //BL
+
+        return currentPos;
+    }
+
+    public void setMotorPower(double power, BasicAuto om) {
+
+        om.Billy.frontLeft.setPower(power);
+        om.Billy.frontRight.setPower(power);
+        om.Billy.backRight.setPower(power);
+        om.Billy.backLeft.setPower(power);
+
+    }
+
+    public boolean targetPosTolerence(BasicAuto om) {
+
+        int countTol = 0;
+        Boolean motorFinish = false;
+        int[] motorPos = new int[4];
+
+        motorPos = motorStartPos(om);
+        for (int i = 0; i < 4; i++) {
+
+            if (prm.MOVE_TOL >= Math.abs(motorPos[i] - targetPos[i])) {
+
+                countTol += 1;
+
+                if (countTol == 4) {
+
+                    motorFinish = true;
+
+                }
+            }
+
+        }
+
+        return motorFinish;
+
+    }
+
 
     public void driveFwdRev(int distance, double powerLimit, String step, BasicAuto om) {
         // "Distance" = the added straight distance from the current position
