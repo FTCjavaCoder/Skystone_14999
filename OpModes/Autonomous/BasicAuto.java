@@ -362,7 +362,6 @@ public class BasicAuto extends LinearOpMode {
     }
 
     public boolean targetPosTolerence() {
-        
         int countTol = 0;
 
         int[] motorPos = motorStartPos();
