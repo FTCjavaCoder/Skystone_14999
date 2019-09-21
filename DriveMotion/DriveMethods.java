@@ -17,7 +17,7 @@ public class DriveMethods{
     public void driveGeneral(String moveType, double distanceInch, double powerLimit, String step, BasicAuto om) {
         int countDistance = 0;
         int[] driveDirection = new int[4];
-        int startPos[] = new int[4];
+        int[] startPos = new int[4];
         boolean motorsDone = false;
 
         switch(moveType) {
@@ -29,22 +29,32 @@ public class DriveMethods{
                 driveDirection[1] = +1;// FR
                 driveDirection[2] = +1;// BR
                 driveDirection[3] = -1;// BL
+                break;
 
             case "Right" :
-                countDistance = (int) Math.round(distanceInch * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
+                countDistance = (int) Math.round((distanceInch * prm.adjustedRight) * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
 
-                driveDirection[0] = +1;// FL
-                driveDirection[1] = +1;// FR
-                driveDirection[2] = -1;// BR
-                driveDirection[3] = -1;// BL
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = +1;// BL
+                break;
 
             case "Rotate" :
-                countDistance = (int) Math.round(distanceInch * prm.ROBOT_DEG_TO_WHEEL_INCH * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
+                countDistance = (int) Math.round((distanceInch * prm.adjustedRotate) * prm.ROBOT_DEG_TO_WHEEL_INCH * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
 
                 driveDirection[0] = -1;// FL
                 driveDirection[1] = -1;// FR
                 driveDirection[2] = -1;// BR
                 driveDirection[3] = -1;// BL
+                break;
+            default:
+                countDistance = (int) 0;
+
+                driveDirection[0] = 0;// FL
+                driveDirection[1] = 0;// FR
+                driveDirection[2] = 0;// BR
+                driveDirection[3] = 0;// BL
         }
 
         startPos = motorStartPos(om);
@@ -57,20 +67,21 @@ public class DriveMethods{
 
         om.Billy.frontLeft.setTargetPosition(targetPos[0]);
         om.Billy.frontRight.setTargetPosition(targetPos[1]);
-        om.Billy.backLeft.setTargetPosition(targetPos[2]);
-        om.Billy.backRight.setTargetPosition(targetPos[3]);
+        om.Billy.backRight.setTargetPosition(targetPos[2]);
+        om.Billy.backLeft.setTargetPosition(targetPos[3]);
+
 
         while(!motorsDone && om.opModeIsActive()) {
 
             motorsDone = targetPosTolerence(om);
 
             om.telemetry.addData("Driving: ", step);
-            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
+            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
                     om.Billy.frontLeft.getTargetPosition(), om.Billy.frontRight.getTargetPosition(),
-                    om.Billy.backLeft.getTargetPosition(), om.Billy.backRight.getTargetPosition());
-            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
+                    om.Billy.backRight.getTargetPosition(),om.Billy.backLeft.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
                     om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
-                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
+                    om.Billy.backRight.getCurrentPosition(), om.Billy.backLeft.getCurrentPosition());
             om.telemetry.addData("Move Tolerance: ", om.prm.MOVE_TOL);
             om.telemetry.update();
 
