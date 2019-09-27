@@ -7,26 +7,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-
-import java.util.List;
 
 import Skystone_14999.DriveMotion.DriveMethods;
 import Skystone_14999.HarwareConfig.HardwareBilly;
-import Skystone_14999.I_Parameters.Parameters;
+import Skystone_14999.I_Parameters.Constants;
 
 @Autonomous(name="BasicAuto", group="Autonomous")
 @Disabled
 public class BasicAuto extends LinearOpMode {
 
     public HardwareBilly Billy = new HardwareBilly();// call using Billy.(for hardware or angle unwrap method)
-    public Parameters prm = new Parameters();// call using prm.(constant DRIVE_POWER_LIMIT etc.)
+    public Constants prm = new Constants();// call using prm.(constant DRIVE_POWER_LIMIT etc.)
     public DriveMethods drv = new DriveMethods();// call with drv.(drive method: driveFwdRev etc.)
 
     // motor position must be integer number of counts
@@ -356,7 +352,7 @@ public class BasicAuto extends LinearOpMode {
 //        /*
 //         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
 //         */
-//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+//        VuforiaLocalizer.Constants parameters = new VuforiaLocalizer.Constants();
 //
 //        parameters.vuforiaLicenseKey = prm.VUFORIA_KEY;
 //        //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
@@ -371,7 +367,7 @@ public class BasicAuto extends LinearOpMode {
 //    public void initTfod() {
 //        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
 //                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+//        TFObjectDetector.Constants tfodParameters = new TFObjectDetector.Constants(tfodMonitorViewId);
 //        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
 //        tfod.loadModelFromAsset(prm.TFOD_MODEL_ASSET, prm.LABEL_GOLD_MINERAL, prm.LABEL_SILVER_MINERAL);
 //    }
@@ -379,7 +375,7 @@ public class BasicAuto extends LinearOpMode {
 //    public void initTfodCrater() {
 //        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
 //                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+//        TFObjectDetector.Constants tfodParameters = new TFObjectDetector.Constants(tfodMonitorViewId);
 //        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
 //        tfod.loadModelFromAsset(prm.TFOD_MODEL_ASSET, prm.LABEL_GOLD_MINERAL);
 //    }

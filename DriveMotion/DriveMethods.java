@@ -3,11 +3,11 @@ package Skystone_14999.DriveMotion;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import Skystone_14999.I_Parameters.Constants;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
-import Skystone_14999.I_Parameters.Parameters;
 
 public class DriveMethods{
-    public Parameters prm = new Parameters();// call using prm.(constant DRIVE_POWER_LIMIT etc.)
+    public Constants prm = new Constants();// call using prm.(constant DRIVE_POWER_LIMIT etc.)
     int targetPos[] = new int[4];
 
     public enum moveDirection {FwdBack, RightLeft, Rotate}

@@ -2,14 +2,14 @@ package Skystone_14999.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import Skystone_14999.I_Parameters.Parameters;
+import Skystone_14999.I_Parameters.Constants;
 import Skystone_14999.OpModes.TeleOp.BasicTeleOp;
 
 
 @TeleOp(name="ServoTest", group="TeleOp")
 public class TestTeleOpMethods extends BasicTeleOp {
 
-    public Parameters prm = new Parameters();
+    public Constants prm = new Constants();
 
     public double StoneGrabPos;
     boolean positive;

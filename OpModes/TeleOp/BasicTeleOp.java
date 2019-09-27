@@ -10,14 +10,14 @@ import com.qualcomm.robotcore.util.Range;
 
 import Skystone_14999.DriveMotion.DriveMethods;
 import Skystone_14999.HarwareConfig.HardwareBilly;
-import Skystone_14999.I_Parameters.Parameters;
+import Skystone_14999.I_Parameters.Constants;
 
 @Autonomous(name="BasicTeleOp", group="TeleOp")
 @Disabled
 public class BasicTeleOp extends LinearOpMode {
 
     public HardwareBilly Billy = new HardwareBilly();
-    public Parameters prm = new Parameters();
+    public Constants prm = new Constants();
     public DriveMethods drv = new DriveMethods();
 
     // Define the static power levels and limits for motors
