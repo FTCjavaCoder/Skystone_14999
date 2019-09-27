@@ -312,50 +312,6 @@ public class BasicAuto extends LinearOpMode {
 
     }
 
-    public int[] motorStartPos() {
-
-        int[] currentPos = new int[4];
-
-        currentPos[0]= Billy.frontLeft.getCurrentPosition(); //FL
-        currentPos[1]= Billy.frontRight.getCurrentPosition(); //FR
-        currentPos[2]= Billy.backRight.getCurrentPosition(); //BR
-        currentPos[3]= Billy.backLeft.getCurrentPosition(); //BL
-
-        return currentPos;
-    }
-
-    public void setMotorPower(double i) {
-
-        Billy.frontLeft.setPower(i);
-        Billy.frontRight.setPower(i);
-        Billy.backRight.setPower(i);
-        Billy.backLeft.setPower(i);
-
-    }
-
-    public boolean targetPosTolerence() {
-        int countTol = 0;
-
-        int[] motorPos = motorStartPos();
-        for (int i = 0; i < 4; i++) {
-
-            if (prm.MOVE_TOL >= Math.abs(motorPos[i] - targetPos[i])) {
-
-                countTol += 1;
-
-                if (countTol == 4) {
-
-                    Boolean motorFinish = true;
-
-                }
-            }
-
-        }
-
-        return motorFinish;
-
-    }
-    
 //
 //    public void pressAToContinue() {
 //
