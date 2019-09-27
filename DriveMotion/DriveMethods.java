@@ -10,11 +10,13 @@ public class DriveMethods{
     public Parameters prm = new Parameters();// call using prm.(constant DRIVE_POWER_LIMIT etc.)
     int targetPos[] = new int[4];
 
+    public enum moveDirection {FwdBack, RightLeft, Rotate}
+
     public DriveMethods(){
         // no OpMode NOTE: still contains non driving methods
     }
 
-    public void driveGeneral(String moveType, double distanceInch, double powerLimit, String step, BasicAuto om) {
+    public void driveGeneral(moveDirection moveType, double distanceInch, double powerLimit, String step, BasicAuto om) {
         int countDistance = 0;
         int[] driveDirection = new int[4];
         int[] startPos = new int[4];
@@ -22,7 +24,7 @@ public class DriveMethods{
 
         switch(moveType) {
 
-            case "Forward" :
+            case FwdBack :
                 countDistance = (int) Math.round(distanceInch * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
 
                 driveDirection[0] = -1;// FL
@@ -31,7 +33,7 @@ public class DriveMethods{
                 driveDirection[3] = -1;// BL
                 break;
 
-            case "Right" :
+            case RightLeft :
                 countDistance = (int) Math.round((distanceInch * prm.adjustedRight) * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
 
                 driveDirection[0] = -1;// FL
@@ -40,7 +42,7 @@ public class DriveMethods{
                 driveDirection[3] = +1;// BL
                 break;
 
-            case "Rotate" :
+            case Rotate :
                 countDistance = (int) Math.round((distanceInch * prm.adjustedRotate) * prm.ROBOT_DEG_TO_WHEEL_INCH * prm.ROBOT_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS);
 
                 driveDirection[0] = -1;// FL
