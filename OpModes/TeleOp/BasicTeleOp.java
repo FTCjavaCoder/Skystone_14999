@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import Skystone_14999.DriveMotion.DriveMethods;
 import Skystone_14999.HarwareConfig.HardwareBilly;
-import Skystone_14999.I_Parameters.Constants;
+import Skystone_14999.Parameters.Constants;
 
 @Autonomous(name="BasicTeleOp", group="TeleOp")
 @Disabled

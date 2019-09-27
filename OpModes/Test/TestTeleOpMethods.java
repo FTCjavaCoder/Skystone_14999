@@ -2,7 +2,7 @@ package Skystone_14999.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import Skystone_14999.I_Parameters.Constants;
+import Skystone_14999.Parameters.Constants;
 import Skystone_14999.OpModes.TeleOp.BasicTeleOp;
 
 

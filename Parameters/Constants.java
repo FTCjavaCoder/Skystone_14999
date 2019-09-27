@@ -1,4 +1,4 @@
-package Skystone_14999.I_Parameters;
+package Skystone_14999.Parameters;
 
 public class Constants {
 

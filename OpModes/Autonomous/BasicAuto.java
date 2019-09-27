@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import Skystone_14999.DriveMotion.DriveMethods;
 import Skystone_14999.HarwareConfig.HardwareBilly;
-import Skystone_14999.I_Parameters.Constants;
+import Skystone_14999.Parameters.Constants;
 
 @Autonomous(name="BasicAuto", group="Autonomous")
 @Disabled
