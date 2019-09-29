@@ -37,7 +37,7 @@ public class BasicOpMode extends LinearOpMode {
 
             idle();
         }
-
+        sleep(300);
     }
 
     public void angleUnWrap() {
@@ -55,6 +55,21 @@ public class BasicOpMode extends LinearOpMode {
         }
         priorAngle = Billy.angles.firstAngle;//Update the latest measurement to be //priorAngle for the next time we call the method
 
+    }
+
+    public void readOrWriteHashMap() {
+
+        cons.readFromPhone(hashMapFile, this);
+        telemetry.addData("Existing File Was Read?","%s", fileWasRead);
+
+        if (!fileWasRead) {
+
+            cons.defineParameters();
+            cons.writeToPhone(hashMapFile, this);
+
+            cons.readFromPhone(hashMapFile, this);
+            telemetry.addData("Created File, File Was Read?","%s", fileWasRead);
+        }
     }
 
 }

@@ -98,7 +98,7 @@ public class Constants {
     }
 
     public void defineParameters() {
-        //
+
         pHM.put("drivePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
 
         pHM.put("rotatePowerLimit", new ParameterHM(0.25, ParameterHM.instanceType.powerLimit));
@@ -107,7 +107,7 @@ public class Constants {
 
         pHM.put("moveTol", new ParameterHM(8, ParameterHM.instanceType.toleranceCounts));
 
-    }
+    }// Define initial values for HashMap parameters
 
     public void writeToPhone(String fileName, BasicOpMode om) {
         Context c = om.hardwareMap.appContext;
@@ -192,6 +192,7 @@ public class Constants {
 
                 om.fileWasRead = true;
 
+                om.telemetry.addData("Parameter Name", "%s", s);
                 om.telemetry.addData("Value", "%.2f", v);
                 om.telemetry.addData("Type", "%s", t);
                 om.telemetry.addData("Range?", "%s", hr);

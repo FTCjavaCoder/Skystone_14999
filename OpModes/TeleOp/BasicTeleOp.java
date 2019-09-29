@@ -90,6 +90,8 @@ public class BasicTeleOp extends BasicOpMode {
 //        Billy.slideExtend.setTargetPosition(Billy.slideExtend.getCurrentPosition());
 //        Billy.slideRotate.setTargetPosition(Billy.slideRotate.getCurrentPosition());
 
+        readOrWriteHashMap();
+
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
         telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);

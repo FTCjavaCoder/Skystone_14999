@@ -127,6 +127,8 @@ public class BasicAuto extends BasicOpMode {
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
 
+        readOrWriteHashMap();
+
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
         telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());

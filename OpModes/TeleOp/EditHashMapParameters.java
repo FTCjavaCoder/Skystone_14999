@@ -31,6 +31,8 @@ public class EditHashMapParameters extends BasicTeleOp {
 
         cons.editHashMap(this);
 
+        cons.writeToPhone(hashMapFile,this);
+
         telemetry.addLine("HashMap editing complete");
         telemetry.update();
         sleep(1000);
