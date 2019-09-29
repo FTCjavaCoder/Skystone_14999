@@ -2,9 +2,6 @@ package Skystone_14999.Parameters;
 
 public class ParameterHM {
 
-//Power Limits
-/** ParamHN(value, power_limit) **/
-
     public enum instanceType {powerLimit, counts, toleranceCounts, distanceInches, rotationDegrees, servoPosition}
 
     public boolean hasRange = true;
