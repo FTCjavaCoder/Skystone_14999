@@ -9,7 +9,7 @@ import Skystone_14999.DriveMotion.DriveMethods;
 public class DriveGeneralTest extends BasicAuto {
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
         initialize();
 
@@ -17,11 +17,11 @@ public class DriveGeneralTest extends BasicAuto {
 
         runtime.reset();
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 24, prm.DRIVE_POWER_LIMIT, "Back 24 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 24, cons.pHM.get("drivePowerLimit").value, "Back 24 inches",this);
         sleep(1000);
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -24, prm.DRIVE_POWER_LIMIT, "Left 24 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -24, cons.pHM.get("drivePowerLimit").value, "Left 24 inches",this);
         sleep(1000);
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate, 90, prm.DRIVE_POWER_LIMIT, "Clockwise 90 degrees",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate, 90, cons.pHM.get("drivePowerLimit").value, "Clockwise 90 degrees",this);
         sleep(1000);
     }
 }

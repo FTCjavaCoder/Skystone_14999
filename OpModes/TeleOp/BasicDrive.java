@@ -13,10 +13,8 @@ import Skystone_14999.HarwareConfig.HardwareBilly;
 
 public class BasicDrive extends BasicTeleOp {
 
-    double localPower = prm.ROTATE_POWER_LIMIT;
-
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
         initializeTeleOp();
 

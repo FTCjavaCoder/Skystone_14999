@@ -1,14 +1,27 @@
 package Skystone_14999.Parameters;
 
+import android.content.Context;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.HashMap;
+
+import Skystone_14999.OpModes.BasicOpMode;
+
 public class Constants {
 
-    // Define the static power levels, power/speed limits, and initial positions for motors and servos
-    public final double DRIVE_POWER_LIMIT = 0.75;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-    public final double ROTATE_POWER_LIMIT = 0.25;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-    public final double SLIDE_POWER_LIMIT = 0.6;// was 0.6
+    public HashMap<String, ParameterHM> pHM = new HashMap();
 
+    // Define the static power levels, power/speed limits, and initial positions for motors and servos
+    //public final double DRIVE_POWER_LIMIT = 0.75;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+    //public final double ROTATE_POWER_LIMIT = 0.25;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+
+    public final double SLIDE_POWER_LIMIT = 0.6;// was 0.6
     public final double TURN_POWER =  0.40;
-    public final double TELEOP_DRIVE_POWER_LIMIT =  0.65;
+    //public final double TELEOP_DRIVE_POWER_LIMIT =  0.65;
 
     //    final double OMNI_EFFICIENCY = 1/1.35;// unitless - factor that's needed to reduce total wheel travel to match forward/back and right/left motion, doesn't apply for rotate
     public final double ROBOT_INCH_TO_MOTOR_DEG = 360 / (3.875 * 3.14159); // units deg/inch - 360 deg. / wheel circumference (Wheel diameter x pi)
@@ -22,7 +35,7 @@ public class Constants {
     // DERIVATION AL = theta * RTD/2; AL = arc length = wheel travel in inches, RTD = robot turning diameter, theta = robot angle in radians
     // theta is input so conversion = RTD/2 * pi/180 (convert input in degrees to radians)
     // AL = theta * (RTD * pi/360)
-    public final int MOVE_TOL = 8;// tolerance for motor reaching final positions in drive methods
+    //public final int MOVE_TOL = 8;// tolerance for motor reaching final positions in drive methods
     public final double GAIN = 0.5;
     public final double IMU_TOL = 320;
     public final double IMU_ROTATE_TOL = 2;
@@ -83,4 +96,173 @@ public class Constants {
     public Constants() {
         //Empty Constructor
     }
+
+    public void defineParameters() {
+        //
+        pHM.put("drivePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
+
+        pHM.put("rotatePowerLimit", new ParameterHM(0.25, ParameterHM.instanceType.powerLimit));
+
+        pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.65, ParameterHM.instanceType.powerLimit));
+
+        pHM.put("moveTol", new ParameterHM(8, ParameterHM.instanceType.toleranceCounts));
+
+    }
+
+    public void writeToPhone(String fileName, BasicOpMode om) {
+        Context c = om.hardwareMap.appContext;
+
+        try {
+
+            OutputStreamWriter osw = new OutputStreamWriter(c.openFileOutput(fileName, c.MODE_PRIVATE));
+
+            for(String s : pHM.keySet()) {
+
+                osw.write(s + "\n");
+                om.telemetry.addData("Parameter Name", "%s", s);
+                osw.write(pHM.get(s).value + "\n");
+                om.telemetry.addData("Value", "%.2f", pHM.get(s).value);
+                osw.write(pHM.get(s).paramType + "\n");
+                om.telemetry.addData("Type", "%s", pHM.get(s).paramType);
+                osw.write(pHM.get(s).hasRange + "\n");
+                om.telemetry.addData("Range?", "%s", pHM.get(s).hasRange);
+                osw.write(pHM.get(s).min + "\n");
+                om.telemetry.addData("Min", "%.2f", pHM.get(s).min);
+                osw.write(pHM.get(s).max + "\n");
+                om.telemetry.addData("Max", "%.2f", pHM.get(s).max);
+                osw.write(pHM.get(s).increment + "\n");
+                om.telemetry.addData("Increment", "%.2f", pHM.get(s).increment);
+                om.telemetry.update();
+            }
+
+            osw.close();
+        }
+        catch(Exception e) {
+
+            Log.e("Exception", e.toString());
+
+            om.telemetry.addData("Exception","%s", e.toString());
+            om.telemetry.update();
+        }
+    }
+
+    public void readFromPhone(String fileName, BasicOpMode om) {
+        Context c = om.hardwareMap.appContext;
+
+        try {
+            InputStream is = c.openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+
+            String s;
+            while((s = br.readLine())!= null) {
+
+                double v = Double.parseDouble(br.readLine());
+                String t = br.readLine();
+                String hr = br.readLine();
+                double min = Double.parseDouble(br.readLine());
+                double max = Double.parseDouble(br.readLine());
+                double inc = Double.parseDouble(br.readLine());
+
+                switch (t) {
+
+                    case ("powerLimit") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.powerLimit));
+                        break;
+                    case ("counts") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.counts));
+                        break;
+
+                    case ("toleranceCounts") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.toleranceCounts));
+                        break;
+
+                    case ("distanceInches") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.distanceInches));
+                        break;
+
+                    case ("rotationDegrees") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.rotationDegrees));
+                        break;
+
+                    case ("servoPosition") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.servoPosition));
+                        break;
+                }
+
+                om.fileWasRead = true;
+
+                om.telemetry.addData("Value", "%.2f", v);
+                om.telemetry.addData("Type", "%s", t);
+                om.telemetry.addData("Range?", "%s", hr);
+                om.telemetry.addData("Min", "%.2f", min);
+                om.telemetry.addData("Max", "%.2f", max);
+                om.telemetry.addData("Increment", "%.2f", inc);
+                om.telemetry.addLine("/////////////////////////////");
+
+                om.idle();
+            }
+
+            is.close();
+        }
+        catch(Exception e) {
+
+            Log.e("Exception", e.toString());
+
+            om.fileWasRead = false;
+
+            om.telemetry.addData("Exception","%s", e.toString());
+            om.telemetry.update();
+        }
+    }
+
+    public void editHashMap(BasicOpMode om) {
+
+        for(String s : pHM.keySet()) {
+
+            while(!(om.gamepad1.x || om.gamepad1.b) && om.opModeIsActive()) {
+                // X to EDIT || B to SKIP
+                om.telemetry.addData("Parameter Name", "%s", s);
+                om.telemetry.addData("Value", "%.2f", pHM.get(s).value);
+                om.telemetry.addData("Type", "%s", pHM.get(s).paramType);
+                om.telemetry.addData("Range?", "%s", pHM.get(s).hasRange);
+                om.telemetry.addData("Min", "%.2f", pHM.get(s).min);
+                om.telemetry.addData("Max", "%.2f", pHM.get(s).max);
+                om.telemetry.addData("Increment", "%.2f", pHM.get(s).increment);
+                om.telemetry.addLine("X to EDIT || B to SKIP");
+                om.telemetry.update();
+            }
+            if(om.gamepad1.x) {
+
+                while(!om.gamepad1.y && om.opModeIsActive()) {
+
+                    om.telemetry.addData("Parameter Name", "%s", s);
+                    om.telemetry.addData("Value", "%.2f", pHM.get(s).value);
+                    om.telemetry.addData("Increment", "%.2f", pHM.get(s).increment);
+                    om.telemetry.addLine("Right Bumper to increase, Left Bumper to decrease");
+                    om.telemetry.addLine("Press Y to accept value");
+                    om.telemetry.update();
+
+                    if(om.gamepad1.right_bumper) {
+
+                        pHM.get(s).increaseParameter();
+                        om.sleep(300);
+                    }
+                    if(om.gamepad1.left_bumper) {
+
+                        pHM.get(s).decreaseParameter();
+                        om.sleep(300);
+                    }
+                }
+            }
+            if(om.gamepad1.b) {
+
+                om.telemetry.addData("Skipped","%s", s);
+                om.telemetry.update();
+                om.sleep(500);
+            }
+
+        }
+    }
+
 }
