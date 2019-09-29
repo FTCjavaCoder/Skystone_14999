@@ -14,7 +14,7 @@ public class TestTeleOpMethods extends BasicTeleOp {
     public double StoneGrabPos;
     boolean positive;
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
             initializeTeleOp();
 
