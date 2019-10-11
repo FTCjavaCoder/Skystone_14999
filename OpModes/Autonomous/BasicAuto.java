@@ -280,10 +280,85 @@ public class BasicAuto extends BasicOpMode {
             if(!targetVisible) {
                 telemetry.addData("Visible Target", "none");
             }
-            telemetry.update();
+            //telemetry.update();
         }
         targetsSkyStone.deactivate();
 
         return skystone;
+    }
+    // made for blue side only || sign multiplier for red/blue to be added
+    public void fwdToStone() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,22, cons.pHM.get("drivePowerLimit").value, "Forward 22 inches",this);
+
+        pressAToContinue();
+    }
+
+    public void nextStone() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,8, cons.pHM.get("drivePowerLimit").value, "Right 8 inches",this);
+
+        pressAToContinue();
+    }
+
+    public void grabSkyStone() {
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 8, cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
+
+        pressAToContinue();
+        //grab skystone with gripper
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-10, cons.pHM.get("drivePowerLimit").value, "Back 10 inches",this);
+
+        pressAToContinue();
+    }
+
+    public void moveSkyStone() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,-90, cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CCW",this);
+
+        telemetry.addLine("CAUTION: FWD 50 inches");
+        pressAToContinue();
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,50, cons.pHM.get("drivePowerLimit").value, "Forward 50 inches",this);
+        // add variable for additional forward distances depending on position of stone grabbed
+
+        pressAToContinue();
+    }
+
+    public void findSkyStone() {
+        boolean skystoneFound = false;
+        int looped = 0;
+
+        while(looped < 2 && opModeIsActive()) {
+            skystoneFound = vuforiaStoneIdentifyExit();
+
+            pressAToContinue();
+            if(skystoneFound) {
+
+                telemetry.addLine("SkyStone Found");
+                pressAToContinue();
+
+                grabSkyStone();
+
+                moveSkyStone();
+                looped = 100;
+            }
+            else {
+
+                telemetry.addLine("Next Stone");
+                pressAToContinue();
+
+                nextStone();
+                looped +=1;
+            }
+        }
+
+        telemetry.addLine("Third Stone");
+        pressAToContinue();
+
+        grabSkyStone();
+
+        moveSkyStone();
+
     }
 }
