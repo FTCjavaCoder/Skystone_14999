@@ -3,14 +3,143 @@ package Skystone_14999.DriveMotion;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import Skystone_14999.Parameters.Constants;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 public class DriveMethods{
 
-    
+    int targetPos[] = new int[4];
+
+    public enum moveDirection {FwdBack, RightLeft, Rotate}
+
     public DriveMethods(){
         // no OpMode NOTE: still contains non driving methods
     }
+
+    public void driveGeneral(moveDirection moveType, double distanceInch, double powerLimit, String step, BasicAuto om) {
+        int countDistance = 0;
+        int[] driveDirection = new int[4];
+        int[] startPos = new int[4];
+        boolean motorsDone = false;
+
+        switch(moveType) {
+
+            case FwdBack :
+                countDistance = (int) Math.round(distanceInch * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = +1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = -1;// BL
+                break;
+
+            case RightLeft :
+                countDistance = (int) Math.round((distanceInch * om.cons.adjustedRight) * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = +1;// BL
+                break;
+
+            case Rotate :
+                countDistance = (int) Math.round((distanceInch * om.cons.adjustedRotate) * om.cons.ROBOT_DEG_TO_WHEEL_INCH * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = -1;// BR
+                driveDirection[3] = -1;// BL
+                break;
+            default:
+                countDistance = (int) 0;
+
+                driveDirection[0] = 0;// FL
+                driveDirection[1] = 0;// FR
+                driveDirection[2] = 0;// BR
+                driveDirection[3] = 0;// BL
+        }
+
+        startPos = motorStartPos(om);
+        setMotorPower(powerLimit, om);
+
+        for (int i=0; i<4; i++) {
+
+            targetPos[i] = startPos[i] + (driveDirection[i] * countDistance);
+        }
+
+        om.Billy.frontLeft.setTargetPosition(targetPos[0]);
+        om.Billy.frontRight.setTargetPosition(targetPos[1]);
+        om.Billy.backRight.setTargetPosition(targetPos[2]);
+        om.Billy.backLeft.setTargetPosition(targetPos[3]);
+
+
+        while(!motorsDone && om.opModeIsActive()) {
+
+            motorsDone = targetPosTolerence(om);
+
+            om.telemetry.addData("Driving: ", step);
+            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                    om.Billy.frontLeft.getTargetPosition(), om.Billy.frontRight.getTargetPosition(),
+                    om.Billy.backRight.getTargetPosition(),om.Billy.backLeft.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+                    om.Billy.backRight.getCurrentPosition(), om.Billy.backLeft.getCurrentPosition());
+            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+            om.telemetry.update();
+
+            om.idle();
+        }
+
+
+    }
+
+    public int[] motorStartPos(BasicAuto om) {
+
+        int[] currentPos = new int[4];
+
+        currentPos[0]= om.Billy.frontLeft.getCurrentPosition(); //FL
+        currentPos[1]= om.Billy.frontRight.getCurrentPosition(); //FR
+        currentPos[2]= om.Billy.backRight.getCurrentPosition(); //BR
+        currentPos[3]= om.Billy.backLeft.getCurrentPosition(); //BL
+
+        return currentPos;
+    }
+
+    public void setMotorPower(double power, BasicAuto om) {
+
+        om.Billy.frontLeft.setPower(power);
+        om.Billy.frontRight.setPower(power);
+        om.Billy.backRight.setPower(power);
+        om.Billy.backLeft.setPower(power);
+
+    }
+
+    public boolean targetPosTolerence(BasicAuto om) {
+
+        int countTol = 0;
+        Boolean motorFinish = false;
+        int[] motorPos = new int[4];
+
+        motorPos = motorStartPos(om);
+        for (int i = 0; i < 4; i++) {
+
+            if (om.cons.pHM.get("moveTol").value >= Math.abs(motorPos[i] - targetPos[i])) {
+
+                countTol += 1;
+
+                if (countTol == 4) {
+
+                    motorFinish = true;
+
+                }
+            }
+
+        }
+
+        return motorFinish;
+
+    }
+
 
     public void driveFwdRev(int distance, double powerLimit, String step, BasicAuto om) {
         // "Distance" = the added straight distance from the current position
@@ -50,7 +179,7 @@ public class DriveMethods{
         brZone = (int) Math.abs (om.Billy.backRight.getCurrentPosition() - brStart - distance);
 
         //Check tolerance zone to exit method
-        while ( ( (flZone > om.prm.MOVE_TOL) || (frZone > om.prm.MOVE_TOL) || (blZone >  om.prm.MOVE_TOL) || (brZone > om.prm.MOVE_TOL) ) && om.opModeIsActive()) {
+        while ( ( (flZone > om.cons.pHM.get("moveTol").value) || (frZone > om.cons.pHM.get("moveTol").value) || (blZone >  om.cons.pHM.get("moveTol").value) || (brZone > om.cons.pHM.get("moveTol").value) ) && om.opModeIsActive()) {
             flZone = (int) Math.abs (om.Billy.frontLeft.getCurrentPosition() - flStart + distance);
             frZone = (int) Math.abs (om.Billy.frontRight.getCurrentPosition() - frStart - distance);
             blZone = (int) Math.abs (om.Billy.backLeft.getCurrentPosition() - blStart + distance);
@@ -62,7 +191,7 @@ public class DriveMethods{
             om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
                     om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
                     om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
-            om.telemetry.addData("Move Tolerance: ", om.prm.MOVE_TOL);
+            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
             om.telemetry.update();
 
             om.idle();
@@ -111,7 +240,7 @@ public class DriveMethods{
         brZone = (int) Math.abs (om.Billy.backRight.getCurrentPosition() - brStart - right);
 
         //Check tolerance zone to exit methodn
-        while ( ( (flZone > om.prm.MOVE_TOL) || (frZone > om.prm.MOVE_TOL) || (blZone > om.prm.MOVE_TOL) || (brZone > om.prm.MOVE_TOL) ) && om.opModeIsActive()) {
+        while ( ( (flZone > om.cons.pHM.get("moveTol").value) || (frZone > om.cons.pHM.get("moveTol").value) || (blZone > om.cons.pHM.get("moveTol").value) || (brZone > om.cons.pHM.get("moveTol").value) ) && om.opModeIsActive()) {
             flZone = (int) Math.abs (om.Billy.frontLeft.getCurrentPosition() - flStart + right);
             frZone = (int) Math.abs (om.Billy.frontRight.getCurrentPosition() - frStart + right);
             blZone = (int) Math.abs (om.Billy.backLeft.getCurrentPosition() - blStart - right);
@@ -166,7 +295,7 @@ public class DriveMethods{
         brZone = (int) Math.abs (om.Billy.backRight.getCurrentPosition() - brStart + clockwise);
 
         //Check tolerance zone to exit method
-        while ( ( (flZone > om.prm.MOVE_TOL) || (frZone > om.prm.MOVE_TOL) || (blZone >  om.prm.MOVE_TOL) || (brZone > om.prm.MOVE_TOL) ) && om.opModeIsActive()) {
+        while ( ( (flZone > om.cons.pHM.get("moveTol").value) || (frZone > om.cons.pHM.get("moveTol").value) || (blZone >  om.cons.pHM.get("moveTol").value) || (brZone > om.cons.pHM.get("moveTol").value) ) && om.opModeIsActive()) {
             flZone = (int) Math.abs (om.Billy.frontLeft.getCurrentPosition() - flStart + clockwise);
             frZone = (int) Math.abs (om.Billy.frontRight.getCurrentPosition() - frStart + clockwise);
             blZone = (int) Math.abs (om.Billy.backLeft.getCurrentPosition() - blStart + clockwise);
@@ -186,34 +315,34 @@ public class DriveMethods{
         om.Billy.backRight.setPower(0);
     }
 
-    public void slideMove(int distance, double powerLimit, String step, BasicAuto om){
-
-        int lsZone;
-        int lsStart;
-
-        lsStart = om.Billy.landingSlide.getCurrentPosition();
-        om.Billy.landingSlide.setPower(powerLimit);
-        om.Billy.landingSlide.setTargetPosition(lsStart + distance);
-
-        lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
-
-        while (lsZone > om.prm.SLIDE_TOL && om.opModeIsActive()) {
-            lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
-
-            om.telemetry.addData("Slide: ", step);
-            om.telemetry.addData("Motor Counts: ", "SlideArm CurrentPos (%d), Command (%d)",
-                    om.Billy.landingSlide.getCurrentPosition(), lsStart + distance);
-
-            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
-                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
-                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
-            om.telemetry.update();
-
-            om.idle();
-        }
-        om.Billy.landingSlide.setPower(0);
-
-    }
+//    public void slideMove(int distance, double powerLimit, String step, BasicAuto om){
+//
+//        int lsZone;
+//        int lsStart;
+//
+//        lsStart = om.Billy.landingSlide.getCurrentPosition();
+//        om.Billy.landingSlide.setPower(powerLimit);
+//        om.Billy.landingSlide.setTargetPosition(lsStart + distance);
+//
+//        lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
+//
+//        while (lsZone > om.prm.SLIDE_TOL && om.opModeIsActive()) {
+//            lsZone = (int) Math.abs (om.Billy.landingSlide.getCurrentPosition() - (lsStart + distance)); // need to confirm sign before distance
+//
+//            om.telemetry.addData("Slide: ", step);
+//            om.telemetry.addData("Motor Counts: ", "SlideArm CurrentPos (%d), Command (%d)",
+//                    om.Billy.landingSlide.getCurrentPosition(), lsStart + distance);
+//
+//            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
+//                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+//                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
+//            om.telemetry.update();
+//
+//            om.idle();
+//        }
+//        om.Billy.landingSlide.setPower(0);
+//
+//    }
 
     public void driveFwdRevIMU(int distance, double powerLimit, double cmdDriveAngle, String step, BasicAuto om) { //not working
 
@@ -233,10 +362,10 @@ public class DriveMethods{
         om.angleUnWrap();
 
         //Check tolerance zone to exit method
-        while (Math.abs(distanceMoved - distance) > om.prm.IMU_TOL && (om.opModeIsActive())) {
+        while (Math.abs(distanceMoved - distance) > om.cons.IMU_TOL && (om.opModeIsActive())) {
 
             error = cmdDriveAngle - om.robotHeading;
-            steering = Range.clip((error * om.prm.GAIN), -om.prm.ROTATE_POWER_LIMIT, om.prm.ROTATE_POWER_LIMIT);
+            steering = Range.clip((error * om.cons.GAIN), -om.cons.pHM.get("rotatePowerLimit").value, om.cons.pHM.get("rotatePowerLimit").value);
 
             //update power limit
             om.Billy.frontLeft.setPower(-powerLimit - steering);
@@ -285,10 +414,10 @@ public class DriveMethods{
         om.angleUnWrap();
 
         //Check tolerance zone to exit method
-        while (Math.abs(distanceMoved - distance) > om.prm.IMU_TOL && (om.opModeIsActive())) {
+        while (Math.abs(distanceMoved - distance) > om.cons.IMU_TOL && (om.opModeIsActive())) {
 
             error = cmdDriveAngle - om.robotHeading;
-            steering = Range.clip((error * om.prm.GAIN), -om.prm.ROTATE_POWER_LIMIT, om.prm.ROTATE_POWER_LIMIT);
+            steering = Range.clip((error * om.cons.GAIN), -om.cons.pHM.get("rotatePowerLimit").value, om.cons.pHM.get("rotatePowerLimit").value);
 
             //update power limit
             om.Billy.frontLeft.setPower(-powerLimit - steering);
@@ -333,10 +462,10 @@ public class DriveMethods{
 
         om.angleUnWrap();
         //Check tolerance zone to exit method
-        while (Math.abs(angle - om.robotHeading) > om.prm.IMU_ROTATE_TOL && (om.opModeIsActive())) {
+        while (Math.abs(angle - om.robotHeading) > om.cons.IMU_ROTATE_TOL && (om.opModeIsActive())) {
 
             error = angle - om.robotHeading;
-            steering = Range.clip((error * om.prm.GAIN), -om.prm.ROTATE_POWER_LIMIT, om.prm.ROTATE_POWER_LIMIT);
+            steering = Range.clip((error * om.cons.GAIN), -om.cons.pHM.get("rotatePowerLimit").value, om.cons.pHM.get("rotatePowerLimit").value);
 
             //update power limit
             om.Billy.frontLeft.setPower(-powerLimit - steering);
