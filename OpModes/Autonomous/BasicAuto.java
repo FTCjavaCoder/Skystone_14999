@@ -90,6 +90,13 @@ public class BasicAuto extends BasicOpMode {
     public VuforiaLocalizer vuforia;
     public boolean targetVisible = false;
 
+    public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+    public VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+
+    public List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+
     @Override
     //    public void runOpMode() throws InterruptedException {
     public void runOpMode() {
@@ -134,28 +141,11 @@ public class BasicAuto extends BasicOpMode {
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
 
-        readOrWriteHashMap();
-
-        //Indicate initialization complete and provide telemetry
-        telemetry.addData("Status: ", "Initialized");
-        telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());
-        telemetry.addData("Target Positions", "Forward (%d), Right (%d), Rotate (%d)", forwardPosition, rightPosition, clockwisePosition);
-        telemetry.update();//Update telemetry to update display
-
-    }// sets: RUN_TO_POSITION, ZeroPowerBehaviour.FLOAT, and 0 power & targetPos
-
-    public void vuforiaStoneIdentifyLoop() {
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
         parameters.vuforiaLicenseKey = cons.VUFORIA_KEY;
         parameters.cameraDirection   = cons.CAMERA_CHOICE;
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
@@ -184,8 +174,19 @@ public class BasicAuto extends BasicOpMode {
         VuforiaTrackable rear2 = targetsSkyStone.get(12);
         rear2.setName("Rear Perimeter 2");
 
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
         allTrackables.addAll(targetsSkyStone);
+
+        readOrWriteHashMap();
+
+        //Indicate initialization complete and provide telemetry
+        telemetry.addData("Status: ", "Initialized");
+        telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());
+        telemetry.addData("Target Positions", "Forward (%d), Right (%d), Rotate (%d)", forwardPosition, rightPosition, clockwisePosition);
+        telemetry.update();//Update telemetry to update display
+
+    }// sets: RUN_TO_POSITION, ZeroPowerBehaviour.FLOAT, and 0 power & targetPos
+
+    public void vuforiaStoneIdentifyLoop() {
 
         targetsSkyStone.activate();
         while (!isStopRequested()) {
@@ -215,46 +216,6 @@ public class BasicAuto extends BasicOpMode {
 
     public boolean vuforiaStoneIdentifyExit() {
         boolean skystone = false;
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        parameters.vuforiaLicenseKey = cons.VUFORIA_KEY;
-        parameters.cameraDirection   = cons.CAMERA_CHOICE;
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
-
-        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
-        stoneTarget.setName("Stone Target");
-        VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
-        blueRearBridge.setName("Blue Rear Bridge");
-        VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
-        redRearBridge.setName("Red Rear Bridge");
-        VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
-        redFrontBridge.setName("Red Front Bridge");
-        VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
-        blueFrontBridge.setName("Blue Front Bridge");
-        VuforiaTrackable red1 = targetsSkyStone.get(5);
-        red1.setName("Red Perimeter 1");
-        VuforiaTrackable red2 = targetsSkyStone.get(6);
-        red2.setName("Red Perimeter 2");
-        VuforiaTrackable front1 = targetsSkyStone.get(7);
-        front1.setName("Front Perimeter 1");
-        VuforiaTrackable front2 = targetsSkyStone.get(8);
-        front2.setName("Front Perimeter 2");
-        VuforiaTrackable blue1 = targetsSkyStone.get(9);
-        blue1.setName("Blue Perimeter 1");
-        VuforiaTrackable blue2 = targetsSkyStone.get(10);
-        blue2.setName("Blue Perimeter 2");
-        VuforiaTrackable rear1 = targetsSkyStone.get(11);
-        rear1.setName("Rear Perimeter 1");
-        VuforiaTrackable rear2 = targetsSkyStone.get(12);
-        rear2.setName("Rear Perimeter 2");
-
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(targetsSkyStone);
 
         targetsSkyStone.activate();
         double start = runtime.time();
@@ -303,12 +264,12 @@ public class BasicAuto extends BasicOpMode {
 
     public void grabSkyStone() {
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 8, cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
-
+        // needs to be longer maybe 12"
         pressAToContinue();
         //grab skystone with gripper
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-10, cons.pHM.get("drivePowerLimit").value, "Back 10 inches",this);
-
+        // needs to be longer maybe -14"
         pressAToContinue();
     }
 
@@ -352,13 +313,15 @@ public class BasicAuto extends BasicOpMode {
                 looped +=1;
             }
         }
+        if(!skystoneFound) {
 
-        telemetry.addLine("Third Stone");
-        pressAToContinue();
+            telemetry.addLine("Third Stone");
+            pressAToContinue();
 
-        grabSkyStone();
+            grabSkyStone();
 
-        moveSkyStone();
+            moveSkyStone();
+        }
 
     }
 }
