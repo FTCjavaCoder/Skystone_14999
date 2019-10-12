@@ -90,10 +90,7 @@ public class BasicAuto extends BasicOpMode {
     public VuforiaLocalizer vuforia;
     public boolean targetVisible = false;
 
-    public int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-    public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-    public VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+    public VuforiaTrackables targetsSkyStone = null;
 
     public List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
 
@@ -140,12 +137,6 @@ public class BasicAuto extends BasicOpMode {
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-
-        parameters.vuforiaLicenseKey = cons.VUFORIA_KEY;
-        parameters.cameraDirection   = cons.CAMERA_CHOICE;
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
@@ -251,39 +242,29 @@ public class BasicAuto extends BasicOpMode {
     public void fwdToStone() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,22, cons.pHM.get("drivePowerLimit").value, "Forward 22 inches",this);
-
-        pressAToContinue();
     }
 
     public void nextStone() {
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft,8, cons.pHM.get("drivePowerLimit").value, "Right 8 inches",this);
-
-        pressAToContinue();
     }
 
     public void grabSkyStone() {
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 8, cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
-        // needs to be longer maybe 12"
-        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 12, cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
+        // needs to be longer previously 8""
+
         //grab skystone with gripper
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-10, cons.pHM.get("drivePowerLimit").value, "Back 10 inches",this);
-        // needs to be longer maybe -14"
-        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-14, cons.pHM.get("drivePowerLimit").value, "Back 10 inches",this);
+        // needs to be longer previously -10"
     }
 
     public void moveSkyStone() {
 
         drv.driveGeneral(DriveMethods.moveDirection.Rotate,-90, cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CCW",this);
 
-        telemetry.addLine("CAUTION: FWD 50 inches");
-        pressAToContinue();
-
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,50, cons.pHM.get("drivePowerLimit").value, "Forward 50 inches",this);
-        // add variable for additional forward distances depending on position of stone grabbed
-
-        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,5, cons.pHM.get("drivePowerLimit").value, "Forward 50 inches",this);
+        //(50") add variable for additional forward distances depending on position of stone grabbed
     }
 
     public void findSkyStone() {
@@ -293,11 +274,10 @@ public class BasicAuto extends BasicOpMode {
         while(looped < 2 && opModeIsActive()) {
             skystoneFound = vuforiaStoneIdentifyExit();
 
-            pressAToContinue();
             if(skystoneFound) {
 
                 telemetry.addLine("SkyStone Found");
-                pressAToContinue();
+                telemetry.update();
 
                 grabSkyStone();
 
@@ -307,7 +287,7 @@ public class BasicAuto extends BasicOpMode {
             else {
 
                 telemetry.addLine("Next Stone");
-                pressAToContinue();
+                telemetry.update();
 
                 nextStone();
                 looped +=1;
@@ -316,7 +296,7 @@ public class BasicAuto extends BasicOpMode {
         if(!skystoneFound) {
 
             telemetry.addLine("Third Stone");
-            pressAToContinue();
+            telemetry.update();
 
             grabSkyStone();
 
