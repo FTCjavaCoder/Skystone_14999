@@ -26,6 +26,7 @@ public class BasicTeleOp extends BasicOpMode {
     public double clockwise =0;
     public double forwardDirection =0;
     public double rightDirection =0;
+    public double verticalDirection =0;
     public int slideDistance = 0;
     public double desiredExtend = 0;
     public double desiredRotate = 0;
@@ -110,6 +111,13 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
         Billy.backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
         Billy.backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
+    }
+
+    public void jackPower() {
+
+        verticalDirection = -gamepad1.left_stick_y * Math.pow(gamepad1.left_stick_y, 2);
+
+        Billy.jackLeadScrew.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
     }
 
 }

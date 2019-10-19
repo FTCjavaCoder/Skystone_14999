@@ -3,6 +3,7 @@ package Skystone_14999.DriveMotion;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import Skystone_14999.OpModes.BasicOpMode;
 import Skystone_14999.Parameters.Constants;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
@@ -93,7 +94,44 @@ public class DriveMethods{
 
     }
 
-    public int[] motorStartPos(BasicAuto om) {
+    public void moveJack(double distanceInch, double jackPowerLimit, String step, BasicOpMode om) {
+
+        int countDistance = 0;
+        int startPos;
+        int jackZone;
+        boolean motorsDone = false;
+
+        countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES *(0 - Math.sqrt(Math.pow(0, 2) - Math.pow(distanceInch + 0, 2)) / om.cons.DEGREES_TO_COUNTS) );
+
+        startPos = om.Billy.jackLeadScrew.getCurrentPosition();
+        om.Billy.jackLeadScrew.setPower(jackPowerLimit);
+        om.Billy.jackLeadScrew.setTargetPosition(countDistance);
+
+        jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
+
+        while((jackZone > om.cons.pHM.get("moveTol").value) && om.opModeIsActive()) {
+
+            jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
+
+            om.telemetry.addData("Jack: ", step);
+            om.telemetry.addData("Motor Commands: ", "Jack (%d)", om.Billy.jackLeadScrew.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "Jack (%d)", om.Billy.jackLeadScrew.getCurrentPosition());
+            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+            om.telemetry.update();
+
+            om.idle();
+        }
+    }
+
+    public int jackCounts(double moveInch, BasicOpMode om) {
+        int counts;
+
+        counts = (int) (om.cons.NUMBER_OF_JACK_STAGES * (0 - Math.sqrt(Math.pow(0, 2) - Math.pow(moveInch + 0, 2)) / om.cons.DEGREES_TO_COUNTS) );
+
+        return counts;
+    }
+
+    public int[] motorStartPos(BasicOpMode om) {
 
         int[] currentPos = new int[4];
 
@@ -105,7 +143,7 @@ public class DriveMethods{
         return currentPos;
     }
 
-    public void setMotorPower(double power, BasicAuto om) {
+    public void setMotorPower(double power, BasicOpMode om) {
 
         om.Billy.frontLeft.setPower(power);
         om.Billy.frontRight.setPower(power);
@@ -114,7 +152,7 @@ public class DriveMethods{
 
     }
 
-    public boolean targetPosTolerence(BasicAuto om) {
+    public boolean targetPosTolerence(BasicOpMode om) {
 
         int countTol = 0;
         Boolean motorFinish = false;

@@ -30,6 +30,8 @@ public class Constants {
 
     //    final double OMNI_EFFICIENCY = 1/1.35;// unitless - factor that's needed to reduce total wheel travel to match forward/back and right/left motion, doesn't apply for rotate
     public final double ROBOT_INCH_TO_MOTOR_DEG = 360 / (3.875 * 3.14159); // units deg/inch - 360 deg. / wheel circumference (Wheel diameter x pi)
+    public final int NUMBER_OF_JACK_STAGES = 2 * 3;// ASSUMING 3 SETS PAIRS OF PIECES PER SIDE
+    public final double MOTOR_DEG_TO_LEAD = 0/360; //Replace 0 with the distance between the ridges of the lead screw
     public final double SLIDE_INCH_TO_MOTOR_DEG = (3 / 3) * 360; // (3 screw rev / inch) * ( 1 motor rev / 3 screw rev) * 360 degrees / motor rev
     // 1/3 gear ratio 16 turns per inch screw
     // DERIVATION alpha = 2*AL/D; AL = arc length = wheel travel in inches, D = wheel diameter, alpha = wheel angle in radians
@@ -110,6 +112,8 @@ public class Constants {
         pHM.put("rotatePowerLimit", new ParameterHM(0.25, ParameterHM.instanceType.powerLimit));
 
         pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.65, ParameterHM.instanceType.powerLimit));
+
+        pHM.put("jackPowerLimit", new ParameterHM(0.25, ParameterHM.instanceType.powerLimit));
 
         pHM.put("moveTol", new ParameterHM(8, ParameterHM.instanceType.toleranceCounts));
 
