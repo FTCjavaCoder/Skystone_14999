@@ -41,11 +41,22 @@ public class ProtoDrive extends BasicTeleOp {
             jackPower();
 
             if (gamepad2.y) {
-                drv.moveJack(10, cons.pHM.get("jackPowerLimit").value, "Up 10 Inches", this);
+                DeltaH += 5;
+
+                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Up 5 Inches", this);
             }
 
             if (gamepad2.a) {
-                drv.moveJack(-5, cons.pHM.get("jackPowerLimit").value, "Up 10 Inches", this);
+                DeltaH -= 5;
+
+                    drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Down 5 Inches", this);
+            }
+
+            if (gamepad2.x) {
+
+                DeltaH = 0;
+
+                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Back to Zero", this);
             }
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());

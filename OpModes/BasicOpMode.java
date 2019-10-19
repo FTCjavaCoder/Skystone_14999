@@ -19,6 +19,8 @@ public class BasicOpMode extends LinearOpMode {
     public boolean fileWasRead = true;
     public String hashMapFile = "HashMapFile.txt";
 
+    public double DeltaH = 0;
+
     public BasicOpMode() {
 
     }

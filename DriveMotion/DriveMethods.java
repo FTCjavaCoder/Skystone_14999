@@ -94,14 +94,10 @@ public class DriveMethods{
 
     }
 
-    public void moveJack(double distanceInch, double jackPowerLimit, String step, BasicOpMode om) {
-
-        int countDistance = 0;
+    public void moveJack(double jackPowerLimit, String step, BasicOpMode om) {
+        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
         int startPos;
         int jackZone;
-        boolean motorsDone = false;
-
-        countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES *(0 - Math.sqrt(Math.pow(0, 2) - Math.pow(distanceInch + 0, 2)) / om.cons.DEGREES_TO_COUNTS) );
 
         startPos = om.Billy.jackLeadScrew.getCurrentPosition();
         om.Billy.jackLeadScrew.setPower(jackPowerLimit);
@@ -121,14 +117,6 @@ public class DriveMethods{
 
             om.idle();
         }
-    }
-
-    public int jackCounts(double moveInch, BasicOpMode om) {
-        int counts;
-
-        counts = (int) (om.cons.NUMBER_OF_JACK_STAGES * (0 - Math.sqrt(Math.pow(0, 2) - Math.pow(moveInch + 0, 2)) / om.cons.DEGREES_TO_COUNTS) );
-
-        return counts;
     }
 
     public int[] motorStartPos(BasicOpMode om) {
