@@ -59,6 +59,16 @@ public class ProtoDrive extends BasicTeleOp {
                 drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Back to Zero", this);
             }
 
+            if (gamepad2.left_bumper) {
+
+                servoStonePos = -0.1;
+            }
+
+            if (gamepad2.right_bumper) {
+
+                servoStonePos = 0.1;
+            }
+
             telemetry.addData("Status", "Run Time: ",runtime.toString());
             telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
                     forwardDirection, rightDirection, clockwise);

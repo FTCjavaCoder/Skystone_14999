@@ -22,7 +22,7 @@ public class BasicTeleOp extends BasicOpMode {
     public DriveMethods drv = new DriveMethods();
 
     // Define the static power levels and limits for motors
-    public double servosMineralPos;
+    public double servoStonePos;
     public double clockwise =0;
     public double forwardDirection =0;
     public double rightDirection =0;
