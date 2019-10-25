@@ -117,7 +117,7 @@ public class BasicTeleOp extends BasicOpMode {
 
         verticalDirection = -gamepad1.left_stick_y * Math.pow(gamepad1.left_stick_y, 2);
 
-        Billy.jackLeadScrew.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+//        Billy.jackLeadScrew.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
     }
 
 }

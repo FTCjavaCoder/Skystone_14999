@@ -304,4 +304,33 @@ public class BasicAuto extends BasicOpMode {
         }
 
     }
+
+    public void grabFoundation() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 30, cons.pHM.get("drivePowerLimit").value, "Forward 30 inches to Foundation", this);
+
+        // grab foundation with gripper
+    }
+
+    public void pullFoundation() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -26, cons.pHM.get("drivePowerLimit").value, "Backward 26 inches with Foundation", this);
+
+        // release foundation from gripper
+    }
+
+    public void aroundFoundation() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 26, cons.pHM.get("drivePowerLimit").value, "Right 26 inches around Foundation", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 18, cons.pHM.get("drivePowerLimit").value, "Forward 18 inches around Foundation", this);
+
+    }
+
+    public void pushFoundation() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -4, cons.pHM.get("drivePowerLimit").value, "Left 4 inches pushing Foundation", this);
+
+    }
+
 }

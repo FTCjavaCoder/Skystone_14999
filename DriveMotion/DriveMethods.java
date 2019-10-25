@@ -94,30 +94,30 @@ public class DriveMethods{
 
     }
 
-    public void moveJack(double jackPowerLimit, String step, BasicOpMode om) {
-        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-        int startPos;
-        int jackZone;
-
-        startPos = om.Billy.jackLeadScrew.getCurrentPosition();
-        om.Billy.jackLeadScrew.setPower(jackPowerLimit);
-        om.Billy.jackLeadScrew.setTargetPosition(countDistance);
-
-        jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
-
-        while((jackZone > om.cons.pHM.get("moveTol").value) && om.opModeIsActive()) {
-
-            jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
-
-            om.telemetry.addData("Jack: ", step);
-            om.telemetry.addData("Motor Commands: ", "Jack (%d)", om.Billy.jackLeadScrew.getTargetPosition());
-            om.telemetry.addData("Motor Counts: ", "Jack (%d)", om.Billy.jackLeadScrew.getCurrentPosition());
-            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
-            om.telemetry.update();
-
-            om.idle();
-        }
-    }
+//    public void moveJack(double jackPowerLimit, String step, BasicOpMode om) {
+//        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
+//        int startPos;
+//        int jackZone;
+//
+//        startPos = om.Billy.jackLeadScrew.getCurrentPosition();
+//        om.Billy.jackLeadScrew.setPower(jackPowerLimit);
+//        om.Billy.jackLeadScrew.setTargetPosition(countDistance);
+//
+//        jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
+//
+//        while((jackZone > om.cons.pHM.get("moveTol").value) && om.opModeIsActive()) {
+//
+//            jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
+//
+//            om.telemetry.addData("Jack: ", step);
+//            om.telemetry.addData("Motor Commands: ", "Jack (%d)", om.Billy.jackLeadScrew.getTargetPosition());
+//            om.telemetry.addData("Motor Counts: ", "Jack (%d)", om.Billy.jackLeadScrew.getCurrentPosition());
+//            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+//            om.telemetry.update();
+//
+//            om.idle();
+//        }
+//    }
 
     public int[] motorStartPos(BasicOpMode om) {
 

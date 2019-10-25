@@ -46,6 +46,6 @@ public class TestTeleOpMethods extends BasicTeleOp {
                 StoneGrabPos -= .05;
             }
 
-        Billy.servoStoneGrab.setPosition(StoneGrabPos);
+//        Billy.servoStoneGrab.setPosition(StoneGrabPos);
     }
 }
