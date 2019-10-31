@@ -36,7 +36,7 @@ public class HardwareBilly
 
 
 //    public DcMotor  mineralCollector = null;
-//    public Servo    mineralDumperL   = null;
+      public Servo  stoneServo   = null;
 //    public Servo    mineralDumperR   = null;
 //    public ColorSensor    colorSensorTeam   = null;
 //    public TouchSensor    touchSensor1   = null;
@@ -68,7 +68,7 @@ public class HardwareBilly
         // Define and initialize ALL installed servos.
 //     servoStoneGrab = hwMap.get(Servo.class, "StoneGrab_servo");
 //        servoPrototype = hwMap.get(Servo.class, "marker_servo");
-//        servoSweeper = hwMap.get(CRServo.class, "sweeper_servo");
+        stoneServo = hwMap.get(Servo.class, "stone_servo");
 //        mineralDumperR = hwMap.get(Servo.class, "mineral_servo_right");
 
         //Define all installed sensors

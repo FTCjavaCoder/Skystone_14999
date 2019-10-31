@@ -61,12 +61,14 @@ public class ProtoDrive extends BasicTeleOp {
 
             if (gamepad2.left_bumper) {
 
-                servoStonePos = -0.1;
+                servoStonePos = 0.5;
+                stoneSweeper(servoStonePos);
             }
 
             if (gamepad2.right_bumper) {
 
-                servoStonePos = 0.1;
+                servoStonePos += 0.05;
+                stoneSweeper(servoStonePos);
             }
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());

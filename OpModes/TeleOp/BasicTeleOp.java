@@ -120,4 +120,9 @@ public class BasicTeleOp extends BasicOpMode {
 //        Billy.jackLeadScrew.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
     }
 
+    public void stoneSweeper(double servoPos) {
+
+        Billy.stoneServo.setPosition(servoPos);
+    }
+
 }
