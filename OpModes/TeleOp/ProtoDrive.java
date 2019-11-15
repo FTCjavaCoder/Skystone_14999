@@ -32,9 +32,9 @@ public class ProtoDrive extends BasicTeleOp {
             if (gamepad1.right_bumper && gamepad1.left_bumper)
                 clockwise = 0;
             else if (gamepad1.right_bumper)  //boolean gamepad1.right_bumper is evaluated for "true" or "false" to determine if pressed
-                clockwise = prm.TURN_POWER;
+                clockwise = cons.TURN_POWER;
             else if (gamepad1.left_bumper)
-                clockwise = -prm.TURN_POWER;
+                clockwise = -cons.TURN_POWER;
             else
                 clockwise = 0;
 
@@ -62,13 +62,13 @@ public class ProtoDrive extends BasicTeleOp {
             if (gamepad2.left_bumper) {
 
                 servoStonePos = 0.5;
-                stoneSweeper(servoStonePos);
+                setServoPos(servoStonePos);
             }
 
             if (gamepad2.right_bumper) {
 
                 servoStonePos += 0.05;
-                stoneSweeper(servoStonePos);
+                setServoPos(servoStonePos);
             }
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
