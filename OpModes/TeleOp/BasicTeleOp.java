@@ -114,4 +114,9 @@ public class BasicTeleOp extends BasicOpMode {
 
     }
 
+    public void setServoPos(double servoPos) {
+
+        Billy.stoneServo.setPosition(servoPos);
+    }
+
 }
