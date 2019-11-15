@@ -94,31 +94,6 @@ public class DriveMethods{
 
     }
 
-//    public void moveJack(double jackPowerLimit, String step, BasicOpMode om) {
-//        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-//        int startPos;
-//        int jackZone;
-//
-//        startPos = om.Billy.jackLeadScrew.getCurrentPosition();
-//        om.Billy.jackLeadScrew.setPower(jackPowerLimit);
-//        om.Billy.jackLeadScrew.setTargetPosition(countDistance);
-//
-//        jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
-//
-//        while((jackZone > om.cons.pHM.get("moveTol").value) && om.opModeIsActive()) {
-//
-//            jackZone = Math.abs(countDistance - (om.Billy.jackLeadScrew.getCurrentPosition() - startPos) );
-//
-//            om.telemetry.addData("Jack: ", step);
-//            om.telemetry.addData("Motor Commands: ", "Jack (%d)", om.Billy.jackLeadScrew.getTargetPosition());
-//            om.telemetry.addData("Motor Counts: ", "Jack (%d)", om.Billy.jackLeadScrew.getCurrentPosition());
-//            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
-//            om.telemetry.update();
-//
-//            om.idle();
-//        }
-//    }
-
     public int[] motorStartPos(BasicOpMode om) {
 
         int[] currentPos = new int[4];
@@ -166,6 +141,37 @@ public class DriveMethods{
 
     }
 
+    public void moveJack(double jackPowerLimit, String step, BasicOpMode om) {
+        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
+        int startPosL;
+        int startPosR;
+        int jackZoneL;
+        int jackZoneR;
+
+        startPosL = om.Billy.jackLeft.getCurrentPosition();
+        startPosR = om.Billy.jackRight.getCurrentPosition();
+        om.Billy.jackLeft.setPower(jackPowerLimit);
+        om.Billy.jackRight.setPower(jackPowerLimit);
+        om.Billy.jackLeft.setTargetPosition(countDistance);
+        om.Billy.jackRight.setTargetPosition(countDistance);
+
+        jackZoneL = Math.abs(countDistance - (om.Billy.jackLeft.getCurrentPosition() - startPosL) );
+        jackZoneR = Math.abs(countDistance - (om.Billy.jackRight.getCurrentPosition() - startPosR) );
+
+        while(( (jackZoneL > om.cons.pHM.get("moveTol").value) || (jackZoneR > om.cons.pHM.get("moveTol").value) ) && om.opModeIsActive()) {
+
+            jackZoneL = Math.abs(countDistance - (om.Billy.jackLeft.getCurrentPosition() - startPosL) );
+            jackZoneR = Math.abs(countDistance - (om.Billy.jackRight.getCurrentPosition() - startPosR) );
+
+            om.telemetry.addData("Jack: ", step);
+            om.telemetry.addData("Motor Commands: ", "Jack Left (%d), Jack Right (%d)", om.Billy.jackLeft.getTargetPosition(), om.Billy.jackRight.getCurrentPosition());
+            om.telemetry.addData("Motor Counts: ", "Jack Left (%d), Jack Right (%d)", om.Billy.jackLeft.getCurrentPosition(), om.Billy.jackRight.getCurrentPosition());
+            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+            om.telemetry.update();
+
+            om.idle();
+        }
+    }
 
     public void driveFwdRev(int distance, double powerLimit, String step, BasicAuto om) {
         // "Distance" = the added straight distance from the current position

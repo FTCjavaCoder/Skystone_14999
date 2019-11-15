@@ -34,7 +34,7 @@ public class Constants {
     public final double L = 5.04;//
     public final double W0 = 999;//
     public final double H0 = 999;//
-    public final double MOTOR_DEG_TO_LEAD = 0/360; //Replace 0 with the distance between the ridges of the lead screw
+    public final double MOTOR_DEG_TO_LEAD = 0.315/360; //Replace 0 with the distance between the ridges of the lead screw
     public final double SLIDE_INCH_TO_MOTOR_DEG = (3 / 3) * 360; // (3 screw rev / inch) * ( 1 motor rev / 3 screw rev) * 360 degrees / motor rev
     // 1/3 gear ratio 16 turns per inch screw
     // DERIVATION alpha = 2*AL/D; AL = arc length = wheel travel in inches, D = wheel diameter, alpha = wheel angle in radians

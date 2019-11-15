@@ -12,7 +12,7 @@ import Skystone_14999.Parameters.Constants;
 public class BasicOpMode extends LinearOpMode {
 
     public HardwareBilly Billy = new HardwareBilly();// call using Billy.(for hardware or angle unwrap method)
-    public Constants cons = new Constants();// call using prm.(constant DRIVE_POWER_LIMIT etc.)
+    public Constants cons = new Constants();// call using cons.(constant DRIVE_POWER_LIMIT etc.)
 
     public double priorAngle = 0;
     public double robotHeading = 0;

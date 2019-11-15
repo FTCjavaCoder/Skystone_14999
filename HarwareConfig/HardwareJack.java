@@ -3,8 +3,6 @@ package Skystone_14999.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,13 +14,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 * REVISION HISTORY
 * made this the hardware for "Billy" with everything for lead screw slide and mineral collecting arm
 */
-public class HardwareBilly
+public class HardwareJack
 {
     /* Public OpMode members. */
-    public DcMotor  frontLeft        = null;
-    public DcMotor  frontRight       = null;
-    public DcMotor  backLeft         = null;
-    public DcMotor  backRight        = null;
+//    public DcMotor  frontLeft        = null;
+//    public DcMotor  frontRight       = null;
+//    public DcMotor  backLeft         = null;
+//    public DcMotor  backRight        = null;
     public DcMotor  jackLeft     = null;
     public DcMotor  jackRight = null;
 //    public DcMotor  slideRotate = null;
@@ -46,7 +44,7 @@ public class HardwareBilly
     public Orientation angles;
 
     /* Constructor */
-    public HardwareBilly(){
+    public HardwareJack(){
 
     }
 
@@ -56,17 +54,17 @@ public class HardwareBilly
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        frontLeft  = hwMap.get(DcMotor.class, "motor_fl");
-        frontRight = hwMap.get(DcMotor.class, "motor_fr");
-        backLeft  = hwMap.get(DcMotor.class, "motor_bl");
-        backRight = hwMap.get(DcMotor.class, "motor_br");
+//        frontLeft  = hwMap.get(DcMotor.class, "motor_fl");
+//        frontRight = hwMap.get(DcMotor.class, "motor_fr");
+//        backLeft  = hwMap.get(DcMotor.class, "motor_bl");
+//        backRight = hwMap.get(DcMotor.class, "motor_br");
         jackLeft  = hwMap.get(DcMotor.class, "motor_jack_left");
         jackRight = hwMap.get(DcMotor.class, "motor_jack_right");
 //        slideRotate = hwMap.get(DcMotor.class, "motor_slide_rotate");
 //        mineralCollector = hwMap.get(DcMotor.class, "motor_collect");
 
         // Define and initialize ALL installed servos.
-//        servoStoneGrab = hwMap.get(Servo.class, "StoneGrab_servo");
+//        servoStoneGrab = hwMap.get(Servo.class, "StoneGrab_servo");-
 //        servoPrototype = hwMap.get(Servo.class, "marker_servo");
 //        servoSweeper = hwMap.get(CRServo.class, "sweeper_servo");
 //        mineralDumperR = hwMap.get(Servo.class, "mineral_servo_right");

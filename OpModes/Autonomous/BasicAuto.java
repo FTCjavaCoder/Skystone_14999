@@ -255,8 +255,20 @@ public class BasicAuto extends BasicOpMode {
 
         //grab skystone with gripper
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-14, cons.pHM.get("drivePowerLimit").value, "Back 10 inches",this);
-        // needs to be longer previously -10"
+    }
+
+    public void brideCrossOutside() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-4, cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);
+        //previously -14"
+
+    }
+
+    public void brideCrossInside() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-32, cons.pHM.get("drivePowerLimit").value, "Back 32 inches",this);
+        //previously -14"
+
     }
 
     public void moveSkyStone() {
@@ -281,7 +293,6 @@ public class BasicAuto extends BasicOpMode {
 
                 grabSkyStone();
 
-                moveSkyStone();
                 looped = 100;
             }
             else {
@@ -300,7 +311,6 @@ public class BasicAuto extends BasicOpMode {
 
             grabSkyStone();
 
-            moveSkyStone();
         }
 
     }
