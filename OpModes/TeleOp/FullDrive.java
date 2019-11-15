@@ -81,6 +81,7 @@ public class FullDrive extends BasicTeleOp {
             telemetry.addData("Commands Jack", "Vertical (%.2f)", verticalDirection);
             telemetry.addData("Jack Motors", "Jack Left (%.2f), Jack Right (%.2f)",
                     Billy.jackLeft.getPower(), Billy.jackRight.getPower());
+
             telemetry.update();
 
             idle();

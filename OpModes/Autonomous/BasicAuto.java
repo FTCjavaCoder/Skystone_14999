@@ -47,6 +47,10 @@ public class BasicAuto extends BasicOpMode {
     public int blStart;
     public int brStart;
 
+    public double extraFwd = 0;
+    public double foundationPosChange = 26;
+    public double sideColor = 1;// + for Blue, - for Red
+
     //Define all double variables
     public double start = 0;//timer variable to use for setting waits in the code
     public float hsvValues[] = {0F, 0F, 0F};
@@ -257,26 +261,66 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
+    public void moveAcrossBridge() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CCW",this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,46 + extraFwd, cons.pHM.get("drivePowerLimit").value, "Forward 50 inches",this);
+        //(5") add variable for additional forward distances depending on position of stone grabbed
+
+    }
+
+    public void placeStoneOnFoundation() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
+
+        //Place stone with gripper
+    }
+
     public void brideCrossOutside() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-4, cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);
         //previously -14"
 
+        moveAcrossBridge();
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-8 + foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value, "Left 8 inches",this);
+
+        placeStoneOnFoundation();
+    }
+
+    public void parkOutside() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
+
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-(-8 + foundationPosChange)) * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 16 inches",this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-25, cons.pHM.get("drivePowerLimit").value, "Back 25 inches",this);
+
     }
 
     public void brideCrossInside() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-32, cons.pHM.get("drivePowerLimit").value, "Back 32 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-30, cons.pHM.get("drivePowerLimit").value, "Back 32 inches",this);
         //previously -14"
+
+        moveAcrossBridge();
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((16 + foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 16 inches",this);
+
+        placeStoneOnFoundation();
 
     }
 
-    public void moveSkyStone() {
+    public void parkInside() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,-90, cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CCW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,5, cons.pHM.get("drivePowerLimit").value, "Forward 50 inches",this);
-        //(50") add variable for additional forward distances depending on position of stone grabbed
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,(-(16 + foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 16 inches",this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-25, cons.pHM.get("drivePowerLimit").value, "Back 25 inches",this);
+
     }
 
     public void findSkyStone() {
@@ -315,11 +359,13 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
+
     public void grabFoundation() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 30, cons.pHM.get("drivePowerLimit").value, "Forward 30 inches to Foundation", this);
 
         // grab foundation with gripper
+
     }
 
     public void pullFoundation() {
@@ -327,19 +373,42 @@ public class BasicAuto extends BasicOpMode {
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -26, cons.pHM.get("drivePowerLimit").value, "Backward 26 inches with Foundation", this);
 
         // release foundation from gripper
+
     }
 
     public void aroundFoundation() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 26, cons.pHM.get("drivePowerLimit").value, "Right 26 inches around Foundation", this);
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (26 * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 26 inches around Foundation", this);
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 18, cons.pHM.get("drivePowerLimit").value, "Forward 18 inches around Foundation", this);
 
     }
 
     public void pushFoundation() {
+        // touching foundation to push it
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -4, cons.pHM.get("drivePowerLimit").value, "Left 4 inches pushing Foundation", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (-4 * sideColor), cons.pHM.get("drivePowerLimit").value, "Left 4 inches pushing Foundation", this);
+
+    }
+
+    public void awayFromFoundationInside() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -16, cons.pHM.get("drivePowerLimit").value, "Left 4 inches pushing Foundation", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate, (90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 Degrees", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 25, cons.pHM.get("drivePowerLimit").value, "Forward 25 inches to park", this);
+
+    }
+
+    public void awayFromFoundationOutside() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 8, cons.pHM.get("drivePowerLimit").value, "Left 4 inches pushing Foundation", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate, (90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 25, cons.pHM.get("drivePowerLimit").value, "Forward 25 inches to park", this);
 
     }
 
