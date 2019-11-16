@@ -51,6 +51,8 @@ public class BasicAuto extends BasicOpMode {
     public double foundationPosChange = 26;
     public double sideColor = 1;// + for Blue, - for Red
 
+    public enum autoChoice {SkyStoneOutside, SkyStoneInside, SkyStoneOutsideUnmoved, SkyStoneInsideUnmoved}
+
     //Define all double variables
     public double start = 0;//timer variable to use for setting waits in the code
     public float hsvValues[] = {0F, 0F, 0F};

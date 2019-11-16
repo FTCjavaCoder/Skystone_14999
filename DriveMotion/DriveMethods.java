@@ -143,7 +143,7 @@ public class DriveMethods{
 
     public void moveJack(double jackPowerLimit, String step, BasicOpMode om) {
 //        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-        int countDistance = (int) (om.DeltaH);//!!!!!!!!!!!!!!!!!!!
+        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * ((om.DeltaH / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS));//!!!!!!!!!!!!!!!!!!!
         int startPosL;
         int startPosR;
         int jackZoneL;
