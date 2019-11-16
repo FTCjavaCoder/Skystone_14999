@@ -82,6 +82,7 @@ public class FullDrive extends BasicTeleOp {
             telemetry.addData("Jack TargetPos", "L (%.2f), R (%.2f)", Billy.jackLeft.getTargetPosition(), Billy.jackRight.getTargetPosition());
             telemetry.addData("Jack Power Cmd", "Vertical (%.2f)", verticalDirection);
             telemetry.addData("Jack Target Height", "Height (%.2f)", DeltaH);
+//            telemetry.addData("Jack Current Height", "Height (%.2f)", currentHeight);
             telemetry.addData("Jack Motors", "Jack Left (%.2f), Jack Right (%.2f)",
                     Billy.jackLeft.getPower(), Billy.jackRight.getPower());
 
