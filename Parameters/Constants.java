@@ -41,7 +41,7 @@ public class Constants {
     // AL is input so conversion = 2/D * 180/pi (convert to degrees
     // alpha = AL * (360 / (D*pi))
     public final int DEGREES_TO_COUNTS = 1440 / 360; // units counts/degree - based on 1440 per 1 revolution
-    public final double ROBOT_DEG_TO_WHEEL_INCH = 18.270918668 * 3.14159 / 360;// units of inch/degree - Robot rotation circumference [(wheel base (diagonal)] * pi/360 deg
+    public final double ROBOT_DEG_TO_WHEEL_INCH = 18.270918668 * 3.14159 / 360;//NR edge to edge 21.25?? wheel center to center 17?? // units of inch/degree -- Robot rotation circumference [(wheel base (diagonal)] * pi/360 deg
     // DERIVATION AL = theta * RTD/2; AL = arc length = wheel travel in inches, RTD = robot turning diameter, theta = robot angle in radians
     // theta is input so conversion = RTD/2 * pi/180 (convert input in degrees to radians)
     // AL = theta * (RTD * pi/360)

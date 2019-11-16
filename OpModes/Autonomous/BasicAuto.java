@@ -244,7 +244,7 @@ public class BasicAuto extends BasicOpMode {
 
         return skystone;
     }
-    // made for blue side only || sign multiplier for red/blue to be added
+
     public void fwdToStone() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,22, cons.pHM.get("drivePowerLimit").value, "Forward 22 inches",this);
@@ -260,6 +260,7 @@ public class BasicAuto extends BasicOpMode {
         // needs to be longer previously 8""
 
         //grab skystone with gripper
+        Billy.stoneServo.setPosition(0.4);//0.4 is arbitrary
 
     }
 
@@ -268,7 +269,6 @@ public class BasicAuto extends BasicOpMode {
         drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CCW",this);
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,46 + extraFwd, cons.pHM.get("drivePowerLimit").value, "Forward 50 inches",this);
-        //(5") add variable for additional forward distances depending on position of stone grabbed
 
     }
 
@@ -277,9 +277,10 @@ public class BasicAuto extends BasicOpMode {
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
 
         //Place stone with gripper
+        Billy.stoneServo.setPosition(0.8);//0.8 is arbitrary
     }
 
-    public void brideCrossOutside() {
+    public void bridgeCrossOutside() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-4, cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);
         //previously -14"
@@ -295,17 +296,15 @@ public class BasicAuto extends BasicOpMode {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
 
-
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-(-8 + foundationPosChange)) * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 16 inches",this);
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-25, cons.pHM.get("drivePowerLimit").value, "Back 25 inches",this);
 
     }
 
-    public void brideCrossInside() {
+    public void bridgeCrossInside() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-30, cons.pHM.get("drivePowerLimit").value, "Back 32 inches",this);
-        //previously -14"
 
         moveAcrossBridge();
 

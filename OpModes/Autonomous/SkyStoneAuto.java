@@ -37,6 +37,10 @@ public class SkyStoneAuto extends BasicAuto {
 
         findSkyStone();
 
+        bridgeCrossInside();
+
+        parkInside();
+
         telemetry.addLine("OpMode Complete");
         sleep(2000);
     }

@@ -38,6 +38,8 @@ public class FoundationAuto extends BasicAuto {
 
         pushFoundation();
 
+        awayFromFoundationOutside();
+
         telemetry.addLine("OpMode Complete");
         sleep(2000);
     }
