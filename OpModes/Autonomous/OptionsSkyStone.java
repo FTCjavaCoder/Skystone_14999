@@ -38,24 +38,34 @@ public class OptionsSkyStone extends BasicAuto {
 
         switch(autoOptions) {
 
-            case SkyStoneInside :
-
-
-                break;
-            case SkyStoneOutside :
-
-
-                break;
-
-            case SkyStoneInsideUnmoved :
-
-
-                break;
-
-            case SkyStoneOutsideUnmoved :
-
-
-                break;
+//            case skyStoneInside :
+//
+//
+//                break;
+//            case skyStoneOutside :
+//
+//
+//                break;
+//
+//            case skyStoneInsideUnmoved :
+//
+//
+//                break;
+//
+//            case skyStoneOutsideUnmoved :
+//
+//
+//                break;
+//
+//            case foundationInside :
+//
+//
+//                break;
+//
+//            case foundationOutside :
+//
+//
+//                break;
 
         }
     }

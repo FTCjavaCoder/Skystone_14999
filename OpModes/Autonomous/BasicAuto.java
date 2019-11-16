@@ -276,6 +276,9 @@ public class BasicAuto extends BasicOpMode {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
 
+        //move jack to be above Foundation
+
+
         //Place stone with gripper
         Billy.stoneServo.setPosition(0.8);//0.8 is arbitrary
     }

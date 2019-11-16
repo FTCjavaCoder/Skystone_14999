@@ -37,13 +37,13 @@ public class OptionAutonomous {
                 break;
 
             case foundationOutside :
-                description = "Foundation side.    Crosses bridge on outside of field near perimeter wall. PLaces SkyStone on moved Foundation. Parks outside as well.";
+                description = "Foundation side. . Parks outside as well.";
                 optionNumber = -1;
                 optionName = option;
                 break;
 
             case foundationInside :
-                description = "Foundation side.    Crosses bridge on inside of field away near center bridge. Places SkyStone on moved Foundation. Parks inside as well.";
+                description = "Foundation side. . Parks inside as well.";
                 optionNumber = -1;
                 optionName = option;
                 break;
