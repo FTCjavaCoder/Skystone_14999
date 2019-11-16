@@ -29,6 +29,7 @@ public class FullDrive extends BasicTeleOp {
             // Set Drive Motor Power
             drivePower();
 
+            // use the bumpers to rotate the robot
             if (gamepad1.right_bumper && gamepad1.left_bumper)
                 clockwise = 0;
             else if (gamepad1.right_bumper)  //boolean gamepad1.right_bumper is evaluated for "true" or "false" to determine if pressed
@@ -39,6 +40,7 @@ public class FullDrive extends BasicTeleOp {
                 clockwise = 0;
 
             jackPower();
+
 //            if (gamepad2.y) {
 //                DeltaH += 5;
 //
@@ -58,14 +60,31 @@ public class FullDrive extends BasicTeleOp {
 ////                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Back to Zero", this);
 //            }
 
-            if (gamepad2.left_bumper) {
+            // SLIDE
+            if (gamepad2.y)
+                slidePower(cons.pHM.get("slidePowerLimit").value);
+            else if (gamepad2.a)
+                slidePower(-cons.pHM.get("slidePowerLimit").value);
+            else
+                slidePower(0);
+
+
+//            if (gamepad1.x)
+//                servoHandPosition += (servoHandMovement * 0.01);
+//            else if (gamepad1.b)
+//                servoHandPosition -= (servoHandMovement * 0.01);
+//
+//            servoHand.setPosition(servoHandPosition);
+
+            // SERVO HAND
+            if (gamepad1.x) {
 
                 servoStonePos += 0.05;
                 setServoPos(servoStonePos);
                 sleep(300);
             }
 
-            if (gamepad2.right_bumper) {
+            if (gamepad1.b) {
 
                 servoStonePos -= 0.05;
                 setServoPos(servoStonePos);
@@ -78,10 +97,10 @@ public class FullDrive extends BasicTeleOp {
             telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
                     Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(),
                     Billy.backRight.getPower());
-            telemetry.addData("Jack Pos", "L (%.2f), R (%.2f)", Billy.jackLeft.getCurrentPosition(), Billy.jackRight.getCurrentPosition());
-            telemetry.addData("Jack TargetPos", "L (%.2f), R (%.2f)", Billy.jackLeft.getTargetPosition(), Billy.jackRight.getTargetPosition());
+            telemetry.addData("Jack Pos", "L (%d), R (%d)", Billy.jackLeft.getCurrentPosition(), Billy.jackRight.getCurrentPosition());
+            telemetry.addData("Jack TargetPos", "L (%d), R (%d)", Billy.jackLeft.getTargetPosition(), Billy.jackRight.getTargetPosition());
             telemetry.addData("Jack Power Cmd", "Vertical (%.2f)", verticalDirection);
-            telemetry.addData("Jack Target Height", "Height (%.2f)", DeltaH);
+//            telemetry.addData("Jack Target Height", "Height (%.2f)", DeltaH);
 //            telemetry.addData("Jack Current Height", "Height (%.2f)", currentHeight);
             telemetry.addData("Jack Motors", "Jack Left (%.2f), Jack Right (%.2f)",
                     Billy.jackLeft.getPower(), Billy.jackRight.getPower());

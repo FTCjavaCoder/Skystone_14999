@@ -29,6 +29,7 @@ public class BasicTeleOp extends BasicOpMode {
     public double desiredExtend = 0;
     public double desiredRotate = 0;
     public double mineralBoxTrgtPos = 0;
+    public double slidePwr = 0;
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
@@ -51,6 +52,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backRight.setPower(0);
         Billy.jackLeft.setPower(0);
         Billy.jackRight.setPower(0);
+        Billy.slide.setPower(0);
 
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -58,6 +60,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.jackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.jackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.slide.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -65,6 +68,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.jackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.jackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Reset all motor encoders
         Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -73,6 +77,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.jackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.jackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -80,6 +85,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.jackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.jackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 //        Billy.servoStoneGrab.setPosition(0.5);
 
@@ -111,6 +117,12 @@ public class BasicTeleOp extends BasicOpMode {
 
         Billy.jackLeft.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
         Billy.jackRight.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+
+    }
+
+    public void slidePower(double power) {
+
+       Billy.slide.setPower(power);
 
     }
 

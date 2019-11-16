@@ -25,6 +25,8 @@ public class HardwareBilly
     public DcMotor  backRight        = null;
     public DcMotor  jackLeft     = null;
     public DcMotor  jackRight = null;
+    public DcMotor slide = null;
+
 //    public DcMotor  slideRotate = null;
 //    public Servo    servoStoneGrab  = null;
 //    public Servo servoPrototype = null;
@@ -62,6 +64,7 @@ public class HardwareBilly
         backRight = hwMap.get(DcMotor.class, "motor_br");
         jackLeft  = hwMap.get(DcMotor.class, "motor_jack_left");
         jackRight = hwMap.get(DcMotor.class, "motor_jack_right");
+        slide = hwMap.get(DcMotor.class, "motor_slide");
 //        slideRotate = hwMap.get(DcMotor.class, "motor_slide_rotate");
 //        mineralCollector = hwMap.get(DcMotor.class, "motor_collect");
 

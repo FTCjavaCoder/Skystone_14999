@@ -116,7 +116,9 @@ public class Constants {
 
         pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.65, ParameterHM.instanceType.powerLimit));
 
-        pHM.put("jackPowerLimit", new ParameterHM(0.25, ParameterHM.instanceType.powerLimit));
+        pHM.put("jackPowerLimit", new ParameterHM(0.60, ParameterHM.instanceType.powerLimit)); //formerly was 0.25
+
+        pHM.put("slidePowerLimit", new ParameterHM(0.60, ParameterHM.instanceType.powerLimit));
 
         pHM.put("moveTol", new ParameterHM(8, ParameterHM.instanceType.toleranceCounts));
 
