@@ -58,19 +58,19 @@ public class FullDrive extends BasicTeleOp {
 ////                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Back to Zero", this);
 //            }
 
-//            if (gamepad2.left_bumper) {
-//
-//                servoStonePos += 0.05;
-//                Billy.servoStoneGrab.setPosition(servoStonePos);
-//                sleep(300);
-//            }
-//
-//            if (gamepad2.right_bumper) {
-//
-//                servoStonePos -= 0.05;
-//                Billy.servoStoneGrab.setPosition(servoStonePos);
-//                sleep(300);
-//            }
+            if (gamepad2.left_bumper) {
+
+                servoStonePos += 0.05;
+                setServoPos(servoStonePos);
+                sleep(300);
+            }
+
+            if (gamepad2.right_bumper) {
+
+                servoStonePos -= 0.05;
+                setServoPos(servoStonePos);
+                sleep(300);
+            }
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
             telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
@@ -78,7 +78,10 @@ public class FullDrive extends BasicTeleOp {
             telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
                     Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(),
                     Billy.backRight.getPower());
-            telemetry.addData("Commands Jack", "Vertical (%.2f)", verticalDirection);
+            telemetry.addData("Jack Pos", "L (%.2f), R (%.2f)", Billy.jackLeft.getCurrentPosition(), Billy.jackRight.getCurrentPosition());
+            telemetry.addData("Jack TargetPos", "L (%.2f), R (%.2f)", Billy.jackLeft.getTargetPosition(), Billy.jackRight.getTargetPosition());
+            telemetry.addData("Jack Power Cmd", "Vertical (%.2f)", verticalDirection);
+            telemetry.addData("Jack Target Height", "Height (%.2f)", DeltaH);
             telemetry.addData("Jack Motors", "Jack Left (%.2f), Jack Right (%.2f)",
                     Billy.jackLeft.getPower(), Billy.jackRight.getPower());
             telemetry.update();
