@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
+import Skystone_14999.Parameters.OptionAutonomous;
+
 @Autonomous(name="OptionsSkyStone", group="Autonomous")
 
 public class OptionsSkyStone extends BasicAuto {
@@ -28,45 +30,94 @@ public class OptionsSkyStone extends BasicAuto {
 
         waitForStart();
 
-        pickCase(autoChoice.SkyStoneInside);
+        runtime.reset();
+
+        switch(selected) {
+
+            case "skyStoneOutside" :
+                foundationPosChange = 0;
+
+                fwdToStone();
+
+                findSkyStone();
+
+                bridgeCrossOutside();
+
+                parkOutside();
+
+                break;
+
+            case "skyStoneInside" :
+                foundationPosChange = 0;
+
+                fwdToStone();
+
+                findSkyStone();
+
+                bridgeCrossInside();
+
+                parkInside();
+
+                break;
+
+            case "skyStoneOutsideUnmoved" :
+                foundationPosChange = 26;
+
+                fwdToStone();
+
+                findSkyStone();
+
+                bridgeCrossOutside();
+
+                parkOutside();
+
+                break;
+
+            case "skyStoneInsideUnmoved" :
+                foundationPosChange = 26;
+
+                fwdToStone();
+
+                findSkyStone();
+
+                bridgeCrossInside();
+
+                parkInside();
+
+                break;
+
+            case "foundationOutside" :
+
+                grabFoundation();
+
+                pullFoundation();
+
+                aroundFoundation();
+
+                pushFoundation();
+
+                awayFromFoundationInside();
+
+                break;
+
+            case "foundationInside" :
+
+                grabFoundation();
+
+                pullFoundation();
+
+                aroundFoundation();
+
+                pushFoundation();
+
+                awayFromFoundationOutside();
+
+                break;
+
+        }
 
         telemetry.addLine("OpMode Complete");
         sleep(2000);
     }
 
-    public void pickCase(autoChoice autoOptions) {
-
-        switch(autoOptions) {
-
-//            case skyStoneInside :
-//
-//
-//                break;
-//            case skyStoneOutside :
-//
-//
-//                break;
-//
-//            case skyStoneInsideUnmoved :
-//
-//
-//                break;
-//
-//            case skyStoneOutsideUnmoved :
-//
-//
-//                break;
-//
-//            case foundationInside :
-//
-//
-//                break;
-//
-//            case foundationOutside :
-//
-//
-//                break;
-
-        }
-    }
 }

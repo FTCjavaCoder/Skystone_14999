@@ -122,7 +122,26 @@ public class FullDrive extends BasicTeleOp {
 ////                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Back to Zero", this);
 //            }
 
+            // SLIDE
+
+
+//            if (gamepad1.x)
+//                servoHandPosition += (servoHandMovement * 0.01);
+//            else if (gamepad1.b)
+//                servoHandPosition -= (servoHandMovement * 0.01);
+//
+//            servoHand.setPosition(servoHandPosition);
+
             // SERVO HAND
+
+//            // SERVOS FOUNDATION
+//            if(gamepad2.y) {
+//
+//                Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition());
+//                Billy.servoFoundationR.setPosition(Billy.servoFoundationL.getPosition());
+//
+//            }
+
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
             telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
