@@ -260,7 +260,8 @@ public class BasicAuto extends BasicOpMode {
         // needs to be longer previously 8""
 
         //grab skystone with gripper
-        Billy.stoneServo.setPosition(0.4);//0.4 is arbitrary
+        Billy.stoneServoLeft.setPosition(0.4);//0.4 is arbitrary
+        Billy.stoneServoRight.setPosition(0.4);//0.4 is arbitrary
 
     }
 
@@ -280,7 +281,8 @@ public class BasicAuto extends BasicOpMode {
 
 
         //Place stone with gripper
-        Billy.stoneServo.setPosition(0.8);//0.8 is arbitrary
+        Billy.stoneServoLeft.setPosition(0.8);//0.8 is arbitrary
+        Billy.stoneServoRight.setPosition(0.8);//0.8 is arbitrary
     }
 
     public void bridgeCrossOutside() {
