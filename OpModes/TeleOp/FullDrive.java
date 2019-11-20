@@ -134,16 +134,23 @@ public class FullDrive extends BasicTeleOp {
 
             // SERVO HAND
 
-//            // SERVOS FOUNDATION
-//            if(gamepad2.y) {
-//
-//                Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition());
-//                Billy.servoFoundationR.setPosition(Billy.servoFoundationL.getPosition());
-//
-//            }
+            // SERVOS FOUNDATION
+            if(gamepad1.dpad_up) {
 
+                Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition() + 0.05);
+
+                Billy.servoFoundationR.setPosition(Billy.servoFoundationL.getPosition() + 0.05);
+            }
+            if(gamepad1.dpad_down) {
+
+                Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition() - 0.05);
+
+                Billy.servoFoundationR.setPosition(Billy.servoFoundationL.getPosition() - 0.05);
+            }
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
+            telemetry.addData("Servos", "F Servo Left (%.2f), F Servo Right (%.2f)",
+                    Billy.servoFoundationL.getPosition(), Billy.servoFoundationR.getPosition());
             telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
                     forwardDirection, rightDirection, clockwise);
             telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
