@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import Skystone_14999.Parameters.OptionAutonomous;
-
 @Autonomous(name="OptionsSkyStone", group="Autonomous")
 
 public class OptionsSkyStone extends BasicAuto {
@@ -41,9 +39,9 @@ public class OptionsSkyStone extends BasicAuto {
 
                 findSkyStone();
 
-                bridgeCrossOutside();
+                bridgeCrossInside();
 
-                parkOutside();
+                parkInside();
 
                 break;
 
@@ -54,9 +52,9 @@ public class OptionsSkyStone extends BasicAuto {
 
                 findSkyStone();
 
-                bridgeCrossInside();
+                bridgeCrossOutside();
 
-                parkInside();
+                parkOutside();
 
                 break;
 
@@ -67,9 +65,9 @@ public class OptionsSkyStone extends BasicAuto {
 
                 findSkyStone();
 
-                bridgeCrossOutside();
+                bridgeCrossInside();
 
-                parkOutside();
+                parkInside();
 
                 break;
 
@@ -80,9 +78,9 @@ public class OptionsSkyStone extends BasicAuto {
 
                 findSkyStone();
 
-                bridgeCrossInside();
+                bridgeCrossOutside();
 
-                parkInside();
+                parkOutside();
 
                 break;
 
