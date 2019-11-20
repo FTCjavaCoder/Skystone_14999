@@ -24,8 +24,10 @@ public class BasicTeleOp extends BasicOpMode {
     public double clockwise =0;
     public double forwardDirection =0;
     public double rightDirection =0;
-    public double verticalDirection =0;
-    public double outwardDirection =0;
+    public double verticalDirection = 0;
+    public double clockwiseDirection =0;
+    public double counterclockwiseDirection = 0;
+    public double slideDirection =0;
     public int slideDistance = 0;
     public double desiredExtend = 0;
     public double desiredRotate = 0;
@@ -78,7 +80,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.jackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.jackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+ //       Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -86,7 +88,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.jackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.jackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 //        Billy.servoStoneGrab.setPosition(0.5);
 
@@ -112,6 +114,15 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
     }
 
+    public void rotatePower() {
+
+        counterclockwiseDirection = -gamepad1.left_trigger * Math.pow(gamepad1.left_trigger, 2);
+        clockwiseDirection = gamepad1.right_trigger * Math.pow(gamepad1.right_trigger, 2);
+
+        clockwise = Range.clip(clockwiseDirection + counterclockwiseDirection, -cons.TURN_POWER, cons.TURN_POWER);
+
+    }
+
     public void jackPower() {
 
         verticalDirection = -gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2);
@@ -123,21 +134,17 @@ public class BasicTeleOp extends BasicOpMode {
 
     public void slidePower() {
 
-        outwardDirection = -gamepad2.right_stick_y * Math.pow(gamepad2.right_stick_y, 2);
+        slideDirection = gamepad2.right_stick_y * Math.pow(gamepad2.right_stick_y, 2);
 
-        Billy.slide.setPower(Range.clip(outwardDirection, -cons.pHM.get("slidePowerLimit").value, cons.pHM.get("slidePowerLimit").value));
-
-    }
-
-    public void slidePower(double power) {
-
-       Billy.slide.setPower(power);
+        Billy.slide.setPower(Range.clip(slideDirection, -cons.pHM.get("slidePowerLimit").value, cons.pHM.get("slidePowerLimit").value));
 
     }
 
     public void setServoPos(double servoPos) {
 
-        Billy.stoneServo.setPosition(servoPos);
+        Billy.stoneServoLeft.setPosition(servoPos);
+        Billy.stoneServoRight.setPosition(servoPos);
+
     }
 
 }

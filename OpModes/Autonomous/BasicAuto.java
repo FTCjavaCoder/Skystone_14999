@@ -257,7 +257,8 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        Billy.stoneServo.setPosition(0.15);//0.15 is correct
+        Billy.stoneServoLeft.setPosition(0.15);//0.15 is correct
+        Billy.stoneServoRight.setPosition(0.15);//0.15 is correct
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,22, cons.pHM.get("drivePowerLimit").value, "Forward 22 inches",this);
 
@@ -276,8 +277,10 @@ public class BasicAuto extends BasicOpMode {
         // needs to be longer previously 8""
 
         pressAToContinue();
+
         //grab skystone with gripper
-        Billy.stoneServo.setPosition(0.4);//0.4 is correct
+        Billy.stoneServoLeft.setPosition(0.4);//0.4 is arbitrary
+        Billy.stoneServoRight.setPosition(0.4);//0.4 is arbitrary
 
     }
 
@@ -299,7 +302,9 @@ public class BasicAuto extends BasicOpMode {
         drv.moveJack(5, cons.pHM.get("jackPowerLimit").value,"Jack Up 5 Inches",this);
 
         //Place stone with gripper
-        Billy.stoneServo.setPosition(0.15);//0.15 is correct
+        Billy.stoneServoLeft.setPosition(0.15);//0.15 is correct
+        Billy.stoneServoRight.setPosition(0.15);//0.15 is correct
+
     }
 
     public void bridgeCrossInside() {

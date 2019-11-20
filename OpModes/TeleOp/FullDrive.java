@@ -29,7 +29,56 @@ public class FullDrive extends BasicTeleOp {
             // Set Drive Motor Power
             drivePower();
 
-            // use the bumpers to rotate the robot
+            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
+            rotatePower();
+
+            // use the left stick on gamepad2 to raise/lower the jack
+            jackPower();
+
+            // use the right stick on gamepad2 to extend/retract the slide
+            slidePower();
+
+            //
+            if (gamepad2.right_bumper) {
+
+                servoStonePos += 0.05;
+                Range.clip(servoStonePos, 0.15, 1);
+                setServoPos(servoStonePos);
+                sleep(300);
+            }
+
+            if (gamepad2.left_bumper) {
+
+                servoStonePos -= 0.05;
+                Range.clip(servoStonePos, 0.15, 1);
+                setServoPos(servoStonePos);
+                sleep(300);
+            }
+
+            // dpad up/down to grab the foundation
+
+
+//            // sets the position of the servos to 4"
+//            if (gamepad2.x) {
+//                servoStonePos = 0.94;
+//                setServoPos(servoStonePos);
+//                sleep(300);
+//            }
+
+            // sets the position of the servos to 8"
+            if (gamepad2.a) {
+                servoStonePos = 0.4;
+                setServoPos(servoStonePos);
+                sleep(300);
+            }
+
+            // sets the position of the servos to open
+            if (gamepad2.b) {
+                servoStonePos = 0.15;
+                setServoPos(servoStonePos);
+                sleep(300);
+            }
+
             if (gamepad1.right_bumper && gamepad1.left_bumper)
                 clockwise = 0;
             else if (gamepad1.right_bumper)  //boolean gamepad1.right_bumper is evaluated for "true" or "false" to determine if pressed
@@ -39,9 +88,22 @@ public class FullDrive extends BasicTeleOp {
             else
                 clockwise = 0;
 
-            jackPower();
+//            if (gamepad2.y)
+//                slidePower(cons.pHM.get("slidePowerLimit").value);
+//            else if (gamepad2.a)
+//                slidePower(-cons.pHM.get("slidePowerLimit").value);
+//            else
+//                slidePower(0);
 
-//            if (gamepad2.y) {
+
+//            if (gamepad1.x)
+//                servoHandPosition += (servoHandMovement * 0.01);
+//            else if (gamepad1.b)
+//                servoHandPosition -= (servoHandMovement * 0.01);
+//
+//            servoHand.setPosition(servoHandPosition);
+
+            //            if (gamepad2.y) {
 //                DeltaH += 5;
 //
 ////                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Up 5 Inches", this);
@@ -61,7 +123,7 @@ public class FullDrive extends BasicTeleOp {
 //            }
 
             // SLIDE
-            slidePower();
+
 
 //            if (gamepad1.x)
 //                servoHandPosition += (servoHandMovement * 0.01);
@@ -71,19 +133,6 @@ public class FullDrive extends BasicTeleOp {
 //            servoHand.setPosition(servoHandPosition);
 
             // SERVO HAND
-            if (gamepad2.left_bumper) {// was x
-
-                servoStonePos += 0.05;
-                setServoPos(servoStonePos);
-                sleep(300);
-            }
-
-            if (gamepad2.right_bumper) {// was b
-
-                servoStonePos -= 0.05;
-                setServoPos(servoStonePos);
-                sleep(300);
-            }
 
 //            // SERVOS FOUNDATION
 //            if(gamepad2.y) {

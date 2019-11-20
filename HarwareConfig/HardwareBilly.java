@@ -40,6 +40,7 @@ public class HardwareBilly
 //    public DcMotor  mineralCollector = null;
       public Servo  stoneServoLeft   = null;
       public Servo  stoneServoRight   = null;
+//    public Servo    mineralDumperR   = null;
 //    public ColorSensor    colorSensorTeam   = null;
 //    public TouchSensor    touchSensor1   = null;
 //    public TouchSensor    touchSensor2   = null;
@@ -65,15 +66,25 @@ public class HardwareBilly
         jackLeft  = hwMap.get(DcMotor.class, "motor_jack_left");
         jackRight = hwMap.get(DcMotor.class, "motor_jack_right");
         slide = hwMap.get(DcMotor.class, "motor_slide");
-//        slideRotate = hwMap.get(DcMotor.class, "motor_slide_rotate");
+
+        stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
+        stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
+        //foundation servo left
+        //foundation servo right
+
+        //        slideRotate = hwMap.get(DcMotor.class, "motor_slide_rotate");
 //        mineralCollector = hwMap.get(DcMotor.class, "motor_collect");
 
         // Define and initialize ALL installed servos.
+
+//        servoStoneGrab = hwMap.get(Servo.class, "StoneGrab_servo");
+//        servoPrototype = hwMap.get(Servo.class, "marker_servo");
+
         servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
         servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
+
         stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
         stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
-
 //        mineralDumperR = hwMap.get(Servo.class, "mineral_servo_right");
 
         //Define all installed sensors
@@ -85,6 +96,7 @@ public class HardwareBilly
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
