@@ -19,6 +19,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 public class Constants {
 
     public HashMap<String, ParameterHM> pHM = new HashMap();
+    public HashMap<String, OptionAutonomous> aOHM = new HashMap();
 
     // Define the static power levels, power/speed limits, and initial positions for motors and servos
     //public final double DRIVE_POWER_LIMIT = 0.75;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
@@ -267,6 +268,177 @@ public class Constants {
                     if(om.gamepad1.left_bumper) {
 
                         pHM.get(s).decreaseParameter();
+                        om.sleep(300);
+                    }
+                }
+            }
+            if(om.gamepad1.b) {
+
+                om.telemetry.addData("Skipped","%s", s);
+                om.telemetry.update();
+                om.sleep(500);
+            }
+
+        }
+    }
+
+    // AUTONOMOUS OPTIONS
+    public void defineAutoOptions() {
+
+        aOHM.put("skyStoneInside", new OptionAutonomous(OptionAutonomous.name.skyStoneInside));
+
+        aOHM.put("skyStoneInsideUnmoved", new OptionAutonomous(OptionAutonomous.name.skyStoneInsideUnmoved));
+
+        aOHM.put("skyStoneOutside", new OptionAutonomous(OptionAutonomous.name.skyStoneOutside));
+
+        aOHM.put("skyStoneOutsideUnmoved", new OptionAutonomous(OptionAutonomous.name.skyStoneOutsideUnmoved));
+
+        aOHM.put("foundationInside", new OptionAutonomous(OptionAutonomous.name.foundationInside));
+
+        aOHM.put("foundationOutside", new OptionAutonomous(OptionAutonomous.name.foundationOutside));
+
+    }// Define Autonomous options
+
+    public void writeToPhoneAO(String fileName, BasicOpMode om) {
+        Context c = om.hardwareMap.appContext;
+
+        try {
+
+            OutputStreamWriter osw = new OutputStreamWriter(c.openFileOutput(fileName, c.MODE_PRIVATE));
+
+            for (String s : aOHM.keySet()) {
+
+                osw.write(s + "\n");
+                om.telemetry.addData("Option Name", "%s", s);
+                osw.write(aOHM.get(s).optionNumber + "\n");
+                om.telemetry.addData("Number", "%.2f", aOHM.get(s).optionNumber);
+                osw.write(aOHM.get(s).description + "\n");
+                om.telemetry.addData("Description", "%s", aOHM.get(s).description);
+
+                osw.close();
+            }
+        }
+        catch(Exception e){
+
+                Log.e("Exception", e.toString());
+
+                om.telemetry.addData("Exception", "%s", e.toString());
+                om.telemetry.update();
+            }
+
+    }
+
+    public void readFromPhoneAO(String fileName, BasicOpMode om) {
+        Context c = om.hardwareMap.appContext;
+
+        try {
+            InputStream is = c.openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+
+            String s;
+            while((s = br.readLine())!= null) {
+
+                double n = Double.parseDouble(br.readLine());
+                String d = br.readLine();
+
+                switch (s) {
+
+                    case ("skyStoneOutside") :
+                        aOHM.put(s, new OptionAutonomous(OptionAutonomous.name.skyStoneOutside));
+                        break;
+                    case ("skyStoneInside") :
+                        aOHM.put(s, new OptionAutonomous(OptionAutonomous.name.skyStoneInside));
+                        break;
+
+                    case ("skyStoneOutsideUnmoved") :
+                        aOHM.put(s, new OptionAutonomous(OptionAutonomous.name.skyStoneOutsideUnmoved));
+                        break;
+
+                    case ("skyStoneInsideUnmoved") :
+                        aOHM.put(s, new OptionAutonomous(OptionAutonomous.name.skyStoneInsideUnmoved));
+                        break;
+
+                    case ("foundationOutside") :
+                        aOHM.put(s, new OptionAutonomous(OptionAutonomous.name.foundationOutside));
+                        break;
+
+                    case ("foundationInside") :
+                        aOHM.put(s, new OptionAutonomous(OptionAutonomous.name.foundationInside));
+                        break;
+                }
+
+                om.fileWasRead = true;
+
+                om.telemetry.addData("Option Name", "%s", s);
+                om.telemetry.addData("Number", "%.2f", n);
+                om.telemetry.addData("Description", "%s", d);
+
+                om.idle();
+            }
+
+            is.close();
+        }
+        catch(Exception e) {
+
+            Log.e("Exception", e.toString());
+
+            om.fileWasRead = false;
+
+            om.telemetry.addData("Exception","%s", e.toString());
+            om.telemetry.update();
+        }
+    }
+
+    public void editHashMapAO(BasicOpMode om) {
+
+        for(String s : aOHM.keySet()) {
+
+            while(!(om.gamepad1.x || om.gamepad1.b) && om.opModeIsActive()) {
+                // X to EDIT || B to SKIP
+                om.telemetry.addData("Option Name", "%s", s);
+                om.telemetry.addData("Number", "%.2f", aOHM.get(s).optionNumber);
+                om.telemetry.addData("Description", "%s", aOHM.get(s).description);
+
+                om.telemetry.addLine("X to Select || B to SKIP");
+                om.telemetry.update();
+            }
+            if(om.gamepad1.x) {
+
+                while(!om.gamepad1.y && !om.gamepad1.b && om.opModeIsActive()) {
+
+                    om.telemetry.addData("Option Name", "%s", s);
+                    om.telemetry.addData("Number", "%.2f", aOHM.get(s).optionNumber);
+                    om.telemetry.addData("Description", "%s", aOHM.get(s).description);
+                    om.telemetry.addLine("Press Y to confirm or B to skip");
+                    om.telemetry.update();
+
+                    if(om.gamepad1.y) {
+// {skyStoneOutside, skyStoneInside, skyStoneOutsideUnmoved, skyStoneInsideUnmoved, foundationOutside, foundationInside}
+                        if(aOHM.get(s).optionNumber == 1) {
+
+                            om.selected = "skyStoneOutside";
+                        }
+                        if(aOHM.get(s).optionNumber == 2) {
+
+                            om.selected = "skyStoneInside";
+                        }
+                        if(aOHM.get(s).optionNumber == 3) {
+
+                            om.selected = "skyStoneOutsideUnmoved";
+                        }if(aOHM.get(s).optionNumber == 4) {
+
+                            om.selected = "skyStoneInsideUnmoved";
+                        }
+                        if(aOHM.get(s).optionNumber == 5) {
+
+                            om.selected = "foundationOutside";
+                        }
+                        if(aOHM.get(s).optionNumber == 6) {
+
+                            om.selected = "foundationInside";
+                        }
+
                         om.sleep(300);
                     }
                 }

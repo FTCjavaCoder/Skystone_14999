@@ -48,7 +48,7 @@ public class BasicAuto extends BasicOpMode {
     public int brStart;
 
     public double extraFwd = 0;
-    public double foundationPosChange = 26;
+    public double foundationPosChange = 26;// 26 for unmoved Foundation, 0 for moved Foundation
     public double sideColor = 1;// + for Blue, - for Red
 
     public enum autoChoice {SkyStoneOutside, SkyStoneInside, SkyStoneOutsideUnmoved, SkyStoneInsideUnmoved}
@@ -173,7 +173,11 @@ public class BasicAuto extends BasicOpMode {
 
         allTrackables.addAll(targetsSkyStone);
 
+        // Find Auto Option
         readOrWriteHashMap();
+
+        // Find Auto Option
+        readOrWriteHashMapAO();
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
@@ -277,7 +281,8 @@ public class BasicAuto extends BasicOpMode {
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
 
         //move jack to be above Foundation
-
+//        DeltaH = 5;
+        drv.moveJack(5, cons.pHM.get("jackPowerLimit").value,"Jack Up 5 Inches",this);
 
         //Place stone with gripper
         Billy.stoneServo.setPosition(0.8);//0.8 is arbitrary

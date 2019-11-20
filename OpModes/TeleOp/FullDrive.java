@@ -61,13 +61,7 @@ public class FullDrive extends BasicTeleOp {
 //            }
 
             // SLIDE
-            if (gamepad2.y)
-                slidePower(cons.pHM.get("slidePowerLimit").value);
-            else if (gamepad2.a)
-                slidePower(-cons.pHM.get("slidePowerLimit").value);
-            else
-                slidePower(0);
-
+            slidePower();
 
 //            if (gamepad1.x)
 //                servoHandPosition += (servoHandMovement * 0.01);
@@ -77,19 +71,28 @@ public class FullDrive extends BasicTeleOp {
 //            servoHand.setPosition(servoHandPosition);
 
             // SERVO HAND
-            if (gamepad1.x) {
+            if (gamepad2.left_bumper) {// was x
 
                 servoStonePos += 0.05;
                 setServoPos(servoStonePos);
                 sleep(300);
             }
 
-            if (gamepad1.b) {
+            if (gamepad2.right_bumper) {// was b
 
                 servoStonePos -= 0.05;
                 setServoPos(servoStonePos);
                 sleep(300);
             }
+
+//            // SERVOS FOUNDATION
+//            if(gamepad2.y) {
+//
+//                Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition());
+//                Billy.servoFoundationR.setPosition(Billy.servoFoundationL.getPosition());
+//
+//            }
+
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
             telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",

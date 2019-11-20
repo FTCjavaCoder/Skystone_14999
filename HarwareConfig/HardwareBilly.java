@@ -25,11 +25,11 @@ public class HardwareBilly
     public DcMotor  backRight        = null;
     public DcMotor  jackLeft     = null;
     public DcMotor  jackRight = null;
-    public DcMotor slide = null;
+    public DcMotor  slide = null;
 
 //    public DcMotor  slideRotate = null;
-//    public Servo    servoStoneGrab  = null;
-//    public Servo servoPrototype = null;
+    public Servo  servoFoundationL  = null;
+    public Servo  servoFoundationR = null;
 //    public CRServo    servoSweeper   = null;
 //    public ColorSensor    colorSensorSampling   = null;
     public BNO055IMU    imu = null;
@@ -69,8 +69,8 @@ public class HardwareBilly
 //        mineralCollector = hwMap.get(DcMotor.class, "motor_collect");
 
         // Define and initialize ALL installed servos.
-//        servoStoneGrab = hwMap.get(Servo.class, "StoneGrab_servo");
-//        servoPrototype = hwMap.get(Servo.class, "marker_servo");
+        servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
+        servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
         stoneServo = hwMap.get(Servo.class, "stone_servo");
 //        mineralDumperR = hwMap.get(Servo.class, "mineral_servo_right");
 
