@@ -90,8 +90,8 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.jackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition());
-        Billy.servoFoundationR.setPosition(Billy.servoFoundationR.getPosition());
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
 
         readOrWriteHashMap();
 

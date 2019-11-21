@@ -137,15 +137,15 @@ public class FullDrive extends BasicTeleOp {
             // SERVOS FOUNDATION
             if(gamepad1.dpad_up) {
 
-                Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition() + 0.05);
+                Billy.servoFoundationL.setPosition(0.10);
 
-                Billy.servoFoundationR.setPosition(Billy.servoFoundationL.getPosition() + 0.05);
+                Billy.servoFoundationR.setPosition(0.90);
             }
             if(gamepad1.dpad_down) {
 
-                Billy.servoFoundationL.setPosition(Billy.servoFoundationL.getPosition() - 0.05);
+                Billy.servoFoundationL.setPosition(0.80);
 
-                Billy.servoFoundationR.setPosition(Billy.servoFoundationL.getPosition() - 0.05);
+                Billy.servoFoundationR.setPosition(0.20);
             }
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
