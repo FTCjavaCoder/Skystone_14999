@@ -174,7 +174,6 @@ public class DriveMethods{
         }
         om.Billy.jackLeft.setPower(0);
         om.Billy.jackRight.setPower(0);
-
         om.telemetry.addLine("Jack Motion Done");
         om.telemetry.update();
     }
