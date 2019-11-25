@@ -314,7 +314,7 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (91 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 91 degrees CW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CW",this);
 
         pressAToContinue();
 
@@ -355,11 +355,11 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        angleUnWrap();
-
-        pressAToContinue();
-
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
+//        angleUnWrap();
+//
+//        pressAToContinue();
+//
+//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
 
         placeStoneOnFoundation();
     }
