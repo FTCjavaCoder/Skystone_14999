@@ -1,5 +1,6 @@
 package Skystone_14999.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -11,7 +12,7 @@ import Skystone_14999.OpModes.BasicOpMode;
  */
 
 @TeleOp(name="ProtoDrive", group="TeleOp")
-
+@Disabled
 public class ProtoDrive extends BasicTeleOp {
 
     @Override

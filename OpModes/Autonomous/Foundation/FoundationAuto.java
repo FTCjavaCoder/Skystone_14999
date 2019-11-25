@@ -1,9 +1,14 @@
-package Skystone_14999.OpModes.Autonomous;
+package Skystone_14999.OpModes.Autonomous.Foundation;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+
+import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Foundation Auto", group="Autonomous")
 
@@ -29,6 +34,14 @@ public class FoundationAuto extends BasicAuto {
         waitForStart();
 
         runtime.reset();
+
+        Billy.angles = Billy.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
+
+        offset = Billy.angles.firstAngle; //Determine initial angle offset 
+        priorAngle = offset; //set prior angle for unwrap to be initial angle 
+        robotHeading = Billy.angles.firstAngle - offset; //robotHeading to be 0 degrees to start 
+
+        sleep(100);
 
         grabFoundation();
 

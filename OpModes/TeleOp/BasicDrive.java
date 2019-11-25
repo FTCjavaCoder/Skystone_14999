@@ -1,5 +1,6 @@
 package Skystone_14999.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -10,7 +11,7 @@ import Skystone_14999.HarwareConfig.HardwareBilly;
  */
 
 @TeleOp(name=" BasicDrive", group="TeleOp")
-
+@Disabled
 public class BasicDrive extends BasicTeleOp {
 
     @Override

@@ -33,7 +33,9 @@ public class JackMoveTest extends BasicAuto {
 
         runtime.reset();
 
-        drv.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Up 1 Inch",this);
+        drv.moveJack(5, cons.pHM.get("jackPowerLimit").value,"Jack Up 5 Inches",this);
+
+        drv.moveJack(2, cons.pHM.get("jackPowerLimit").value,"Jack Down to 2 Inches",this);
 
     }
 }

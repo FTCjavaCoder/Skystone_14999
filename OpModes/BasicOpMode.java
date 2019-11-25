@@ -15,11 +15,12 @@ public class BasicOpMode extends LinearOpMode {
     public Constants cons = new Constants();// call using cons.(constant DRIVE_POWER_LIMIT etc.)
 
     public double priorAngle = 0;
+    public double offset = 0;
     public double robotHeading = 0;
     public boolean fileWasRead = true;
     public String hashMapFile = "HashMapFile.txt";
     public String autoOptionFile = "AutoOptionFile.txt";
-    public String selected = "Unknown";
+    public int selected = 0;
 
     public double DeltaH = 0;
     public double currentH = 0;
@@ -77,19 +78,19 @@ public class BasicOpMode extends LinearOpMode {
         }
     }
 
-    public void readOrWriteHashMapAO() {
-
-        cons.readFromPhoneAO(hashMapFile, this);
-        telemetry.addData("Existing File Was Read?","%s", fileWasRead);
-
-        if (!fileWasRead) {
-
-            cons.defineAutoOptions();
-            cons.writeToPhoneAO(hashMapFile, this);
-
-            cons.readFromPhoneAO(hashMapFile, this);
-            telemetry.addData("Created File, File Was Read?","%s", fileWasRead);
-        }
-    }
+//    public void readOrWriteHashMapAO() {
+//
+//        cons.readFromPhoneAO(hashMapFile, this);
+//        telemetry.addData("Existing File Was Read?","%s", fileWasRead);
+//
+//        if (!fileWasRead) {
+//
+//            cons.defineAutoOptions();
+//            cons.writeToPhoneAO(hashMapFile, this);
+//
+//            cons.readFromPhoneAO(hashMapFile, this);
+//            telemetry.addData("Created File, File Was Read?","%s", fileWasRead);
+//        }
+//    }
 
 }

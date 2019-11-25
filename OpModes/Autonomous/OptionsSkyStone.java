@@ -1,12 +1,13 @@
 package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 @Autonomous(name="OptionsSkyStone", group="Autonomous")
-
+@Disabled
 public class OptionsSkyStone extends BasicAuto {
 
     @Override
@@ -32,59 +33,67 @@ public class OptionsSkyStone extends BasicAuto {
 
         switch(selected) {
 
-            case "skyStoneOutside" :
+            case 0 :
+
                 foundationPosChange = 0;
+                insideOutside = 0;// 0 for Inside, 24 for Outside
 
                 fwdToStone();
 
                 findSkyStone();
 
-                bridgeCrossInside();
+                bridgeCrossSkyStone();
 
-                parkInside();
+                parkSkyStone();
 
                 break;
 
-            case "skyStoneInside" :
+            case 1 :
+
                 foundationPosChange = 0;
+                insideOutside = 24;// 0 for Inside, 24 for Outside
 
                 fwdToStone();
 
                 findSkyStone();
 
-                bridgeCrossOutside();
+                bridgeCrossSkyStone();
 
-                parkOutside();
+                parkSkyStone();
 
                 break;
 
-            case "skyStoneOutsideUnmoved" :
+            case 2 :
+
                 foundationPosChange = 26;
+                insideOutside = 0;// 0 for Inside, 24 for Outside
 
                 fwdToStone();
 
                 findSkyStone();
 
-                bridgeCrossInside();
+                bridgeCrossSkyStone();
 
-                parkInside();
+                parkSkyStone();
 
                 break;
 
-            case "skyStoneInsideUnmoved" :
+            case 3 :
+
                 foundationPosChange = 26;
+                insideOutside = 24;// 0 for Inside, 24 for Outside
 
                 fwdToStone();
 
                 findSkyStone();
 
-                bridgeCrossOutside();
+                bridgeCrossSkyStone();
 
-                parkOutside();
+                parkSkyStone();
 
                 break;
 
-            case "foundationOutside" :
+            case 4 :
 
                 grabFoundation();
 
@@ -98,7 +107,7 @@ public class OptionsSkyStone extends BasicAuto {
 
                 break;
 
-            case "foundationInside" :
+            case 5 :
 
                 grabFoundation();
 
