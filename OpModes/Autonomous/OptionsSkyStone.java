@@ -35,7 +35,7 @@ public class OptionsSkyStone extends BasicAuto {
 
             case 0 :
 
-                foundationPosChange = 0;
+                foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
                 insideOutside = 0;// 0 for Inside, 24 for Outside
 
                 fwdToStone();
@@ -94,6 +94,7 @@ public class OptionsSkyStone extends BasicAuto {
                 break;
 
             case 4 :
+                foundationInOut = 0;
 
                 grabFoundation();
 
@@ -103,12 +104,14 @@ public class OptionsSkyStone extends BasicAuto {
 
                 pushFoundation();
 
-                awayFromFoundationInside();
+                awayFromFoundation();
 
                 break;
 
             case 5 :
 
+                foundationInOut = 26;
+
                 grabFoundation();
 
                 pullFoundation();
@@ -117,7 +120,7 @@ public class OptionsSkyStone extends BasicAuto {
 
                 pushFoundation();
 
-                awayFromFoundationOutside();
+                awayFromFoundation();
 
                 break;
 
