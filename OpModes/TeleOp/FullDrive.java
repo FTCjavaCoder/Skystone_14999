@@ -53,7 +53,7 @@ public class FullDrive extends BasicTeleOp {
             //
             if (gamepad2.right_bumper) {
 
-                servoStonePos += 0.05;
+                servoStonePos = Billy.stoneServoRight.getPosition() + 0.05;
                 Range.clip(servoStonePos, 0.15, 1);
                 setServoPos(servoStonePos);
                 sleep(300);
@@ -61,7 +61,7 @@ public class FullDrive extends BasicTeleOp {
 
             if (gamepad2.left_bumper) {
 
-                servoStonePos -= 0.05;
+                servoStonePos = Billy.stoneServoRight.getPosition() - 0.05;
                 Range.clip(servoStonePos, 0.15, 1);
                 setServoPos(servoStonePos);
                 sleep(300);
