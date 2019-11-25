@@ -470,25 +470,20 @@ public class BasicAuto extends BasicOpMode {
     public void grabFoundation() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -32, cons.pHM.get("drivePowerLimit").value, "Backward 32 inches to Foundation", this);
-
-        pressAToContinue();
+        
         // grab foundation with servos
         Billy.servoFoundationL.setPosition(0.80);
         Billy.servoFoundationR.setPosition(0.20);
 
-        pressAToContinue();
     }
 
     public void pullFoundation() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 30, cons.pHM.get("drivePowerLimit").value, "Forward 30 inches with Foundation", this);
 
-        pressAToContinue();
         // release foundation from gripper
         Billy.servoFoundationL.setPosition(0.10);
         Billy.servoFoundationR.setPosition(0.90);
-
-        pressAToContinue();
 
     }
 
@@ -496,23 +491,16 @@ public class BasicAuto extends BasicOpMode {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 2, cons.pHM.get("drivePowerLimit").value, "Forward 2 inches away from Foundation", this);
 
-        pressAToContinue();
-
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (-26 * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Left 26 inches around Foundation", this);
-
-        pressAToContinue();
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -18, cons.pHM.get("drivePowerLimit").value, "Backwards 18 inches around Foundation", this);
 
-        pressAToContinue();
     }
 
     public void pushFoundation() {
         // touching foundation to push it
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (foundationPush * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Right 8 inches pushing Foundation", this);
-
-        pressAToContinue();
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (-foundationPush * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Left 8 inches away from Foundation", this);
 
@@ -536,11 +524,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void awayFromFoundation() {
 
-        pressAToContinue();
-
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, (foundationInOut), cons.pHM.get("drivePowerLimit").value, "Back 6 inches towards center of Bridge", this);
-
-        pressAToContinue();
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -16 * sideColor, cons.pHM.get("drivePowerLimit").value / 2, "Left 16 inches to park", this);
 
