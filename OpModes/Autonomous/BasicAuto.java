@@ -310,11 +310,11 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.Rotate,(90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CW",this);
 
-        angleUnWrap();
+        angleUnWrap();// think about commenting
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (91 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 88 degrees CW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (91 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 91 degrees CW",this);
 
         pressAToContinue();
 
@@ -347,11 +347,11 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-180 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 180 degrees CCW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((8 - insideOutside - foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Left 8 inches",this);
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-8 + insideOutside + foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Left 8 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-180 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 180 degrees CCW",this);
 
         pressAToContinue();
 
@@ -359,7 +359,7 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 + robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
 
         placeStoneOnFoundation();
     }
@@ -374,8 +374,6 @@ public class BasicAuto extends BasicOpMode {
         //move jack to be below Bridge WAS 3
 //        DeltaH = 5;
         drv.moveJack(1.5, cons.pHM.get("jackPowerLimit").value,"Jack Down 1.5 Inches",this);
-
-        pressAToContinue();
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-(-8 + insideOutside + foundationPosChange)) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Right 16 inches",this);
 
@@ -405,7 +403,7 @@ public class BasicAuto extends BasicOpMode {
 //
 //        pressAToContinue();
 //
-//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 + robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
+//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
 //
 //        placeStoneOnFoundation();
 //

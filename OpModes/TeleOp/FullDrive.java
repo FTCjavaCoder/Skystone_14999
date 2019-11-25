@@ -3,6 +3,10 @@ package Skystone_14999.OpModes.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.BasicOpMode;
 
@@ -22,6 +26,14 @@ public class FullDrive extends BasicTeleOp {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+
+        Billy.angles = Billy.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
+
+        offset = Billy.angles.firstAngle; //Determine initial angle offset 
+        priorAngle = offset; //set prior angle for unwrap to be initial angle 
+        robotHeading = Billy.angles.firstAngle - offset; //robotHeading to be 0 degrees to start 
+
+        sleep(100);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -148,7 +160,10 @@ public class FullDrive extends BasicTeleOp {
                 Billy.servoFoundationR.setPosition(0.20);
             }
 
+            angleUnWrap();
+
             telemetry.addData("Status", "Run Time: ",runtime.toString());
+            telemetry.addData("Robot Heading", "( .2f )", robotHeading);
             telemetry.addData("Servos", "F Servo Left (%.2f), F Servo Right (%.2f)",
                     Billy.servoFoundationL.getPosition(), Billy.servoFoundationR.getPosition());
             telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
