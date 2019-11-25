@@ -10,9 +10,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
-@Autonomous(name="Foundation Auto", group="Autonomous")
+@Autonomous(name="Foundation Inside", group="Autonomous")
 
-public class FoundationAuto extends BasicAuto {
+public class FoundationInside extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -28,6 +28,8 @@ public class FoundationAuto extends BasicAuto {
 
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
+
+        foundationInOut = 0;// 0 for Inside, 26 for Outside
 
         initialize();
 
@@ -51,7 +53,7 @@ public class FoundationAuto extends BasicAuto {
 
         pushFoundation();
 
-        awayFromFoundationOutside();
+        awayFromFoundation();
 
         telemetry.addLine("OpMode Complete");
         sleep(2000);

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
-@Autonomous(name="SkyStone Auto", group="Autonomous")
+@Autonomous(name="SkyStone Outside", group="Autonomous")
 
 public class SkyStoneOutside extends BasicAuto {
 

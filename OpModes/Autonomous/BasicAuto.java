@@ -50,6 +50,7 @@ public class BasicAuto extends BasicOpMode {
     public double extraFwd = 0;
     public double foundationPosChange = 0;// 26 for unmoved Foundation, 0 for moved Foundation
     public double insideOutside = 0;// 0 for Inside, 24 for Outside
+    public double foundationInOut = 26;// 0 for Inside, 26 for Outside
     public double foundationPush = 8;
     public double sideColor = 1;// + for Blue, - for Red, KEEP BLUE
 
@@ -520,27 +521,27 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public void awayFromFoundationOutside() {
-
-        pressAToContinue();
-
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 18, cons.pHM.get("drivePowerLimit").value, "Forward 20 inches towards wall", this);
-
-        pressAToContinue();
-
-//        drv.driveGeneral(DriveMethods.moveDirection.Rotate, (-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 Degrees CCW", this);
+//    public void awayFromFoundationOutside() {
 //
 //        pressAToContinue();
+//
+//        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 18, cons.pHM.get("drivePowerLimit").value, "Forward 20 inches towards wall", this);
+//
+//        pressAToContinue();
+//
+////        drv.driveGeneral(DriveMethods.moveDirection.Rotate, (-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 Degrees CCW", this);
+////
+////        pressAToContinue();
+//
+//        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -16 * sideColor, cons.pHM.get("drivePowerLimit").value / 2, "Left 16 inches to park", this);
+//
+//    }
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -16 * sideColor, cons.pHM.get("drivePowerLimit").value / 2, "Left 16 inches to park", this);
-
-    }
-
-    public void awayFromFoundationInside() {
+    public void awayFromFoundation() {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -8, cons.pHM.get("drivePowerLimit").value, "Back 8 inches towards center of Bridge", this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, (-8 + foundationInOut), cons.pHM.get("drivePowerLimit").value, "Back 8 inches towards center of Bridge", this);
 
         pressAToContinue();
 
