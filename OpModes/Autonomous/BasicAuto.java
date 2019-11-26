@@ -330,7 +330,7 @@ public class BasicAuto extends BasicOpMode {
         drv.moveJack(3, cons.pHM.get("jackPowerLimit").value,"Jack Up 3 Inches",this);
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 4 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
 
         //Place stone with gripper
         Billy.stoneServoLeft.setPosition(0.15);
@@ -364,6 +364,75 @@ public class BasicAuto extends BasicOpMode {
         placeStoneOnFoundation();
     }
 
+    public void bridgeCrossSkyStoneF() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);
+        //previously -14"
+
+        moveAcrossBridge();
+
+        pressAToContinue();
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-insideOutside - foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Left 8 inches",this);
+
+        pressAToContinue();
+
+    }
+
+    public void grabAndRotateFoundation() {
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-4, cons.pHM.get("drivePowerLimit").value, "Backward 4 inches",this);
+
+        pressAToContinue();
+        // grab foundation with servos
+        Billy.servoFoundationL.setPosition(0.80);
+        Billy.servoFoundationR.setPosition(0.20);
+
+        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-48 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 48 degrees CCW",this);
+
+    }
+
+    public void straightToCorner() {
+
+        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-25, cons.pHM.get("drivePowerLimit").value, "Back 25 inches",this);
+
+        // Release foundation with servos
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+
+        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,6, cons.pHM.get("drivePowerLimit").value, "Forward 6 inches",this);
+
+        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(180 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 180 degrees CW",this);
+
+        placeStoneOnFoundation();
+    }
+
+    public void backSkyStoneAndFoundation() {
+
+        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-2, cons.pHM.get("drivePowerLimit").value, "Backwards 5 inches",this);
+
+        pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(63 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 63 degrees CW",this);
+
+    }
+    // get SkyStone first then do move foundation then place block
+    public void parkSkyStoneF() {
+        // move jack down
+        pressAToContinue();
+
+        drv.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
+
+        pressAToContinue();
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-40, cons.pHM.get("drivePowerLimit").value, "Back 35 inches",this);
+
+    }
+
     public void parkSkyStone() {
 
         pressAToContinue();
@@ -373,6 +442,8 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
 
         drv.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
+
+        pressAToContinue();
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-(-4 + insideOutside + foundationPosChange)) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Right 16 inches",this);
 
@@ -470,7 +541,7 @@ public class BasicAuto extends BasicOpMode {
     public void grabFoundation() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -32, cons.pHM.get("drivePowerLimit").value, "Backward 32 inches to Foundation", this);
-        
+
         // grab foundation with servos
         Billy.servoFoundationL.setPosition(0.80);
         Billy.servoFoundationR.setPosition(0.20);
