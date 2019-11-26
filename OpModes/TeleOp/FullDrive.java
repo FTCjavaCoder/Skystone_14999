@@ -163,7 +163,7 @@ public class FullDrive extends BasicTeleOp {
             angleUnWrap();
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
-            telemetry.addData("Robot Heading", "( .2f )", robotHeading);
+            telemetry.addData("Robot Heading", "( %.2f )", robotHeading);
             telemetry.addData("Slide Pos", "Slide (%d)", Billy.slide.getCurrentPosition());
             telemetry.addData("Slide TargetPos", "Slide (%d)", Billy.slide.getTargetPosition());
             telemetry.addData("Slide Power", "Slide (%.2f)", Billy.slide.getPower());

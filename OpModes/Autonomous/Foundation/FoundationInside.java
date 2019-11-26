@@ -29,7 +29,7 @@ public class FoundationInside extends BasicAuto {
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
-        foundationInOut = 0;// 0 for Inside, 26 for Outside
+        foundationInOut = 0;// 0 for Inside, 22 for Outside
 
         initialize();
 
