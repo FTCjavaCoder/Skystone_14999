@@ -50,7 +50,7 @@ public class BasicAuto extends BasicOpMode {
     public double extraFwd = 0;
     public double foundationPosChange = 0;// 26 for unmoved Foundation, 0 for moved Foundation
     public double insideOutside = 0;// 0 for Inside, 24 for Outside
-    public double foundationInOut = 26;// 0 for Inside, 26 for Outside
+    public double foundationInOut = 0;// 0 for Inside, 26 for Outside
     public double foundationPush = 8;
     public double sideColor = 1;// + for Blue, - for Red, KEEP BLUE
 
@@ -300,8 +300,8 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
 
         //grab skystone with gripper
-        Billy.stoneServoLeft.setPosition(0.4);
-        Billy.stoneServoRight.setPosition(0.4);
+        Billy.stoneServoLeft.setPosition(0.45);
+        Billy.stoneServoRight.setPosition(0.45);
 
     }
 
@@ -347,7 +347,7 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-insideOutside - foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Left 8 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-insideOutside - foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Sideways inches",this);
 
         pressAToContinue();
 
@@ -359,7 +359,7 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - (robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
 
         placeStoneOnFoundation();
     }
@@ -389,22 +389,22 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationR.setPosition(0.20);
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-48 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 48 degrees CCW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-68 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 68 degrees CCW",this);
 
     }
 
     public void straightToCorner() {
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-25, cons.pHM.get("drivePowerLimit").value, "Back 25 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-20, cons.pHM.get("drivePowerLimit").value, "Back 25 inches",this);
 
         // Release foundation with servos
         Billy.servoFoundationL.setPosition(0.10);
         Billy.servoFoundationR.setPosition(0.90);
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,6, cons.pHM.get("drivePowerLimit").value, "Forward 6 inches",this);
-
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,10, cons.pHM.get("drivePowerLimit").value, "Forward 10 inches",this);
+        //was 6
         pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.Rotate,(180 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 180 degrees CW",this);
 
@@ -414,10 +414,10 @@ public class BasicAuto extends BasicOpMode {
     public void backSkyStoneAndFoundation() {
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-2, cons.pHM.get("drivePowerLimit").value, "Backwards 5 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-6, cons.pHM.get("drivePowerLimit").value, "Backwards 6 inches",this);
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(63 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 63 degrees CW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(83 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 63 degrees CW",this);
 
     }
     // get SkyStone first then do move foundation then place block
@@ -429,7 +429,7 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-40, cons.pHM.get("drivePowerLimit").value, "Back 35 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-45, cons.pHM.get("drivePowerLimit").value, "Back 35 inches",this);
 
     }
 
@@ -446,6 +446,12 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-(-4 + insideOutside + foundationPosChange)) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Right 16 inches",this);
+
+        angleUnWrap();
+
+        pressAToContinue();
+
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - (robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
 
         pressAToContinue();
 
