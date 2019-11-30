@@ -486,51 +486,56 @@ public class DriveMethods{
 //
 //    }
 //
-//    public void driveRotateIMU(double angle, double powerLimit, String step, BasicAuto om) {
-//
-//        double error;
-//        double steering;
-//
-//        // "angle" = the added rotation angle from the current position
-//        om.Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        om.Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        om.angleUnWrap();
-//        //Check tolerance zone to exit method
-//        while (Math.abs(angle - om.robotHeading) > om.cons.IMU_ROTATE_TOL && (om.opModeIsActive())) {
-//
-//            error = angle - om.robotHeading;
-//            steering = Range.clip((error * om.cons.GAIN), -om.cons.pHM.get("rotatePowerLimit").value, om.cons.pHM.get("rotatePowerLimit").value);
-//
-//            //update power limit
-//            om.Billy.frontLeft.setPower(-powerLimit - steering);
-//            om.Billy.frontRight.setPower(-powerLimit - steering);
-//            om.Billy.backLeft.setPower(-powerLimit - steering);
-//            om.Billy.backRight.setPower(-powerLimit - steering);
-//
-//            om.angleUnWrap();
-//
-//            om.telemetry.addData("Driving: %s", step);
-//            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
-//                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
-//                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
-//            om.telemetry.addData("wanted angle","%.2f, heading %.2f ", angle, om.robotHeading);
-//            om.telemetry.update();
-//
-//            om.idle();
-//        }
-//
-//        om.Billy.frontLeft.setPower(0);
-//        om.Billy.frontRight.setPower(0);
-//        om.Billy.backLeft.setPower(0);
-//        om.Billy.backRight.setPower(0);
-//
-//        om.telemetry.addLine("Power set to zero");
-//        om.telemetry.update();
-//
-//    }
+    public void driveRotateIMU(double angle, double powerLimit, String step, BasicAuto om) {
+
+        double error;
+        double steering;
+
+        // "angle" = the added rotation angle from the current position
+        om.Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        om.angleUnWrap();
+        //Check tolerance zone to exit method
+        while (Math.abs(angle - om.robotHeading) > om.cons.IMU_ROTATE_TOL && (om.opModeIsActive())) {
+
+            error = angle - om.robotHeading;
+            steering = Range.clip((error * om.cons.GAIN), -om.cons.pHM.get("rotatePowerLimit").value, om.cons.pHM.get("rotatePowerLimit").value);
+
+            //update power limit
+            om.Billy.frontLeft.setPower(-powerLimit - steering);
+            om.Billy.frontRight.setPower(-powerLimit - steering);
+            om.Billy.backLeft.setPower(-powerLimit - steering);
+            om.Billy.backRight.setPower(-powerLimit - steering);
+
+            om.angleUnWrap();
+
+            om.telemetry.addData("Driving: %s", step);
+            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BL (%d) BR (%d)",
+                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+                    om.Billy.backLeft.getCurrentPosition(), om.Billy.backRight.getCurrentPosition());
+            om.telemetry.addData("wanted angle","%.2f, heading %.2f ", angle, om.robotHeading);
+            om.telemetry.update();
+
+            om.idle();
+        }
+
+        om.Billy.frontLeft.setPower(0);
+        om.Billy.frontRight.setPower(0);
+        om.Billy.backRight.setPower(0);
+        om.Billy.backLeft.setPower(0);
+
+        om.Billy.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        om.telemetry.addLine("Power set to zero");
+        om.telemetry.update();
+
+    }
 //
 //    public void calStart(BasicAuto om) {
 //

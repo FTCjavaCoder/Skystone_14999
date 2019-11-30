@@ -275,6 +275,8 @@ public class BasicAuto extends BasicOpMode {
         sleep(400);// 0.400 of a second
         Billy.slide.setPower(0);
 
+        pressAToContinue();
+
         Billy.stoneServoLeft.setPosition(0.15);
         Billy.stoneServoRight.setPosition(0.15);
 
@@ -302,6 +304,8 @@ public class BasicAuto extends BasicOpMode {
         //grab skystone with gripper
         Billy.stoneServoLeft.setPosition(0.45);
         Billy.stoneServoRight.setPosition(0.45);
+
+        sleep(250);
 
     }
 
@@ -341,7 +345,7 @@ public class BasicAuto extends BasicOpMode {
     public void bridgeCrossSkyStone() {
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);
-        //previously -14"
+        // make shorter for OUTSIDE
 
         moveAcrossBridge();
 
@@ -389,8 +393,9 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationR.setPosition(0.20);
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-80 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 80 degrees CCW",this);
+//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-80 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 80 degrees CCW",this);
 
+        drv.driveRotateIMU(-50, cons.pHM.get("rotatePowerLimit").value, "Rotate to 50 degrees CCW using the IMU", this);
     }
 
     public void straightToCorner() {
@@ -417,8 +422,9 @@ public class BasicAuto extends BasicOpMode {
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-20, cons.pHM.get("drivePowerLimit").value, "Backwards 6 inches",this);
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(80 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 80 degrees CW",this);
+//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(80 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 80 degrees CW",this);
 
+        drv.driveRotateIMU(50, cons.pHM.get("rotatePowerLimit").value, "Rotate to 50 degrees CW using the IMU", this);
     }
     // get SkyStone first then do move foundation then place block
     public void parkSkyStoneF() {
@@ -550,7 +556,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void grabFoundation() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -32, cons.pHM.get("drivePowerLimit").value, "Backward 32 inches to Foundation", this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 32, cons.pHM.get("drivePowerLimit").value, "Forward 32 inches to Foundation", this);
 
         // grab foundation with servos
         Billy.servoFoundationL.setPosition(0.80);
@@ -562,7 +568,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void pullFoundation() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 31, cons.pHM.get("drivePowerLimit").value, "Forward 31 inches with Foundation", this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -31, cons.pHM.get("drivePowerLimit").value, "Backward 31 inches with Foundation", this);
 
         // release foundation from gripper
         Billy.servoFoundationL.setPosition(0.10);
@@ -609,8 +615,8 @@ public class BasicAuto extends BasicOpMode {
 
 //        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, (foundationInOut), cons.pHM.get("drivePowerLimit").value, "Back 6 inches towards center of Bridge", this);
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -48 * sideColor, cons.pHM.get("drivePowerLimit").value / 2, "Left 48 inches to park", this);
-        //was 16
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (45 * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Right 45 inches to park", this);
+        //was 50
     }
 
 }

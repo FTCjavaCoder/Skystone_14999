@@ -49,10 +49,6 @@ public class FoundationInside extends BasicAuto {
 
         pullFoundation();
 
-        aroundFoundation();
-
-        pushFoundation();
-
         awayFromFoundation();
 
         telemetry.addLine("OpMode Complete");
