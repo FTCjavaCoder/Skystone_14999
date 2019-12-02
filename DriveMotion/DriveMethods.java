@@ -505,10 +505,10 @@ public class DriveMethods{
             steering = Range.clip((error * om.cons.GAIN), -om.cons.pHM.get("rotatePowerLimit").value, om.cons.pHM.get("rotatePowerLimit").value);
 
             //update power limit
-            om.Billy.frontLeft.setPower(-powerLimit - steering);
-            om.Billy.frontRight.setPower(-powerLimit - steering);
-            om.Billy.backLeft.setPower(-powerLimit - steering);
-            om.Billy.backRight.setPower(-powerLimit - steering);
+            om.Billy.frontLeft.setPower(powerLimit - steering);
+            om.Billy.frontRight.setPower(powerLimit - steering);
+            om.Billy.backLeft.setPower(powerLimit - steering);
+            om.Billy.backRight.setPower(powerLimit - steering);
 
             om.angleUnWrap();
 
