@@ -29,7 +29,7 @@ public class SkyStoneFoundationInside extends BasicAuto {
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
-        foundationPosChange = 26;// 0 for moved, 26 for unmoved Foundation.
+        foundationPosChange = 18;// 0 for moved, 18 for unmoved Foundation. (WAS 26 THEN 22)
         insideOutside = 0;// 0 for Inside, 24 for Outside
 
         initialize();
