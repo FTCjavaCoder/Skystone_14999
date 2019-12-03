@@ -487,6 +487,11 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-insideOutside - foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Sideways 0-50ish inches",this);
 
+        telemetry.addData("robotHeading: (%.2f)", robotHeading);
+        pressAToContinue();
+
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - (robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
+
         pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-13, cons.pHM.get("drivePowerLimit").value, "Backward 13 inches",this);
 
