@@ -332,7 +332,7 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,44.5 + extraFwd, cons.pHM.get("drivePowerLimit").value, "Forward 48+ inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,45.5 + extraFwd, cons.pHM.get("drivePowerLimit").value, "Forward 45.5+ inches",this);//was 48
 
     }
 
@@ -422,6 +422,10 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationR.setPosition(0.90);
 
         pressAToContinue();
+//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate, (-5 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate -5 degrees CCW",this);
+
+        pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,6, cons.pHM.get("drivePowerLimit").value, "Forward 6 inches",this);// was 4
 
         pressAToContinue();
@@ -433,7 +437,7 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
 //        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-80 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 80 degrees CCW",this);
 
-        drv.driveRotateIMU(-130, cons.pHM.get("rotatePowerLimit").value, "Rotate to 130 degrees CCW using the IMU", this);// was -140
+        drv.driveRotateIMU(-134, cons.pHM.get("rotatePowerLimit").value, "Rotate to 134 degrees CCW using the IMU", this);// was -130 needed a lil bit more
     }
 
     public void straightToCorner() {
@@ -441,26 +445,39 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,20, cons.pHM.get("drivePowerLimit").value, "Forward 20 inches",this);
 
-        // Release foundation with servos
-        Billy.servoFoundationL.setPosition(0.10);
-        Billy.servoFoundationR.setPosition(0.90);
-
         pressAToContinue();
         drv.moveJack(3, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
 
+        //move slide OUT more
+        Billy.slide.setPower(-cons.pHM.get("slidePowerLimit").value);
+        sleep(600);// 0.600 of a second
+        Billy.slide.setPower(0);
+
+        pressAToContinue();
+        //Place stone with gripper
         Billy.stoneServoLeft.setPosition(0.15);
         Billy.stoneServoRight.setPosition(0.15);
+
+        pressAToContinue();
+        //move slide IN
+        Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
+        sleep(600);// 0.600 of a second
+        Billy.slide.setPower(0);
+
+        sleep(200);
+        // Release foundation with servos
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
     }
 
     public void backSkyStoneAndFoundation() {
 
         pressAToContinue();
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-20, cons.pHM.get("drivePowerLimit").value, "Backwards 6 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-15, cons.pHM.get("drivePowerLimit").value, "Backwards 15 inches",this);//was -20
 
         pressAToContinue();
-//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(80 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 80 degrees CW",this);
 
-        drv.driveRotateIMU(-95, cons.pHM.get("rotatePowerLimit").value, "Rotate to -95 degrees CW using the IMU", this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate, 50, cons.pHM.get("rotatePowerLimit").value, "Rotate 45 degrees CW", this);
     }
 
     public void parkSkyStoneF() {
@@ -468,14 +485,16 @@ public class BasicAuto extends BasicOpMode {
         pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft,((-insideOutside - foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value / 2, "Sideways 0-50ish inches",this);
 
-        // move jack down
         pressAToContinue();
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-13, cons.pHM.get("drivePowerLimit").value, "Backward 13 inches",this);
 
+        pressAToContinue();
+        // move jack down
         drv.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-5, cons.pHM.get("drivePowerLimit").value, "Backward 5 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-11, cons.pHM.get("drivePowerLimit").value, "Backward 11 inches",this);
 
     }
 
