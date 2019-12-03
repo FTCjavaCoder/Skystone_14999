@@ -30,7 +30,7 @@ public class SkyStoneFoundationInside extends BasicAuto {
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
         foundationPosChange = 18;// 0 for moved, 18 for unmoved Foundation. (WAS 26 THEN 22)
-        insideOutside = 0;// 0 for Inside, 24 for Outside
+        insideOutside = 0;// 0 for Inside, 24 for Outside (IS 20 FOR Actual Outside)
 
         initialize();
 

@@ -297,7 +297,6 @@ public class BasicAuto extends BasicOpMode {
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 8, cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
         // DON'T MAKE ANY LONGER
         telemetry.addData("robotHeading: (%.2f)", robotHeading);
-        pressAToContinue();
 
         //grab skystone with gripper
         Billy.stoneServoLeft.setPosition(0.5);
@@ -308,8 +307,6 @@ public class BasicAuto extends BasicOpMode {
     }
 
     public void moveAcrossBridge() {
-
-        pressAToContinue();
 //        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CW",this);
 //
 //        angleUnWrap();// think about commenting
@@ -367,7 +364,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void bridgeCrossSkyStone() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, "Back 4-24 inches",this);
         // make shorter for OUTSIDE
 
         moveAcrossBridge();
@@ -394,7 +391,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void bridgeCrossSkyStoneF() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, "Back 4-24 inches",this);
         // make shorter for OUTSIDE
 
         moveAcrossBridge();
@@ -458,12 +455,6 @@ public class BasicAuto extends BasicOpMode {
         Billy.stoneServoLeft.setPosition(0.15);
         Billy.stoneServoRight.setPosition(0.15);
 
-        pressAToContinue();
-        //move slide IN
-        Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
-        sleep(600);// 0.600 of a second
-        Billy.slide.setPower(0);
-
         sleep(200);
         // Release foundation with servos
         Billy.servoFoundationL.setPosition(0.10);
@@ -474,6 +465,17 @@ public class BasicAuto extends BasicOpMode {
 
         pressAToContinue();
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-15, cons.pHM.get("drivePowerLimit").value, "Backwards 15 inches",this);//was -20
+
+        //Stow gripper
+        Billy.stoneServoLeft.setPosition(1);
+        Billy.stoneServoRight.setPosition(1);
+        sleep(200);
+
+        pressAToContinue();
+        //move slide IN
+        Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
+        sleep(600);// 0.600 of a second
+        Billy.slide.setPower(0);
 
         pressAToContinue();
 
