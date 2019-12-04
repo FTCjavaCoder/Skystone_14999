@@ -5,14 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import Skystone_14999.HarwareConfig.HardwareBilly;
+import Skystone_14999.OpModes.BasicOpMode;
 
 /**
  *
  */
 
-@TeleOp(name=" BasicDrive", group="TeleOp")
+@TeleOp(name="ProtoDrive", group="TeleOp")
 @Disabled
-public class BasicDrive extends BasicTeleOp {
+public class ProtoDrive extends BasicTeleOp {
 
     @Override
     public void runOpMode() {
@@ -27,7 +28,7 @@ public class BasicDrive extends BasicTeleOp {
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-               drivePower();
+            drivePower();
 
             if (gamepad1.right_bumper && gamepad1.left_bumper)
                 clockwise = 0;
@@ -38,25 +39,39 @@ public class BasicDrive extends BasicTeleOp {
             else
                 clockwise = 0;
 
-//            if (gamepad2.dpad_up){
-//
-//                Billy.servoSweeper.setPower(1);
-//            }
-//            if (gamepad2.dpad_down){
-//
-//                Billy.servoSweeper.setPower(-1);
-//            }
-//
-//            if (gamepad2.dpad_left) {
-//
-//                Billy.servoSweeper.setPower(0);
-//            }
+            jackPower();
 
-            //set motor power
+            if (gamepad2.y) {
+                DeltaH += 5;
 
+//                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Up 5 Inches", this);
+            }
 
+            if (gamepad2.a) {
+                DeltaH -= 5;
 
-            // Show the elapsed time, wheel power, arm motor speed, arm positions, and servo positions.
+//                    drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Down 5 Inches", this);
+            }
+
+            if (gamepad2.x) {
+
+                DeltaH = 0;
+
+//                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Back to Zero", this);
+            }
+
+            if (gamepad2.left_bumper) {
+
+                servoStonePos = 0.5;
+                setServoPos(servoStonePos);
+            }
+
+            if (gamepad2.right_bumper) {
+
+                servoStonePos += 0.05;
+                setServoPos(servoStonePos);
+            }
+
             telemetry.addData("Status", "Run Time: ",runtime.toString());
             telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
                     forwardDirection, rightDirection, clockwise);
@@ -65,19 +80,7 @@ public class BasicDrive extends BasicTeleOp {
                     Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(),
                     Billy.backRight.getPower());
 
-//            telemetry.addData("Slide Rotate Target and Current Pos","%.2f, %.2f",
-//                    Billy.slideRotate.getTargetPosition() / (prm.SLIDE_ROTATE_DEG_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS),
-//                    Billy.slideRotate.getCurrentPosition() / (prm.SLIDE_ROTATE_DEG_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS));
-//
-//            telemetry.addData("Slide Extend Target and Current Pos","%.2f, %.2f",
-//                    Billy.slideExtend.getTargetPosition() / (prm.SLIDE_EXTEND_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS),
-//                    Billy.slideExtend.getCurrentPosition() / (prm.SLIDE_EXTEND_INCH_TO_MOTOR_DEG * prm.DEGREES_TO_COUNTS));
-//
-//            telemetry.addData("Box Servo Target Pos","%.4f", mineralBoxTrgtPos);
-//
-//            telemetry.addData("Lead Screw", "screwepower (%.2f), screwposition (%.2f)",
-//                    Billy.landingSlide.getPower(),
-//                    Billy.landingSlide.getCurrentPosition()/prm.DEGREES_TO_COUNTS/prm.SLIDE_INCH_TO_MOTOR_DEG);
+
             telemetry.update();
 
             idle();

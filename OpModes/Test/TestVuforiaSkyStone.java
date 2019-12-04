@@ -1,6 +1,7 @@
 package Skystone_14999.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -23,7 +24,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @Autonomous(name="SKYSTONE Vuforia Test", group ="Autonomous")
-
+@Disabled
 public class TestVuforiaSkyStone extends BasicAuto {
 
     @Override public void runOpMode() {

@@ -17,19 +17,22 @@ import Skystone_14999.Parameters.Constants;
 @Disabled
 public class BasicTeleOp extends BasicOpMode {
 
-    public HardwareBilly Billy = new HardwareBilly();
-    public Constants prm = new Constants();
     public DriveMethods drv = new DriveMethods();
 
     // Define the static power levels and limits for motors
-    public double servosMineralPos;
+    public double servoStonePos;
     public double clockwise =0;
     public double forwardDirection =0;
     public double rightDirection =0;
+    public double verticalDirection = 0;
+    public double clockwiseDirection =0;
+    public double counterclockwiseDirection = 0;
+    public double slideDirection =0;
     public int slideDistance = 0;
     public double desiredExtend = 0;
     public double desiredRotate = 0;
     public double mineralBoxTrgtPos = 0;
+    public double slidePwr = 0;
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
@@ -37,6 +40,7 @@ public class BasicTeleOp extends BasicOpMode {
     public void runOpMode() {
 
     }
+
 
     public void initializeTeleOp() {
 
@@ -49,46 +53,47 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-//        Billy.landingSlide.setPower(0);
+        Billy.jackLeft.setPower(0);
+        Billy.jackRight.setPower(0);
+        Billy.slide.setPower(0);
 
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.landingSlide.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.slideExtend.setDirection(DcMotorSimple.Direction.FORWARD);
-//        Billy.slideRotate.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.jackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.jackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.slide.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        Billy.landingSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        Billy.slideExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        Billy.slideRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.jackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.jackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Reset all motor encoders
         Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.landingSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.slideExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        Billy.slideRotate.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.jackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.jackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+ //       Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        Billy.landingSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        Billy.slideExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        Billy.slideRotate.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//
-//        Billy.slideExtend.setPower(prm.SLIDE_EXTEND_POWER_LIMIT);
-//        Billy.slideRotate.setPower(prm.SLIDE_ROTATE_POWER_LIMIT);
+        Billy.jackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.jackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-//        Billy.slideExtend.setTargetPosition(Billy.slideExtend.getCurrentPosition());
-//        Billy.slideRotate.setTargetPosition(Billy.slideRotate.getCurrentPosition());
+        Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
+        Billy.stoneServoRight.setPosition(Billy.stoneServoRight.getPosition());
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
 
         readOrWriteHashMap();
 
@@ -110,6 +115,39 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
         Billy.backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
         Billy.backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
+    }
+
+    public void rotatePower() {
+
+        counterclockwiseDirection = -gamepad1.left_trigger * Math.pow(gamepad1.left_trigger, 2);
+        clockwiseDirection = gamepad1.right_trigger * Math.pow(gamepad1.right_trigger, 2);
+
+        clockwise = Range.clip(clockwiseDirection + counterclockwiseDirection, -cons.TURN_POWER, cons.TURN_POWER);
+
+    }
+
+    public void jackPower() {
+
+        verticalDirection = -gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2);
+
+        Billy.jackLeft.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+        Billy.jackRight.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+
+    }
+
+    public void slidePower() {
+
+        slideDirection = gamepad2.right_stick_y * Math.pow(gamepad2.right_stick_y, 2);
+
+        Billy.slide.setPower(Range.clip(slideDirection, -cons.pHM.get("slidePowerLimit").value, cons.pHM.get("slidePowerLimit").value));
+
+    }
+
+    public void setServoPos(double servoPos) {
+
+        Billy.stoneServoLeft.setPosition(servoPos);
+        Billy.stoneServoRight.setPosition(servoPos);
+
     }
 
 }
