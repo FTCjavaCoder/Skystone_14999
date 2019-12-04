@@ -295,8 +295,6 @@ public class BasicAuto extends BasicOpMode {
         drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (0 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 0 degrees CCW",this);
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 8, cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
-        // DON'T MAKE ANY LONGER
-        telemetry.addData("robotHeading: (%.2f)", robotHeading);
 
         //grab skystone with gripper
         Billy.stoneServoLeft.setPosition(0.5);
@@ -307,16 +305,6 @@ public class BasicAuto extends BasicOpMode {
     }
 
     public void moveAcrossBridge() {
-//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CW",this);
-//
-//        angleUnWrap();// think about commenting
-//
-//        pressAToContinue();
-//
-//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CW",this);
-//        pressAToContinue();
-//
-//        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-48 - extraFwd, cons.pHM.get("drivePowerLimit").value, "Backward 48+ inches",this);
 
         drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 90 degrees CCW",this);
 
@@ -489,7 +477,7 @@ public class BasicAuto extends BasicOpMode {
 
         telemetry.addData("robotHeading: (%.2f)", robotHeading);
         pressAToContinue();
-        
+
 
 //        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - (robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to -90 degrees CCW",this);
 
