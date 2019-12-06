@@ -141,7 +141,7 @@ public class BasicTeleOp extends BasicOpMode {
 
     public void rotatePowerRightStick() {
 
-        clockwise = (gamepad1.right_stick_x * Math.pow(gamepad1.right_stick_x, 2) ) * cons.pHM.get("teleOpRotatePowerLimit").value;
+        clockwise = (gamepad1.right_stick_x) * cons.pHM.get("teleOpRotatePowerLimit").value;
 
         clockwise = Range.clip(clockwise, -cons.pHM.get("teleOpRotatePowerLimit").value, cons.pHM.get("teleOpRotatePowerLimit").value);
 
