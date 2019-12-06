@@ -130,8 +130,8 @@ public class BasicTeleOp extends BasicOpMode {
 
     public void drivePowerAllLeftStick() {
 
-        forwardDirection = (-gamepad1.left_stick_y * Math.pow(gamepad1.left_stick_y, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
-        rightDirection = (gamepad1.left_stick_x * Math.pow(gamepad1.left_stick_x, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
+        forwardDirection = (-gamepad1.left_stick_y) * cons.pHM.get("teleOpDrivePowerLimit").value;
+        rightDirection = (gamepad1.left_stick_x) * cons.pHM.get("teleOpDrivePowerLimit").value;
 
         Billy.frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
         Billy.frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
