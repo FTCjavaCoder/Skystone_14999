@@ -19,17 +19,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class HardwareBilly
 {
     /* Public OpMode members. */
-    public DcMotor  frontLeft        = null;
-    public DcMotor  frontRight       = null;
-    public DcMotor  backLeft         = null;
-    public DcMotor  backRight        = null;
-    public DcMotor  jackLeft     = null;
-    public DcMotor  jackRight = null;
-    public DcMotor  slide = null;
+    public DcMotor  frontLeft   = null;
+    public DcMotor  frontRight  = null;
+    public DcMotor  backLeft    = null;
+    public DcMotor  backRight   = null;
+    public DcMotor  jackLeft    = null;
+    public DcMotor  jackRight   = null;
+    public DcMotor  slide       = null;
 
 //    public DcMotor  slideRotate = null;
     public Servo  servoFoundationL  = null;
-    public Servo  servoFoundationR = null;
+    public Servo  servoFoundationR  = null;
 //    public CRServo    servoSweeper   = null;
 //    public ColorSensor    colorSensorSampling   = null;
     public BNO055IMU    imu = null;
@@ -38,9 +38,9 @@ public class HardwareBilly
 
 
 //    public DcMotor  mineralCollector = null;
-      public Servo  stoneServoLeft   = null;
+      public Servo  stoneServoLeft    = null;
       public Servo  stoneServoRight   = null;
-//    public Servo    mineralDumperR   = null;
+      public Servo  servoCapstoneRelease   = null;
 //    public ColorSensor    colorSensorTeam   = null;
 //    public TouchSensor    touchSensor1   = null;
 //    public TouchSensor    touchSensor2   = null;
