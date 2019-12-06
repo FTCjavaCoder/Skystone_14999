@@ -1,7 +1,6 @@
-package Skystone_14999.OpModes.Autonomous.SkyStone;
+package Skystone_14999.OpModes.Autonomous.Foundation;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -11,9 +10,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
-@Autonomous(name="SkyStone Outside", group="Skystone")
-@Disabled
-public class SkyStoneOutside extends BasicAuto {
+@Autonomous(name="Foundation Outside", group="Foundation")
+
+public class FoundationOutsideRed extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -30,8 +29,8 @@ public class SkyStoneOutside extends BasicAuto {
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
-        foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
-        insideOutside = 24;// 0 for Inside, 24 for Outside
+        sideColor = -1;
+        foundationInOut = 22;// 0 for Inside, 22 for Outside
 
         initialize();
 
@@ -47,13 +46,11 @@ public class SkyStoneOutside extends BasicAuto {
 
         sleep(100);
 
-        fwdToStone();
+        grabFoundation();
 
-        findSkyStone();
+        pullFoundation();
 
-        bridgeCrossSkyStone();
-
-        parkSkyStone();
+        awayFromFoundation();
 
         telemetry.addLine("OpMode Complete");
         sleep(2000);

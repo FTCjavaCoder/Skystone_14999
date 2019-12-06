@@ -546,7 +546,7 @@ public class BasicAuto extends BasicOpMode {
         Billy.stoneServoRight.setPosition(0.15);
         sleep(250);
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-(cons.pHM.get("dropStoneForward").value / 3) - extraFwd, cons.pHM.get("drivePowerLimit").value, "Back 35/3- inches",this);//was 48
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack,-4, cons.pHM.get("drivePowerLimit").value, "Back 4 inches",this);//was 48
 
     }
 
@@ -612,12 +612,11 @@ public class BasicAuto extends BasicOpMode {
 
 //        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -2, (cons.pHM.get("drivePowerLimit").value / 2), "Backward 2 inches with Foundation", this);
 
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-20 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 20 degrees CCW",this);
+
         // release foundation from gripper
         Billy.servoFoundationL.setPosition(0.10);
         Billy.servoFoundationR.setPosition(0.90);
-
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-10 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 10 degrees CCW",this);
-
     }
 
     public void aroundFoundation() {
@@ -657,10 +656,17 @@ public class BasicAuto extends BasicOpMode {
 
     public void awayFromFoundation() {
 
-//        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, (foundationInOut), cons.pHM.get("drivePowerLimit").value, "Back 6 inches towards center of Bridge", this);
+//        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (45 * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 45 inches to park", this);
+//        //was 50
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (45 * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 45 inches to park", this);
-        //was 50
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (21 * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 21 inches", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(20 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 20 degrees CW",this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -18, cons.pHM.get("drivePowerLimit").value, "Backward 18 inches to wall", this);
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (24 * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 24 inches", this);
+
     }
 
 }

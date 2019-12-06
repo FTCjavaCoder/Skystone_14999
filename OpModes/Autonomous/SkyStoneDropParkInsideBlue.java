@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 @Autonomous(name="SkyStone Drop Park Inside", group="Autonomous")
 
-public class SkyStoneDropParkInside extends BasicAuto {
+public class SkyStoneDropParkInsideBlue extends BasicAuto {
 
     @Override
     public void runOpMode() {
