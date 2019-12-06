@@ -28,6 +28,8 @@ public class BasicTeleOp extends BasicOpMode {
     public double clockwiseDirection =0;
     public double counterclockwiseDirection = 0;
     public double slideDirection =0;
+    public double rightTrigger = 0;
+    public double leftTrigger = 0;
     public int slideDistance = 0;
     public double desiredExtend = 0;
     public double desiredRotate = 0;
@@ -92,8 +94,8 @@ public class BasicTeleOp extends BasicOpMode {
 
         Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
         Billy.stoneServoRight.setPosition(Billy.stoneServoRight.getPosition());
-        Billy.servoFoundationL.setPosition(0.10);
-        Billy.servoFoundationR.setPosition(0.90);
+        Billy.servoFoundationL.setPosition(0.80);
+        Billy.servoFoundationR.setPosition(0.20);
 
         readOrWriteHashMap();
 
@@ -108,8 +110,8 @@ public class BasicTeleOp extends BasicOpMode {
 
     public void drivePower() {
 
-        forwardDirection = -gamepad1.left_stick_y * Math.pow(gamepad1.left_stick_y, 2);
-        rightDirection = gamepad1.right_stick_x * Math.pow(gamepad1.right_stick_x, 2);
+        forwardDirection = (-gamepad1.left_stick_y * Math.pow(gamepad1.left_stick_y, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
+        rightDirection = (gamepad1.right_stick_x * Math.pow(gamepad1.right_stick_x, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
 
         Billy.frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
         Billy.frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
@@ -119,25 +121,52 @@ public class BasicTeleOp extends BasicOpMode {
 
     public void rotatePower() {
 
-        counterclockwiseDirection = -gamepad1.left_trigger * Math.pow(gamepad1.left_trigger, 2);
-        clockwiseDirection = gamepad1.right_trigger * Math.pow(gamepad1.right_trigger, 2);
+        counterclockwiseDirection = (-gamepad1.left_trigger * Math.pow(gamepad1.left_trigger, 2) ) * cons.pHM.get("teleOpRotatePowerLimit").value;
+        clockwiseDirection = (gamepad1.right_trigger * Math.pow(gamepad1.right_trigger, 2) ) * cons.pHM.get("teleOpRotatePowerLimit").value;
 
-        clockwise = Range.clip(clockwiseDirection + counterclockwiseDirection, -cons.TURN_POWER, cons.TURN_POWER);
+        clockwise = Range.clip(clockwiseDirection + counterclockwiseDirection, -cons.pHM.get("teleOpRotatePowerLimit").value, cons.pHM.get("teleOpRotatePowerLimit").value);
+
+    }
+
+    public void drivePowerAllLeftStick() {
+
+        forwardDirection = (-gamepad1.left_stick_y * Math.pow(gamepad1.left_stick_y, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
+        rightDirection = (gamepad1.left_stick_x * Math.pow(gamepad1.left_stick_x, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
+
+        Billy.frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
+        Billy.frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
+        Billy.backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
+        Billy.backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
+    }
+
+    public void rotatePowerRightStick() {
+
+        clockwise = (gamepad1.right_stick_x * Math.pow(gamepad1.right_stick_x, 2) ) * cons.pHM.get("teleOpRotatePowerLimit").value;
+
+        clockwise = Range.clip(clockwise, -cons.pHM.get("teleOpRotatePowerLimit").value, cons.pHM.get("teleOpRotatePowerLimit").value);
 
     }
 
     public void jackPower() {
 
-        verticalDirection = -gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2);
+        verticalDirection = (-gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2) ) * cons.pHM.get("jackPowerLimit").value;
 
         Billy.jackLeft.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
         Billy.jackRight.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
 
     }
 
+    public void jackLeft() {
+
+        leftTrigger = (-gamepad2.left_trigger * Math.pow(gamepad2.left_trigger, 2) ) * cons.pHM.get("jackPowerLimit").value;
+        rightTrigger = (gamepad2.right_trigger * Math.pow(gamepad2.right_trigger, 2) ) * cons.pHM.get("jackPowerLimit").value;
+
+        Billy.jackLeft.setPower(Range.clip(rightTrigger + leftTrigger, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+    }
+
     public void slidePower() {
 
-        slideDirection = gamepad2.right_stick_y * Math.pow(gamepad2.right_stick_y, 2);
+        slideDirection = (gamepad2.right_stick_y * Math.pow(gamepad2.right_stick_y, 2) ) * cons.pHM.get("slidePowerLimit").value;
 
         Billy.slide.setPower(Range.clip(slideDirection, -cons.pHM.get("slidePowerLimit").value, cons.pHM.get("slidePowerLimit").value));
 

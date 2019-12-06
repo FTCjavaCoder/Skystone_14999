@@ -26,7 +26,7 @@ public class Constants {
     //public final double ROTATE_POWER_LIMIT = 0.25;//clockwise rotation power/speed to be converted to individual motor powers/speeds
 
     public final double SLIDE_POWER_LIMIT = 0.6;// was 0.6
-    public final double TURN_POWER =  0.40;
+//    public final double TURN_POWER =  0.40;
     //public final double TELEOP_DRIVE_POWER_LIMIT =  0.65;
 
     //    final double OMNI_EFFICIENCY = 1/1.35;// unitless - factor that's needed to reduce total wheel travel to match forward/back and right/left motion, doesn't apply for rotate
@@ -111,17 +111,25 @@ public class Constants {
 
     public void defineParameters() {
 
-        pHM.put("drivePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
+        pHM.put("drivePowerLimit", new ParameterHM( 1, ParameterHM.instanceType.powerLimit));// was 0.75
 
-        pHM.put("rotatePowerLimit", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// was 0.25
+        pHM.put("rotatePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));// was 0.5
 
         pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.55, ParameterHM.instanceType.powerLimit));
+
+        pHM.put("teleOpRotatePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));
 
         pHM.put("jackPowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
 
         pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));
 
         pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
+
+        pHM.put("dropStoneForward", new ParameterHM(35, ParameterHM.instanceType.distanceInches));// For crossDropStonePark method
+
+        pHM.put("foundationExtraFwd", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of Foundation allowing us to still use SkystoneInside
+
+        pHM.put("foundationExtraSideways", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of Foundation allowing us to still use SkystoneInside
 
     }// Define initial values for HashMap parameters
 

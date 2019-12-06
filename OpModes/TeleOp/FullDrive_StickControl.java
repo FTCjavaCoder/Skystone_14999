@@ -7,16 +7,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-import Skystone_14999.HarwareConfig.HardwareBilly;
-import Skystone_14999.OpModes.BasicOpMode;
-
 /**
  *
  */
 
-@TeleOp(name="FullDrive", group="TeleOp")
+@TeleOp(name="FullDrive Stick Control", group="TeleOp")
 
-public class FullDrive extends BasicTeleOp {
+public class FullDrive_StickControl extends BasicTeleOp {
 
     @Override
     public void runOpMode() {
@@ -39,10 +36,10 @@ public class FullDrive extends BasicTeleOp {
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            drivePower();
+            drivePowerAllLeftStick();
 
             // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
-            rotatePower();
+            rotatePowerRightStick();
 
             // use the left stick on gamepad2 to raise/lower the jack
             jackPower();
@@ -91,65 +88,10 @@ public class FullDrive extends BasicTeleOp {
                 sleep(300);
             }
 
-            if (gamepad1.right_bumper && gamepad1.left_bumper)
-                clockwise = 0;
-            else if (gamepad1.right_bumper)  //boolean gamepad1.right_bumper is evaluated for "true" or "false" to determine if pressed
-                clockwise = cons.pHM.get("teleOpRotatePowerLimit").value;
-            else if (gamepad1.left_bumper)
-                clockwise = -cons.pHM.get("teleOpRotatePowerLimit").value;
-            else
-                clockwise = 0;
-
             if (gamepad2.dpad_up) {
 
                 jackLeft();
             }
-
-//            if (gamepad2.y)
-//                slidePower(cons.pHM.get("slidePowerLimit").value);
-//            else if (gamepad2.a)
-//                slidePower(-cons.pHM.get("slidePowerLimit").value);
-//            else
-//                slidePower(0);
-
-
-//            if (gamepad1.x)
-//                servoHandPosition += (servoHandMovement * 0.01);
-//            else if (gamepad1.b)
-//                servoHandPosition -= (servoHandMovement * 0.01);
-//
-//            servoHand.setPosition(servoHandPosition);
-
-            //            if (gamepad2.y) {
-//                DeltaH += 5;
-//
-////                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Up 5 Inches", this);
-//            }
-//
-//            if (gamepad2.a) {
-//                DeltaH -= 5;
-//
-////                    drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Down 5 Inches", this);
-//            }
-//
-//            if (gamepad2.x) {
-//
-//                DeltaH = 0;
-//
-////                drv.moveJack(cons.pHM.get("jackPowerLimit").value, "Back to Zero", this);
-//            }
-
-            // SLIDE
-
-
-//            if (gamepad1.x)
-//                servoHandPosition += (servoHandMovement * 0.01);
-//            else if (gamepad1.b)
-//                servoHandPosition -= (servoHandMovement * 0.01);
-//
-//            servoHand.setPosition(servoHandPosition);
-
-            // SERVO HAND
 
             // SERVOS FOUNDATION
             if(gamepad1.dpad_up) {
