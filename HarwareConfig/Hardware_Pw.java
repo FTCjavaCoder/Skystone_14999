@@ -31,6 +31,7 @@ public class Hardware_Pw
 
     public Servo  stoneServoLeft   = null;
     public Servo  stoneServoRight   = null;
+    public Servo  servoCapstoneRelease   = null;
 
     // DRIVING Variables
     private double teleOpDrivePowerLimit = 0;
@@ -153,6 +154,7 @@ public class Hardware_Pw
 
         servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
         servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
+        servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
 
         stoneServoLeft.setPosition(servoHand_Position);
         stoneServoRight.setPosition(servoHand_Position);
@@ -318,6 +320,14 @@ public class Hardware_Pw
         }
         else
             GoOpenUp = false;
+    }
+
+    public void releaseCapstone(Gamepad gp1, Gamepad gp2) {
+
+        if (gp1.right_bumper && gp1.b) {
+
+            servoCapstoneRelease.setPosition(0);
+        }
     }
 
     /* Method to make sure all engines are stopped */

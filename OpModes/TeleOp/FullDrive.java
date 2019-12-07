@@ -91,18 +91,23 @@ public class FullDrive extends BasicTeleOp {
                 sleep(300);
             }
 
-            if (gamepad1.right_bumper && gamepad1.left_bumper)
-                clockwise = 0;
-            else if (gamepad1.right_bumper)  //boolean gamepad1.right_bumper is evaluated for "true" or "false" to determine if pressed
-                clockwise = cons.pHM.get("teleOpRotatePowerLimit").value;
-            else if (gamepad1.left_bumper)
-                clockwise = -cons.pHM.get("teleOpRotatePowerLimit").value;
-            else
-                clockwise = 0;
+//            if (gamepad1.right_bumper && gamepad1.left_bumper)
+//                clockwise = 0;
+//            else if (gamepad1.right_bumper)  //boolean gamepad1.right_bumper is evaluated for "true" or "false" to determine if pressed
+//                clockwise = cons.pHM.get("teleOpRotatePowerLimit").value;
+//            else if (gamepad1.left_bumper)
+//                clockwise = -cons.pHM.get("teleOpRotatePowerLimit").value;
+//            else
+//                clockwise = 0;
 
             if (gamepad2.dpad_up) {
 
                 jackLeft();
+            }
+
+            if (gamepad1.right_bumper && gamepad1.b) {
+
+                Billy.servoCapstoneRelease.setPosition(0);
             }
 
 //            if (gamepad2.y)

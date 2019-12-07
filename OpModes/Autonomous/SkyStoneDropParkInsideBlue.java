@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="SkyStone Drop Park Inside", group="Autonomous")
+@Autonomous(name="SkyStone Drop Park Inside Blue", group="Autonomous")
 
 public class SkyStoneDropParkInsideBlue extends BasicAuto {
 

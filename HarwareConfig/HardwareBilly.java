@@ -85,7 +85,7 @@ public class HardwareBilly
 
         stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
         stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
-//        mineralDumperR = hwMap.get(Servo.class, "mineral_servo_right");
+        servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
 
         //Define all installed sensors
 //        colorSensorSampling  = hwMap.get(ColorSensor.class, "color_sensor1");

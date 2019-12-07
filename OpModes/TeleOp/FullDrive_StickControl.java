@@ -107,6 +107,11 @@ public class FullDrive_StickControl extends BasicTeleOp {
                 Billy.servoFoundationR.setPosition(0.20);
             }
 
+            if (gamepad1.right_bumper && gamepad1.b) {
+
+                Billy.servoCapstoneRelease.setPosition(0);
+            }
+
             angleUnWrap();
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());

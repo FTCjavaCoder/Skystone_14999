@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
-@Autonomous(name="Foundation Outside", group="Foundation")
+@Autonomous(name="Foundation Outside Blue", group="Foundation")
 
 public class FoundationOutsideBlue extends BasicAuto {
 

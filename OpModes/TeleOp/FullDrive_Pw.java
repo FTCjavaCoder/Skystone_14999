@@ -121,6 +121,8 @@ public class FullDrive_Pw extends OpMode
                 Billy.HandOpening();
         }
 
+        Billy.releaseCapstone(gamepad1, gamepad2);
+
         if (gamepad2.dpad_up) Billy.setDisplayStatus(+1);
         if (gamepad2.dpad_down) Billy.setDisplayStatus (-1);
 
