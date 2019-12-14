@@ -48,19 +48,19 @@ public class AutoDrivingTest extends BasicAuto {
 
         sleep(100);
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value,"Forward 60 Inches", this);
-
-        pressAToContinue();
-
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value,"Right 36 Inches", this);
-
-        pressAToContinue();
-
         drv.driveGeneralPower(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 60 Inches", this);
 
         pressAToContinue();
 
         drv.driveGeneralPower(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 36 Inches", this);
+
+        pressAToContinue();
+
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value,"Forward 60 Inches", this);
+
+        pressAToContinue();
+
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value,"Right 36 Inches", this);
 
         pressAToContinue();
 

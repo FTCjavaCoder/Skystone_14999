@@ -59,6 +59,7 @@ public class DriveMethods{
                 driveDirection[3] = 0;// BL
         }
 
+        om.runtime.reset();
         startPos = motorStartPos(om);
         setMotorPower(powerLimit, om);
 
@@ -95,6 +96,16 @@ public class DriveMethods{
         om.Billy.frontRight.setTargetPosition(om.Billy.frontRight.getCurrentPosition());
         om.Billy.backRight.setTargetPosition(om.Billy.backRight.getCurrentPosition());
         om.Billy.backLeft.setTargetPosition(om.Billy.backLeft.getCurrentPosition());
+
+        om.telemetry.addData("Driving: ", step);
+        om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                om.Billy.frontLeft.getTargetPosition(), om.Billy.frontRight.getTargetPosition(),
+                om.Billy.backRight.getTargetPosition(),om.Billy.backLeft.getTargetPosition());
+        om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+                om.Billy.backRight.getCurrentPosition(), om.Billy.backLeft.getCurrentPosition());
+        om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+        om.telemetry.addData("Time: ", om.runtime);
 
     }
 
@@ -176,6 +187,7 @@ public class DriveMethods{
             setPower[i] = Range.clip(Math.abs(error[i]) * powerGain, powerMin, powerLimit) * Math.signum(error[i]);
         }
 
+        om.runtime.reset();
         setMotorPowerArray(setPower, om);
 
         while(!motorsDone && om.opModeIsActive()) {
@@ -226,6 +238,16 @@ public class DriveMethods{
         om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         om.Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        om.telemetry.addData("Driving: ", step);
+        om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                om.Billy.frontLeft.getTargetPosition(), om.Billy.frontRight.getTargetPosition(),
+                om.Billy.backRight.getTargetPosition(),om.Billy.backLeft.getTargetPosition());
+        om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+                om.Billy.backRight.getCurrentPosition(), om.Billy.backLeft.getCurrentPosition());
+        om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+        om.telemetry.addData("Time: ", om.runtime);
 
     }
 
@@ -359,7 +381,7 @@ public class DriveMethods{
 
                 countTol += 1;
 
-                if (countTol == 4) {
+                if (countTol == 1) {// was 4
 
                     motorFinish = true;
 
