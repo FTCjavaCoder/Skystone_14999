@@ -381,7 +381,7 @@ public class DriveMethods{
 
                 countTol += 1;
 
-                if (countTol == 1) {// was 4
+                if (countTol == 4) {// was 4 also 1
 
                     motorFinish = true;
 
