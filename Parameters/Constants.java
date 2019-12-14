@@ -111,9 +111,9 @@ public class Constants {
 
     public void defineParameters() {
 
-        pHM.put("drivePowerLimit", new ParameterHM( 0.75, ParameterHM.instanceType.powerLimit));// was 1
+        pHM.put("drivePowerLimit", new ParameterHM( 1, ParameterHM.instanceType.powerLimit));// was 0.75
 
-        pHM.put("drivePowerMinimum", new ParameterHM( 0.2, ParameterHM.instanceType.powerLimit));// NEW
+        pHM.put("drivePowerMinimum", new ParameterHM( 0.15, ParameterHM.instanceType.powerLimit));//was 0.2
 
         pHM.put("rotatePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));// was 0.5
 
