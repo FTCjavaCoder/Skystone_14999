@@ -2,16 +2,13 @@ package Skystone_14999.OpModes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import Skystone_14999.DriveMotion.DriveMethods;
-import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.BasicOpMode;
-import Skystone_14999.Parameters.Constants;
 
 @Autonomous(name="BasicTeleOp", group="TeleOp")
 @Disabled
@@ -55,24 +52,21 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-        Billy.jackLeft.setPower(0);
-        Billy.jackRight.setPower(0);
+        Billy.jack.setPower(0);
         Billy.slide.setPower(0);
 
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.jackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.jackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.jack.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.slide.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.jackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.jackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.jack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Reset all motor encoders
@@ -80,16 +74,14 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.jackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.jackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.jack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
  //       Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.jackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.jackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.jack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
@@ -151,8 +143,8 @@ public class BasicTeleOp extends BasicOpMode {
 
         verticalDirection = (-gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2) ) * cons.pHM.get("jackPowerLimit").value;
 
-        Billy.jackLeft.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
-        Billy.jackRight.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+        Billy.jack.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+//        Billy.jackRight.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
 
     }
 
@@ -161,7 +153,7 @@ public class BasicTeleOp extends BasicOpMode {
         leftTrigger = (-gamepad2.left_trigger * Math.pow(gamepad2.left_trigger, 2) ) * cons.pHM.get("jackPowerLimit").value;
         rightTrigger = (gamepad2.right_trigger * Math.pow(gamepad2.right_trigger, 2) ) * cons.pHM.get("jackPowerLimit").value;
 
-        Billy.jackLeft.setPower(Range.clip(rightTrigger + leftTrigger, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
+        Billy.jack.setPower(Range.clip(rightTrigger + leftTrigger, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
     }
 
     public void slidePower() {

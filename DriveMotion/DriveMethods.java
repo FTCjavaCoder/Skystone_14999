@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import Skystone_14999.OpModes.BasicOpMode;
-import Skystone_14999.Parameters.Constants;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 public class DriveMethods{
@@ -91,6 +90,229 @@ public class DriveMethods{
             om.idle();
         }
 
+        setMotorPower(0, om);
+        om.Billy.frontLeft.setTargetPosition(om.Billy.frontLeft.getCurrentPosition());
+        om.Billy.frontRight.setTargetPosition(om.Billy.frontRight.getCurrentPosition());
+        om.Billy.backRight.setTargetPosition(om.Billy.backRight.getCurrentPosition());
+        om.Billy.backLeft.setTargetPosition(om.Billy.backLeft.getCurrentPosition());
+
+    }
+
+    public void driveGeneralPower(moveDirection moveType, double distanceInch, double powerLimit, double powerMin, String step, BasicAuto om) {
+        int countDistance = 0;
+        int[] driveDirection = new int[4];
+        int[] startPos = new int[4];
+        boolean motorsDone = false;
+        double[] error = new double[4];
+        double[] prePower = new double[4];
+        double[] setPower = new double[4];
+        double powerGain = powerLimit / (4 * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);// 4 is inches from target when robot will start slowing down
+
+        om.Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        switch(moveType) {
+
+            case FwdBack :
+                countDistance = (int) Math.round(distanceInch * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = +1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = -1;// BL
+                break;
+
+            case RightLeft :
+                countDistance = (int) Math.round((distanceInch * om.cons.adjustedRight) * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = +1;// BL
+                break;
+
+            case Rotate :
+                countDistance = (int) Math.round((distanceInch * om.cons.adjustedRotate) * om.cons.ROBOT_DEG_TO_WHEEL_INCH * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = -1;// BR
+                driveDirection[3] = -1;// BL
+                break;
+            default:
+                countDistance = (int) 0;
+
+                driveDirection[0] = 0;// FL
+                driveDirection[1] = 0;// FR
+                driveDirection[2] = 0;// BR
+                driveDirection[3] = 0;// BL
+        }
+
+        startPos = motorStartPos(om);
+
+        for (int i=0; i<4; i++) {
+
+            targetPos[i] = startPos[i] + (driveDirection[i] * countDistance);
+        }
+
+        error[0] = targetPos[0] - om.Billy.frontLeft.getCurrentPosition();
+        error[1] = targetPos[1] - om.Billy.frontRight.getCurrentPosition();
+        error[2] = targetPos[2] - om.Billy.backRight.getCurrentPosition();
+        error[3] = targetPos[3] - om.Billy.backLeft.getCurrentPosition();
+
+//            prePower[0] = Math.abs(error[0]) * powerGain;
+//            prePower[1] = Math.abs(error[1]) * powerGain;
+//            prePower[2] = Math.abs(error[2]) * powerGain;
+//            prePower[3] = Math.abs(error[3]) * powerGain;
+//        prePower[0] = Range.clip(Math.abs(error[0]) * powerGain, powerMin, powerLimit);
+//        prePower[1] = Range.clip(Math.abs(error[1]) * powerGain, powerMin, powerLimit);
+//        prePower[2] = Range.clip(Math.abs(error[2]) * powerGain, powerMin, powerLimit);
+//        prePower[3] = Range.clip(Math.abs(error[3]) * powerGain, powerMin, powerLimit);
+
+        for (int i=0; i<4; i++) {
+
+            setPower[i] = Range.clip(Math.abs(error[i]) * powerGain, powerMin, powerLimit) * Math.signum(error[i]);
+        }
+
+        setMotorPowerArray(setPower, om);
+
+        while(!motorsDone && om.opModeIsActive()) {
+
+            error[0] = targetPos[0] - om.Billy.frontLeft.getCurrentPosition();
+            error[1] = targetPos[1] - om.Billy.frontRight.getCurrentPosition();
+            error[2] = targetPos[2] - om.Billy.backRight.getCurrentPosition();
+            error[3] = targetPos[3] - om.Billy.backLeft.getCurrentPosition();
+
+//            prePower[0] = Math.abs(error[0]) * powerGain;
+//            prePower[1] = Math.abs(error[1]) * powerGain;
+//            prePower[2] = Math.abs(error[2]) * powerGain;
+//            prePower[3] = Math.abs(error[3]) * powerGain;
+//            prePower[0] = Range.clip(Math.abs(error[0]) * powerGain, powerMin, powerLimit);
+//            prePower[1] = Range.clip(Math.abs(error[1]) * powerGain, powerMin, powerLimit);
+//            prePower[2] = Range.clip(Math.abs(error[2]) * powerGain, powerMin, powerLimit);
+//            prePower[3] = Range.clip(Math.abs(error[3]) * powerGain, powerMin, powerLimit);
+
+            for (int i=0; i<4; i++) {
+
+                setPower[i] = Range.clip(Math.abs(error[i]) * powerGain, powerMin, powerLimit) * Math.signum(error[i]);
+            }
+
+            setMotorPowerArray(setPower, om);
+
+            om.telemetry.addData("Driving: ", step);
+            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                    om.Billy.frontLeft.getTargetPosition(), om.Billy.frontRight.getTargetPosition(),
+                    om.Billy.backRight.getTargetPosition(),om.Billy.backLeft.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+                    om.Billy.backRight.getCurrentPosition(), om.Billy.backLeft.getCurrentPosition());
+            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+            om.telemetry.update();
+
+            motorsDone = targetPosTolerence(om);
+
+            om.idle();
+        }
+        setMotorPower(0, om);
+
+        om.Billy.frontLeft.setTargetPosition(om.Billy.frontLeft.getCurrentPosition());
+        om.Billy.frontRight.setTargetPosition(om.Billy.frontRight.getCurrentPosition());
+        om.Billy.backRight.setTargetPosition(om.Billy.backRight.getCurrentPosition());
+        om.Billy.backLeft.setTargetPosition(om.Billy.backLeft.getCurrentPosition());
+
+        om.Billy.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+    }
+
+    public void driveGeneralQuickStop(moveDirection moveType, double distanceInch, double powerLimit, String step, BasicAuto om) {
+        int countDistance = 0;
+        int[] driveDirection = new int[4];
+        int[] startPos = new int[4];
+        boolean motorsDone = false;
+
+        om.Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        om.Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        switch(moveType) {
+
+            case FwdBack :
+                countDistance = (int) Math.round(distanceInch * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = +1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = -1;// BL
+                break;
+
+            case RightLeft :
+                countDistance = (int) Math.round((distanceInch * om.cons.adjustedRight) * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = +1;// BR
+                driveDirection[3] = +1;// BL
+                break;
+
+            case Rotate :
+                countDistance = (int) Math.round((distanceInch * om.cons.adjustedRotate) * om.cons.ROBOT_DEG_TO_WHEEL_INCH * om.cons.ROBOT_INCH_TO_MOTOR_DEG * om.cons.DEGREES_TO_COUNTS);
+
+                driveDirection[0] = -1;// FL
+                driveDirection[1] = -1;// FR
+                driveDirection[2] = -1;// BR
+                driveDirection[3] = -1;// BL
+                break;
+            default:
+                countDistance = (int) 0;
+
+                driveDirection[0] = 0;// FL
+                driveDirection[1] = 0;// FR
+                driveDirection[2] = 0;// BR
+                driveDirection[3] = 0;// BL
+        }
+
+        startPos = motorStartPos(om);
+
+        for (int i=0; i<4; i++) {
+
+            targetPos[i] = startPos[i] + (driveDirection[i] * countDistance);
+        }
+
+        setMotorPower(powerLimit, om);
+
+        while(!motorsDone && om.opModeIsActive()) {
+
+            motorsDone = targetPosTolerence(om);
+
+            om.telemetry.addData("Driving: ", step);
+            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                    om.Billy.frontLeft.getTargetPosition(), om.Billy.frontRight.getTargetPosition(),
+                    om.Billy.backRight.getTargetPosition(),om.Billy.backLeft.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+                    om.Billy.frontLeft.getCurrentPosition(), om.Billy.frontRight.getCurrentPosition(),
+                    om.Billy.backRight.getCurrentPosition(), om.Billy.backLeft.getCurrentPosition());
+            om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
+            om.telemetry.update();
+
+            om.idle();
+        }
+        setMotorPower(0, om);
+
+        om.Billy.frontLeft.setTargetPosition(om.Billy.frontLeft.getCurrentPosition());
+        om.Billy.frontRight.setTargetPosition(om.Billy.frontRight.getCurrentPosition());
+        om.Billy.backRight.setTargetPosition(om.Billy.backRight.getCurrentPosition());
+        om.Billy.backLeft.setTargetPosition(om.Billy.backLeft.getCurrentPosition());
+
+        om.Billy.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        om.Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 
@@ -112,6 +334,15 @@ public class DriveMethods{
         om.Billy.frontRight.setPower(power);
         om.Billy.backRight.setPower(power);
         om.Billy.backLeft.setPower(power);
+
+    }
+
+    public void setMotorPowerArray(double[] power, BasicOpMode om) {
+
+        om.Billy.frontLeft.setPower(power[0]);
+        om.Billy.frontRight.setPower(power[1]);
+        om.Billy.backRight.setPower(power[2]);
+        om.Billy.backLeft.setPower(power[3]);
 
     }
 
@@ -146,34 +377,28 @@ public class DriveMethods{
         int countDistance = (int) ( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!!
 //        int startPosL;
 //        int startPosR;
-        int jackZoneL;
-        int jackZoneR;
+        int jackZoneC;
 
-//        startPosL = om.Billy.jackLeft.getCurrentPosition();
+//        startPosL = om.Billy.jack.getCurrentPosition();
 //        startPosR = om.Billy.jackRight.getCurrentPosition();
-        om.Billy.jackLeft.setPower(jackPowerLimit);
-        om.Billy.jackRight.setPower(jackPowerLimit);
-        om.Billy.jackLeft.setTargetPosition(countDistance);
-        om.Billy.jackRight.setTargetPosition(countDistance);
+        om.Billy.jack.setPower(jackPowerLimit);
+        om.Billy.jack.setTargetPosition(countDistance);
 
-        jackZoneL = Math.abs(countDistance - om.Billy.jackLeft.getCurrentPosition() );
-        jackZoneR = Math.abs(countDistance - om.Billy.jackRight.getCurrentPosition() );
+        jackZoneC = Math.abs(countDistance - om.Billy.jack.getCurrentPosition() );
 
-        while(( (jackZoneL > om.cons.pHM.get("moveTol").value) || (jackZoneR > om.cons.pHM.get("moveTol").value) ) && om.opModeIsActive()) {
+        while((jackZoneC > om.cons.pHM.get("moveTol").value) && om.opModeIsActive()) {
 
-            jackZoneL = Math.abs(countDistance - om.Billy.jackLeft.getCurrentPosition() );
-            jackZoneR = Math.abs(countDistance - om.Billy.jackRight.getCurrentPosition() );
+            jackZoneC = Math.abs(countDistance - om.Billy.jack.getCurrentPosition() );
 
             om.telemetry.addData("Jack: ", step);
-            om.telemetry.addData("Motor Commands: ", "Jack Left (%d), Jack Right (%d)", om.Billy.jackLeft.getTargetPosition(), om.Billy.jackRight.getCurrentPosition());
-            om.telemetry.addData("Motor Counts: ", "Jack Left (%d), Jack Right (%d)", om.Billy.jackLeft.getCurrentPosition(), om.Billy.jackRight.getCurrentPosition());
+            om.telemetry.addData("Motor Commands: ", "Jack Center (%d)", om.Billy.jack.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "Jack Center (%d)", om.Billy.jack.getCurrentPosition());
             om.telemetry.addData("Move Tolerance: ", om.cons.pHM.get("moveTol").value);
             om.telemetry.update();
 
             om.idle();
         }
-        om.Billy.jackLeft.setPower(0);
-        om.Billy.jackRight.setPower(0);
+        om.Billy.jack.setPower(0);
 
         om.telemetry.addLine("Jack Motion Done");
     }

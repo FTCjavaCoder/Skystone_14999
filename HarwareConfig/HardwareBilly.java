@@ -3,8 +3,6 @@ package Skystone_14999.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -23,8 +21,8 @@ public class HardwareBilly
     public DcMotor  frontRight  = null;
     public DcMotor  backLeft    = null;
     public DcMotor  backRight   = null;
-    public DcMotor  jackLeft    = null;
-    public DcMotor  jackRight   = null;
+    public DcMotor jack = null;
+//    public DcMotor  jackRight   = null;
     public DcMotor  slide       = null;
 
 //    public DcMotor  slideRotate = null;
@@ -40,7 +38,7 @@ public class HardwareBilly
 //    public DcMotor  mineralCollector = null;
       public Servo  stoneServoLeft    = null;
       public Servo  stoneServoRight   = null;
-      public Servo  servoCapstoneRelease   = null;
+//      public Servo  servoCapstoneRelease   = null;
 //    public ColorSensor    colorSensorTeam   = null;
 //    public TouchSensor    touchSensor1   = null;
 //    public TouchSensor    touchSensor2   = null;
@@ -63,8 +61,8 @@ public class HardwareBilly
         frontRight = hwMap.get(DcMotor.class, "motor_fr");
         backLeft  = hwMap.get(DcMotor.class, "motor_bl");
         backRight = hwMap.get(DcMotor.class, "motor_br");
-        jackLeft  = hwMap.get(DcMotor.class, "motor_jack_left");
-        jackRight = hwMap.get(DcMotor.class, "motor_jack_right");
+        jack = hwMap.get(DcMotor.class, "motor_jack");
+//        jackRight = hwMap.get(DcMotor.class, "motor_jack_right");
         slide = hwMap.get(DcMotor.class, "motor_slide");
 
         stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
@@ -85,7 +83,7 @@ public class HardwareBilly
 
         stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
         stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
-        servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
+//        servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
 
         //Define all installed sensors
 //        colorSensorSampling  = hwMap.get(ColorSensor.class, "color_sensor1");

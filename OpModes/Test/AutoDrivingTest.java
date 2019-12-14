@@ -48,66 +48,21 @@ public class AutoDrivingTest extends BasicAuto {
 
         sleep(100);
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 24,cons.pHM.get("drivePowerLimit").value, "Forward 24 inches", this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value,"Forward 60 Inches", this);
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -24,cons.pHM.get("drivePowerLimit").value, "Backward 24 inches", this);
+        pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 24,cons.pHM.get("drivePowerLimit").value, "Right 24 inches", this);
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value,"Right 36 Inches", this);
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, -24,cons.pHM.get("drivePowerLimit").value, "Left 24 inches", this);
+        pressAToContinue();
 
-        telemetry.addLine("Methods Done, Starting Power Only Motion");
-        telemetry.update();
-        sleep(1000);
+        drv.driveGeneralPower(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 60 Inches", this);
 
-        Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pressAToContinue();
 
-        Billy.frontLeft.setPower(-cons.pHM.get("drivePowerLimit").value);
-        Billy.frontRight.setPower(cons.pHM.get("drivePowerLimit").value);
-        Billy.backRight.setPower(cons.pHM.get("drivePowerLimit").value);
-        Billy.backLeft.setPower(-cons.pHM.get("drivePowerLimit").value);
+        drv.driveGeneralPower(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 36 Inches", this);
 
-        sleep(1500);
-
-        drv.setMotorPower(0, this);
-
-        sleep(500);
-
-        Billy.frontLeft.setPower(cons.pHM.get("drivePowerLimit").value);
-        Billy.frontRight.setPower(-cons.pHM.get("drivePowerLimit").value);
-        Billy.backRight.setPower(-cons.pHM.get("drivePowerLimit").value);
-        Billy.backLeft.setPower(cons.pHM.get("drivePowerLimit").value);
-
-        sleep(1500);
-
-        drv.setMotorPower(0, this);
-
-        sleep(500);
-
-        Billy.frontLeft.setPower(-cons.pHM.get("drivePowerLimit").value);
-        Billy.frontRight.setPower(-cons.pHM.get("drivePowerLimit").value);
-        Billy.backRight.setPower(cons.pHM.get("drivePowerLimit").value);
-        Billy.backLeft.setPower(cons.pHM.get("drivePowerLimit").value);
-
-        sleep(1500);
-
-        drv.setMotorPower(0, this);
-
-        sleep(500);
-
-        Billy.frontLeft.setPower(cons.pHM.get("drivePowerLimit").value);
-        Billy.frontRight.setPower(cons.pHM.get("drivePowerLimit").value);
-        Billy.backRight.setPower(-cons.pHM.get("drivePowerLimit").value);
-        Billy.backLeft.setPower(-cons.pHM.get("drivePowerLimit").value);
-
-        sleep(1500);
-
-        drv.setMotorPower(0, this);
-
-        sleep(500);
+        pressAToContinue();
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();

@@ -113,6 +113,8 @@ public class Constants {
 
         pHM.put("drivePowerLimit", new ParameterHM( 0.75, ParameterHM.instanceType.powerLimit));// was 1
 
+        pHM.put("drivePowerMinimum", new ParameterHM( 0.2, ParameterHM.instanceType.powerLimit));// NEW
+
         pHM.put("rotatePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));// was 0.5
 
         pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.55, ParameterHM.instanceType.powerLimit));

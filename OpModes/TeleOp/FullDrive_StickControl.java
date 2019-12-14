@@ -107,10 +107,10 @@ public class FullDrive_StickControl extends BasicTeleOp {
                 Billy.servoFoundationR.setPosition(0.20);
             }
 
-            if (gamepad1.right_bumper && gamepad1.b) {
-
-                Billy.servoCapstoneRelease.setPosition(0);
-            }
+//            if (gamepad1.right_bumper && gamepad1.b) {
+//
+//                Billy.servoCapstoneRelease.setPosition(0);
+//            }
 
             angleUnWrap();
 
@@ -126,13 +126,10 @@ public class FullDrive_StickControl extends BasicTeleOp {
             telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
                     Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(),
                     Billy.backRight.getPower());
-            telemetry.addData("Jack Pos", "L (%d), R (%d)", Billy.jackLeft.getCurrentPosition(), Billy.jackRight.getCurrentPosition());
-            telemetry.addData("Jack TargetPos", "L (%d), R (%d)", Billy.jackLeft.getTargetPosition(), Billy.jackRight.getTargetPosition());
+            telemetry.addData("Jack Pos", "Center (%d)", Billy.jack.getCurrentPosition());
+            telemetry.addData("Jack TargetPos", "Center (%d)", Billy.jack.getTargetPosition());
             telemetry.addData("Jack Power Cmd", "Vertical (%.2f)", verticalDirection);
-//            telemetry.addData("Jack Target Height", "Height (%.2f)", DeltaH);
-//            telemetry.addData("Jack Current Height", "Height (%.2f)", currentHeight);
-            telemetry.addData("Jack Motors", "Jack Left (%.2f), Jack Right (%.2f)",
-                    Billy.jackLeft.getPower(), Billy.jackRight.getPower());
+            telemetry.addData("Jack Motors", "Jack Center (%.2f)", Billy.jack.getPower());
 
             telemetry.update();
 

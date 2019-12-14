@@ -6,29 +6,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Skystone_14999.DriveMotion.DriveMethods;
 import Skystone_14999.OpModes.BasicOpMode;
-
-import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @Autonomous(name="BasicAuto", group="Autonomous")
 @Disabled
@@ -121,16 +108,14 @@ public class BasicAuto extends BasicOpMode {
         Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.jackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.jackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.jackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.jack.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.slide.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.jackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.jackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.jack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Reset all motor encoders
@@ -138,32 +123,28 @@ public class BasicAuto extends BasicOpMode {
         Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.jackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.jackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.jack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Billy.frontLeft.setTargetPosition(0);
         Billy.frontRight.setTargetPosition(0);
         Billy.backLeft.setTargetPosition(0);
         Billy.backRight.setTargetPosition(0);
-        Billy.jackLeft.setTargetPosition(0);
-        Billy.jackRight.setTargetPosition(0);
+        Billy.jack.setTargetPosition(0);
 
         //Set all motors to position mode (assumes that all motors have encoders on them)
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Billy.jackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Billy.jackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Billy.jack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Billy.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         Billy.frontLeft.setPower(0);
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-        Billy.jackLeft.setPower(0);
-        Billy.jackRight.setPower(0);
+        Billy.jack.setPower(0);
         Billy.slide.setPower(0);
 
         Billy.servoFoundationL.setPosition(0.80);
@@ -287,7 +268,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void nextStone() {
 
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,7.5, (cons.pHM.get("drivePowerLimit").value), "Right 7.5 inches",this);
+        drv.driveGeneral(DriveMethods.moveDirection.RightLeft,(7.5 * sideColor), (cons.pHM.get("drivePowerLimit").value), "Right 7.5 inches",this);
     }
 
     public void grabSkyStone() {
@@ -297,7 +278,7 @@ public class BasicAuto extends BasicOpMode {
         Billy.stoneServoLeft.setPosition(0.15);
         Billy.stoneServoRight.setPosition(0.15);
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (0 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 0 degrees CCW",this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (0 * sideColor) - robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 0 degrees CCW",this);
 
         drv.driveGeneral(DriveMethods.moveDirection.FwdBack, (8 + extraFwdToBlock), cons.pHM.get("drivePowerLimit").value, "Forward 8 inches",this);
 
@@ -426,7 +407,7 @@ public class BasicAuto extends BasicOpMode {
         //pressAToContinue();
 //        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-80 * sideColor), cons.pHM.get("drivePowerLimit").value, "Rotate 80 degrees CCW",this);
 
-        drv.driveRotateIMU(-134, cons.pHM.get("rotatePowerLimit").value, "Rotate to 134 degrees CCW using the IMU", this);// was -130 needed a lil bit more
+        drv.driveRotateIMU(-134 * sideColor, cons.pHM.get("rotatePowerLimit").value, "Rotate to 134 degrees CCW using the IMU", this);// was -130 needed a lil bit more
     }
 
     public void straightToCorner() {
@@ -471,7 +452,7 @@ public class BasicAuto extends BasicOpMode {
 
         //pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate, 50, cons.pHM.get("rotatePowerLimit").value, "Rotate 45 degrees CW", this);
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate, 50 * sideColor, cons.pHM.get("rotatePowerLimit").value, "Rotate 45 degrees CW", this);
     }
 
     public void parkSkyStoneF() {
@@ -533,9 +514,14 @@ public class BasicAuto extends BasicOpMode {
         angleUnWrap();// think about commenting
 
         telemetry.addData("robotHeading: (%.2f)", robotHeading);
-        //pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 - robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+//        if(sideColor == 1) {
+//
+//            drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-90 - robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+//
+//        }
+
+//        drv.driveGeneral(DriveMethods.moveDirection.Rotate,( (-90 * sideColor) - robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
 
         //pressAToContinue();
 
@@ -612,7 +598,7 @@ public class BasicAuto extends BasicOpMode {
 
 //        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -2, (cons.pHM.get("drivePowerLimit").value / 2), "Backward 2 inches with Foundation", this);
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-10 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 10 degrees CCW",this);//was 20
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(-20 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 20 degrees CCW",this);//15 was too close
 
         // release foundation from gripper
         Billy.servoFoundationL.setPosition(0.10);
@@ -661,9 +647,9 @@ public class BasicAuto extends BasicOpMode {
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (25 * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 25 inches", this);//was 21
 
-        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(10 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 10 degrees CW",this);//was 20
+        drv.driveGeneral(DriveMethods.moveDirection.Rotate,(20 * sideColor), cons.pHM.get("rotatePowerLimit").value, "Rotate 20 degrees CW",this);//15 was too close
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -18, cons.pHM.get("drivePowerLimit").value, "Backward 18 inches to wall", this);
+        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, -10, cons.pHM.get("drivePowerLimit").value, "Backward 14 inches to wall", this);//was 16
 
         drv.driveGeneral(DriveMethods.moveDirection.RightLeft, (20 * sideColor), cons.pHM.get("drivePowerLimit").value, "Right 20 inches", this);//was 24
 
