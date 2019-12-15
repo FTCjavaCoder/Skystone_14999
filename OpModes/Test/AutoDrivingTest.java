@@ -56,13 +56,13 @@ public class AutoDrivingTest extends BasicAuto {
 
         pressAToContinue();
 
-        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value,"Forward 60 Inches", this);
-
-        pressAToContinue();
-
-        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value,"Right 36 Inches", this);
-
-        pressAToContinue();
+//        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value,"Forward 60 Inches", this);
+//
+//        pressAToContinue();
+//
+//        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value,"Right 36 Inches", this);
+//
+//        pressAToContinue();
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();

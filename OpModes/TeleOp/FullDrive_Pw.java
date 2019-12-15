@@ -29,6 +29,7 @@
 
 package Skystone_14999.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -38,7 +39,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="FullDrive_Pw", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class FullDrive_Pw extends OpMode
 {
     // Declare OpMode members.
