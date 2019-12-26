@@ -1,7 +1,6 @@
 package Skystone_14999.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -9,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import Skystone_14999.DriveMotion.DriveMethods;
+import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Auto Driving Test", group="Test")
@@ -34,7 +33,7 @@ public class AutoDrivingTest extends BasicAuto {
 //        foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
 //        insideOutside = 0;// 0 for Inside, 24 for Outside
 
-        initialize();
+        initializeMiniBot();
 
         waitForStart();
 
@@ -42,30 +41,61 @@ public class AutoDrivingTest extends BasicAuto {
 
         Billy.angles = Billy.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
 
-        offset = Billy.angles.firstAngle; //Determine initial angle offset 
-        priorAngle = offset; //set prior angle for unwrap to be initial angle 
-        robotHeading = Billy.angles.firstAngle - offset; //robotHeading to be 0 degrees to start 
+        Billy.offset = Billy.angles.firstAngle; //Determine initial angle offset 
+        Billy.priorAngle = Billy.offset; //set prior angle for unwrap to be initial angle 
+        Billy.robotHeading = Billy.angles.firstAngle - Billy.offset; //robotHeading to be 0 degrees to start 
 
         sleep(100);
 
-        drv.driveGeneralPower(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 60, 0, "IMU Forward 60 Inches", this);
 
         pressAToContinue();
-
-        drv.driveGeneralPower(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 36 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -60, 0, "IMU Backward 60 Inches", this);
 
         pressAToContinue();
+        Billy.IMUDriveRotate(-90,"Rotate 90 deg CCW", this);
 
-//        drv.driveGeneral(DriveMethods.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value,"Forward 60 Inches", this);
+        pressAToContinue();
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 36, -90, "IMU Right 60 Inches", this);
+
+        pressAToContinue();
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -36, -90, "IMU Left 60 Inches", this);
+
+        pressAToContinue();
+        Billy.IMUDriveRotate(0,"Rotate 90 deg CW", this);
+
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, 60, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 60 Inches", this);
 //
 //        pressAToContinue();
 //
-//        drv.driveGeneral(DriveMethods.moveDirection.RightLeft, 36, cons.pHM.get("drivePowerLimit").value,"Right 36 Inches", this);
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, 90, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 90 CW", this);
 //
 //        pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, 60, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 60 Inches", this);
+//
+//        pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, 90, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 90 CW", this);
+//
+//        pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, -60, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backward 60 Inches", this);
+//
+//        pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, 90, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 90 CW", this);
+//
+//        pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, -60, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Left 60 Inches", this);
+//
+//        pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, 90, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 90 CW", this);
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();
-        sleep(2000);
+        sleep(1500);
     }
 }

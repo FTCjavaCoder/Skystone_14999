@@ -1,4 +1,4 @@
-package Skystone_14999.OpModes.Autonomous.SkyStone;
+package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -8,11 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import Skystone_14999.OpModes.Autonomous.BasicAuto;
+@Autonomous(name="Double SkyStone Drop Park Inside Blue", group="Autonomous")
 
-@Autonomous(name="SkyStone Inside Blue", group="Skystone")
-
-public class SkyStoneInsideBlue extends BasicAuto {
+public class DoubleSkyStoneDP_InB extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -31,8 +29,9 @@ public class SkyStoneInsideBlue extends BasicAuto {
 
         foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
         insideOutside = 0;// 0 for Inside, 24 for Outside
+        sideColor = 1;// + for Blue, - for Red, KEEP BLUE
 
-        initialize();
+        initializeMiniBot();
 
         waitForStart();
 
@@ -46,15 +45,21 @@ public class SkyStoneInsideBlue extends BasicAuto {
 
         sleep(100);
 
-        fwdToStone();
+        fwdToTwoStone();
 
-        findSkyStone();
+        vuforiaStoneLocate();
 
-        bridgeCrossSkyStone();
+        goToStone();
 
-        parkSkyStone();
+        takeStone1();
+
+        getStone2();
+
+        takeStone2();
+
+        twoStonePark();
 
         telemetry.addLine("OpMode Complete");
-        sleep(2000);
+        sleep(500);
     }
 }

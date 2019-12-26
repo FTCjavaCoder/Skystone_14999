@@ -7,14 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import Skystone_14999.DriveMotion.DriveMethods;
 import Skystone_14999.OpModes.BasicOpMode;
 
 @Autonomous(name="BasicTeleOp", group="TeleOp")
 @Disabled
 public class BasicTeleOp extends BasicOpMode {
-
-    public DriveMethods drv = new DriveMethods();
 
     // Define the static power levels and limits for motors
     public double servoStonePos;
@@ -43,8 +40,10 @@ public class BasicTeleOp extends BasicOpMode {
 
     public void initializeTeleOp() {
 
+        readOrWriteHashMap();
+
         // initialize configuration to Billy
-        Billy.init(hardwareMap);
+        Billy.init(hardwareMap, cons);
         // define variables for OpMode powers and positions
         // Initialize all powers and variables to zero
 
@@ -69,13 +68,13 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.jack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //Reset all motor encoders
+        // Reset all motor encoders
         Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.jack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
- //       Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -89,8 +88,6 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.servoFoundationL.setPosition(0.80);
         Billy.servoFoundationR.setPosition(0.20);
 
-        readOrWriteHashMap();
-
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
         telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);
@@ -100,74 +97,48 @@ public class BasicTeleOp extends BasicOpMode {
 
     }
 
-    public void drivePower() {
+    public void initializeTeleOpMiniBot() {
 
-        forwardDirection = (-gamepad1.left_stick_y * Math.pow(gamepad1.left_stick_y, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
-        rightDirection = (gamepad1.right_stick_x * Math.pow(gamepad1.right_stick_x, 2) ) * cons.pHM.get("teleOpDrivePowerLimit").value;
+        readOrWriteHashMap();
 
-        Billy.frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-        Billy.frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-        Billy.backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-        Billy.backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-    }
+        // initialize configuration to Billy
+        Billy.initMiniBot(hardwareMap, cons);
+        // define variables for OpMode powers and positions
+        // Initialize all powers and variables to zero
 
-    public void rotatePower() {
+        Billy.frontLeft.setPower(0);
+        Billy.frontRight.setPower(0);
+        Billy.backLeft.setPower(0);
+        Billy.backRight.setPower(0);
 
-        counterclockwiseDirection = (-gamepad1.left_trigger * Math.pow(gamepad1.left_trigger, 2) ) * cons.pHM.get("teleOpRotatePowerLimit").value;
-        clockwiseDirection = (gamepad1.right_trigger * Math.pow(gamepad1.right_trigger, 2) ) * cons.pHM.get("teleOpRotatePowerLimit").value;
 
-        clockwise = Range.clip(clockwiseDirection + counterclockwiseDirection, -cons.pHM.get("teleOpRotatePowerLimit").value, cons.pHM.get("teleOpRotatePowerLimit").value);
+        Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
-    }
+        Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-    public void drivePowerAllLeftStick() {
+        //Reset all motor encoders
+        Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        forwardDirection = (-gamepad1.left_stick_y) * cons.pHM.get("teleOpDrivePowerLimit").value;
-        rightDirection = (gamepad1.left_stick_x) * cons.pHM.get("teleOpDrivePowerLimit").value;
+        Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        Billy.frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-        Billy.frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-        Billy.backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-        Billy.backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -cons.pHM.get("teleOpDrivePowerLimit").value, cons.pHM.get("teleOpDrivePowerLimit").value));
-    }
-
-    public void rotatePowerRightStick() {
-
-        clockwise = (gamepad1.right_stick_x) * cons.pHM.get("teleOpRotatePowerLimit").value;
-
-        clockwise = Range.clip(clockwise, -cons.pHM.get("teleOpRotatePowerLimit").value, cons.pHM.get("teleOpRotatePowerLimit").value);
-
-    }
-
-    public void jackPower() {
-
-        verticalDirection = (-gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2) ) * cons.pHM.get("jackPowerLimit").value;
-
-        Billy.jack.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
-//        Billy.jackRight.setPower(Range.clip(verticalDirection, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
-
-    }
-
-    public void jackLeft() {
-
-        leftTrigger = (-gamepad2.left_trigger * Math.pow(gamepad2.left_trigger, 2) ) * cons.pHM.get("jackPowerLimit").value;
-        rightTrigger = (gamepad2.right_trigger * Math.pow(gamepad2.right_trigger, 2) ) * cons.pHM.get("jackPowerLimit").value;
-
-        Billy.jack.setPower(Range.clip(rightTrigger + leftTrigger, -cons.pHM.get("jackPowerLimit").value, cons.pHM.get("jackPowerLimit").value));
-    }
-
-    public void slidePower() {
-
-        slideDirection = (gamepad2.right_stick_y * Math.pow(gamepad2.right_stick_y, 2) ) * cons.pHM.get("slidePowerLimit").value;
-
-        Billy.slide.setPower(Range.clip(slideDirection, -cons.pHM.get("slidePowerLimit").value, cons.pHM.get("slidePowerLimit").value));
-
-    }
-
-    public void setServoPos(double servoPos) {
-
-        Billy.stoneServoLeft.setPosition(servoPos);
-        Billy.stoneServoRight.setPosition(servoPos);
+        //Indicate initialization complete and provide telemetry
+        telemetry.addData("Status: ", "Initialized");
+        telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);
+        telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());
+        telemetry.addData(">", "Press Play to start");
+        telemetry.update();
 
     }
 

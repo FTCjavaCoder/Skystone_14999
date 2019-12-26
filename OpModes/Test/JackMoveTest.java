@@ -1,15 +1,15 @@
 package Skystone_14999.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import Skystone_14999.DriveMotion.DriveMethods;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="JackMoveTest", group="Autonomous")
-
+@Disabled
 public class JackMoveTest extends BasicAuto {
 
     @Override
@@ -33,9 +33,9 @@ public class JackMoveTest extends BasicAuto {
 
         runtime.reset();
 
-        drv.moveJack(5, cons.pHM.get("jackPowerLimit").value,"Jack Up 5 Inches",this);
+        Billy.moveJack(5, cons.pHM.get("jackPowerLimit").value,"Jack Up 5 Inches",this);
 
-        drv.moveJack(2, cons.pHM.get("jackPowerLimit").value,"Jack Down to 2 Inches",this);
+        Billy.moveJack(2, cons.pHM.get("jackPowerLimit").value,"Jack Down to 2 Inches",this);
 
     }
 }

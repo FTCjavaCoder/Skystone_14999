@@ -41,9 +41,9 @@ public class SkyStoneOutsideUnmoved extends BasicAuto {
 
         Billy.angles = Billy.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
 
-        offset = Billy.angles.firstAngle; //Determine initial angle offset 
-        priorAngle = offset; //set prior angle for unwrap to be initial angle 
-        robotHeading = Billy.angles.firstAngle - offset; //robotHeading to be 0 degrees to start 
+        Billy.offset = Billy.angles.firstAngle; //Determine initial angle offset 
+        Billy.priorAngle = Billy.offset; //set prior angle for unwrap to be initial angle 
+        Billy.robotHeading = Billy.angles.firstAngle - Billy.offset; //robotHeading to be 0 degrees to start 
 
         sleep(100);
 

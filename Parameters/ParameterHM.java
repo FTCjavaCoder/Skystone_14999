@@ -19,7 +19,7 @@ public class ParameterHM {
                 value = inputValue;
                 min = -1;
                 max = 1;
-                increment = 0.05;
+                increment = 0.01;
                 paramType = type;
                 break;
 

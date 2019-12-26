@@ -26,9 +26,9 @@ public class FullDrive_StickControl extends BasicTeleOp {
 
         Billy.angles = Billy.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
 
-        offset = Billy.angles.firstAngle; //Determine initial angle offset 
-        priorAngle = offset; //set prior angle for unwrap to be initial angle 
-        robotHeading = Billy.angles.firstAngle - offset; //robotHeading to be 0 degrees to start 
+        Billy.offset = Billy.angles.firstAngle; //Determine initial angle offset 
+        Billy.priorAngle = Billy.offset; //set prior angle for unwrap to be initial angle 
+        Billy.robotHeading = Billy.angles.firstAngle - Billy.offset; //robotHeading to be 0 degrees to start 
 
         sleep(100);
 
@@ -36,23 +36,23 @@ public class FullDrive_StickControl extends BasicTeleOp {
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            drivePowerAllLeftStick();
+            Billy.drivePowerAllLeftStick(gamepad1, gamepad2);
 
             // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
-            rotatePowerRightStick();
+            Billy.rotatePowerRightStick(gamepad1, gamepad2);
 
             // use the left stick on gamepad2 to raise/lower the jack
-            jackPower();
+            Billy.jackPower(gamepad1, gamepad2);
 
             // use the right stick on gamepad2 to extend/retract the slide
-            slidePower();
+            Billy.slidePower(gamepad1, gamepad2);
 
             //
             if (gamepad2.right_bumper) {
 
                 servoStonePos = Billy.stoneServoRight.getPosition() + 0.05;
                 Range.clip(servoStonePos, 0.15, 1);
-                setServoPos(servoStonePos);
+                Billy.setServoPos(servoStonePos);
                 sleep(300);
             }
 
@@ -60,37 +60,22 @@ public class FullDrive_StickControl extends BasicTeleOp {
 
                 servoStonePos = Billy.stoneServoRight.getPosition() - 0.05;
                 Range.clip(servoStonePos, 0.15, 1);
-                setServoPos(servoStonePos);
+                Billy.setServoPos(servoStonePos);
                 sleep(300);
             }
-
-            // dpad up/down to grab the foundation
-
-
-//            // sets the position of the servos to 4"
-//            if (gamepad2.x) {
-//                servoStonePos = 0.94;
-//                setServoPos(servoStonePos);
-//                sleep(300);
-//            }
 
             // sets the position of the servos to 8"
             if (gamepad2.a) {
                 servoStonePos = 0.5;
-                setServoPos(servoStonePos);
+                Billy.setServoPos(servoStonePos);
                 sleep(300);
             }
 
             // sets the position of the servos to open
             if (gamepad2.b) {
                 servoStonePos = 0.15;
-                setServoPos(servoStonePos);
+                Billy.setServoPos(servoStonePos);
                 sleep(300);
-            }
-
-            if (gamepad2.dpad_up) {
-
-                jackLeft();
             }
 
             // SERVOS FOUNDATION
@@ -112,10 +97,10 @@ public class FullDrive_StickControl extends BasicTeleOp {
 //                Billy.servoCapstoneRelease.setPosition(0);
 //            }
 
-            angleUnWrap();
+            Billy.angleUnWrap();
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
-            telemetry.addData("Robot Heading", "( %.2f )", robotHeading);
+            telemetry.addData("Robot Heading", "( %.2f )", Billy.robotHeading);
             telemetry.addData("Slide Pos", "Slide (%d)", Billy.slide.getCurrentPosition());
             telemetry.addData("Slide TargetPos", "Slide (%d)", Billy.slide.getTargetPosition());
             telemetry.addData("Slide Power", "Slide (%.2f)", Billy.slide.getPower());
