@@ -48,17 +48,18 @@ public class HardwareBilly
 
     public enum moveDirection {FwdBack, RightLeft, Rotate}
 
-    double DRIVE_POWER_LIMIT = 0.75;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-    double ROTATE_POWER_LIMIT = 0.25;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-    double DRIVE_POWER_MINIMUM = 0.2;
-    double STEERING_POWER_LIMIT = 0.5;
-    double POWER_GAIN = 0.2;
-    double ROTATE_POWER_GAIN = 0.05;
-    double IMU_ROTATE_TOL = 2.0;
-    double IMU_DISTANCE_TOL = 1.0;
+    public double DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+    public double ROTATE_POWER_LIMIT = 1;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+    public double DRIVE_POWER_MINIMUM = 0.1;
+    public double STEERING_POWER_LIMIT = 0.5;
+    public double STEERING_POWER_GAIN = 0.1;
+    public double POWER_GAIN = 0.2;
+    public double ROTATE_POWER_GAIN = 0.02;
+    public double IMU_ROTATE_TOL = 1.0;
+    public double IMU_DISTANCE_TOL = 1.0;
     int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
-    double TELEOP_DRIVE_POWER_LIMIT = 0.55;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-    double TELEOP_ROTATE_POWER_LIMIT = 0.55;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    double TELEOP_DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
     double JACK_POWER_LIMIT = 0.75;
     double SLIDE_POWER_LIMIT = 0.6;
     double dropStoneForward = 35;
@@ -135,6 +136,7 @@ public class HardwareBilly
         ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
         DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
         STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
+        STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
         POWER_GAIN = cons.POWER_GAIN;
         ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
         IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
@@ -184,6 +186,7 @@ public class HardwareBilly
         ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
         DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
         STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
+        STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
         POWER_GAIN = cons.POWER_GAIN;
         ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
         IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
@@ -356,6 +359,7 @@ public class HardwareBilly
         boolean motorsDone = false;
         double[] error = new double[4];
         double[] setPower = new double[4];
+        double prePower[] = new double[4];
         double scaledDistance = 0 ;
 
         setMotorPower(0);
@@ -370,25 +374,28 @@ public class HardwareBilly
         driveDirection[2] = -1;// BR
         driveDirection[3] = -1;// BL
 
-        double prePower[] = new double[4];
 
         angleUnWrap();
 
         for(int i = 0; i < 4; i++){
 
-            prePower[i] = driveDirection[i] * Range.clip( Math.abs( (targetAngle - robotHeading) * ROTATE_POWER_GAIN), DRIVE_POWER_MINIMUM, ROTATE_POWER_LIMIT);
+            prePower[i] = driveDirection[i] * (targetAngle - robotHeading) * ROTATE_POWER_GAIN;
+
+            setPower[i] = Math.signum(prePower[i]) * Range.clip( Math.abs(prePower[i]), DRIVE_POWER_MINIMUM, ROTATE_POWER_LIMIT);
 
         }
 
         setMotorPowerArray(prePower);
 
-        while( (Math.abs(scaledDistance - distanceTraveled) > IMU_DISTANCE_TOL) && om.opModeIsActive()) {
+        while( (Math.abs(targetAngle - robotHeading) > IMU_ROTATE_TOL) && om.opModeIsActive()) {
 
             angleUnWrap();
 
             for(int i = 0; i < 4; i++){
 
-                prePower[i] = driveDirection[i] * Range.clip( Math.abs( (targetAngle - robotHeading) * ROTATE_POWER_GAIN), DRIVE_POWER_MINIMUM, ROTATE_POWER_LIMIT);
+                prePower[i] = driveDirection[i] * (targetAngle - robotHeading) * ROTATE_POWER_GAIN;
+
+                setPower[i] = Math.signum(prePower[i]) * Range.clip( Math.abs(prePower[i]) , DRIVE_POWER_MINIMUM, ROTATE_POWER_LIMIT);
 
             }
 
@@ -417,7 +424,7 @@ public class HardwareBilly
     public double calcSteeringPowerIMU(double angleWanted) {
 
         angleUnWrap();
-        double steerPower = (angleWanted - robotHeading) * ROTATE_POWER_GAIN;
+        double steerPower = (angleWanted - robotHeading) * STEERING_POWER_GAIN;
 
         double clippedSteering = -1.0 * (Range.clip(steerPower, -STEERING_POWER_LIMIT, STEERING_POWER_LIMIT) );
 

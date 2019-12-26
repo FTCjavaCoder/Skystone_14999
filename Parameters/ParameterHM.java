@@ -47,7 +47,7 @@ public class ParameterHM {
             case rotationDegrees :
                 value = inputValue;
                 hasRange = false;
-                increment = 5;
+                increment = .25;
                 paramType = type;
                 break;
 

@@ -22,19 +22,20 @@ public class Constants {
 //    public HashMap<String, OptionAutonomous> aOHM = new HashMap();
 
     // Define the static power levels, power/speed limits, and initial positions for motors and servos
-    public double DRIVE_POWER_LIMIT = 0.75;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-    public double ROTATE_POWER_LIMIT = 0.25;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-    public double DRIVE_POWER_MINIMUM = 0.2;
+    public double DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+    public double ROTATE_POWER_LIMIT = 1;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+    public double DRIVE_POWER_MINIMUM = 0.1;
     public double STEERING_POWER_LIMIT = 0.5;
+    public double STEERING_POWER_GAIN = 0.1;
     public double POWER_GAIN = 0.2;
-    public double ROTATE_POWER_GAIN = 0.05;
-    public double IMU_ROTATE_TOL = 2.0;
+    public double ROTATE_POWER_GAIN = 0.02;
+    public double IMU_ROTATE_TOL = 1.0;
     public double IMU_DISTANCE_TOL = 1.0;
 
     public int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
 
-    public double TELEOP_DRIVE_POWER_LIMIT = 0.55;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-    public double TELEOP_ROTATE_POWER_LIMIT = 0.55;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    public double TELEOP_DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    public double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
 
     public double JACK_POWER_LIMIT = 0.75;
     public double SLIDE_POWER_LIMIT = 0.6;// was 0.6
@@ -80,23 +81,25 @@ public class Constants {
 
         pHM.put("drivePowerLimit", new ParameterHM( 1.0, ParameterHM.instanceType.powerLimit));// was 0.75
 
-        pHM.put("drivePowerMinimum", new ParameterHM( 0.2, ParameterHM.instanceType.powerLimit));//was 0.2
+        pHM.put("drivePowerMinimum", new ParameterHM( 0.1, ParameterHM.instanceType.powerLimit));//was 0.2
 
-        pHM.put("rotatePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));// was 0.5
+        pHM.put("rotatePowerLimit", new ParameterHM(1, ParameterHM.instanceType.powerLimit));// was 0.75
 
         pHM.put("powerGain", new ParameterHM(0.2, ParameterHM.instanceType.powerLimit));// new
 
-        pHM.put("rotatePowerGain", new ParameterHM(0.05, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("rotatePowerGain", new ParameterHM(0.02, ParameterHM.instanceType.powerLimit));// was 0.05
 
-        pHM.put("IMURotateTol", new ParameterHM(2.0, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("IMURotateTol", new ParameterHM(1.0, ParameterHM.instanceType.rotationDegrees));// was 2.0
 
-        pHM.put("IMUDistanceTol", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("IMUDistanceTol", new ParameterHM(1.0, ParameterHM.instanceType.distanceInches));// new
+
+        pHM.put("steeringPowerGain", new ParameterHM(0.1, ParameterHM.instanceType.powerLimit));// new
 
         pHM.put("steeringPowerLimit", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// new
 
-        pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.55, ParameterHM.instanceType.powerLimit));
+        pHM.put("teleOpDrivePowerLimit", new ParameterHM(1, ParameterHM.instanceType.powerLimit));// was 0.55
 
-        pHM.put("teleOpRotatePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));
+        pHM.put("teleOpRotatePowerLimit", new ParameterHM(1, ParameterHM.instanceType.powerLimit));// was 0.40
 
         pHM.put("jackPowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
 
@@ -139,6 +142,9 @@ public class Constants {
             }
             if(s.equals("steeringPowerLimit")) {
                 STEERING_POWER_LIMIT = pHM.get(s).value;
+            }
+            if(s.equals("steeringPowerGain")) {
+                STEERING_POWER_GAIN = pHM.get(s).value;
             }
             if(s.equals("teleOpDrivePowerLimit")) {
                 TELEOP_DRIVE_POWER_LIMIT = pHM.get(s).value;

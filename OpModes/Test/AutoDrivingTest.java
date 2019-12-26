@@ -56,10 +56,10 @@ public class AutoDrivingTest extends BasicAuto {
         Billy.IMUDriveRotate(-90,"Rotate 90 deg CCW", this);
 
         pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 36, -90, "IMU Right 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 60, -90, "IMU Right 60 Inches", this);
 
         pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -36, -90, "IMU Left 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -60, -90, "IMU Left 60 Inches", this);
 
         pressAToContinue();
         Billy.IMUDriveRotate(0,"Rotate 90 deg CW", this);
