@@ -24,13 +24,7 @@ public class MiniDrive_StickControl extends BasicTeleOp {
         waitForStart();
         runtime.reset();
 
-        Billy.angles = Billy.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
-
-        Billy.offset = Billy.angles.firstAngle; //Determine initial angle offset 
-        Billy.priorAngle = Billy.offset; //set prior angle for unwrap to be initial angle 
-        Billy.robotHeading = Billy.angles.firstAngle - Billy.offset; //robotHeading to be 0 degrees to start 
-
-        sleep(100);
+        Billy.initIMU(this);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

@@ -1,7 +1,6 @@
-package Skystone_14999.OpModes.Autonomous.SkyStone;
+package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -9,11 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import Skystone_14999.OpModes.Autonomous.BasicAuto;
+@Autonomous(name="Double SkyStone Drop Park Inside Red", group="Autonomous")
 
-@Autonomous(name="SkyStone and Foundation Inside", group="Autonomous")
-@Disabled
-public class SkyStoneFoundationInside extends BasicAuto {
+public class DoubleSkyStoneDP_InR extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -30,10 +27,11 @@ public class SkyStoneFoundationInside extends BasicAuto {
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
-        foundationPosChange = 18;// 0 for moved, 18 for unmoved Foundation. (WAS 26 THEN 22)
-        insideOutside = 0;// 0 for Inside, 20 for Outside (WAS 24)
+        foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
+        insideOutside = 0;// 0 for Inside, 24 for Outside
+        sideColor = -1;// + for Blue, - for Red, KEEP RED
 
-        initialize();
+        initializeMiniBot();
 
         waitForStart();
 
@@ -41,21 +39,21 @@ public class SkyStoneFoundationInside extends BasicAuto {
 
         Billy.initIMU(this);
 
-        fwdToStone();
+        fwdToTwoStone();
 
-        findSkyStone();
+        vuforiaStoneLocate();
 
-        bridgeCrossSkyStoneF();
+        goToStone();
 
-        grabAndRotateFoundation();
+        takeStone1();
 
-        straightToCorner();
+        getStone2();
 
-        backSkyStoneAndFoundation();
+        takeStone2();
 
-        parkSkyStoneF();
+        twoStonePark();
 
         telemetry.addLine("OpMode Complete");
-        sleep(1000);
+        sleep(500);
     }
 }

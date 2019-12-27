@@ -201,6 +201,17 @@ public class HardwareBilly
         foundationExtraSideways = cons.foundationExtraSideways;
     }
 
+    public void initIMU(BasicOpMode om) {
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
+
+        offset = angles.firstAngle; //Determine initial angle offset 
+        priorAngle = offset; //set prior angle for unwrap to be initial angle 
+        robotHeading = angles.firstAngle - offset; //robotHeading to be 0 degrees to start 
+
+        om.sleep(100);
+    }
+
     public void angleUnWrap() {
 
         double deltaAngle;
