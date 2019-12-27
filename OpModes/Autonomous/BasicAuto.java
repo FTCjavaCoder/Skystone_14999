@@ -339,18 +339,21 @@ public class BasicAuto extends BasicOpMode {
                             stonePos = "Right";
                             stoneSelect = 2;
                         }
+                        telemetry.addData("translation of stone", translation.get(1));
+                        telemetry.update();
                     }
                 }
-                else /*NOT Visible*/ {
-                    telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
-                    stonePos = "Left";
-                    stoneSelect = 0;
-                }
-                telemetry.addData("translation of stone", translation.get(1));
-                telemetry.update();
+
             }
 
         }
+        if(stonePos.equals("Unknown") || stoneSelect == -1) /*NOT Visible*/ {
+            telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
+            stonePos = "Left";
+            stoneSelect = 0;
+            telemetry.update();
+        }
+
         telemetry.addData("SkystonePos", stonePos);
         telemetry.addData("Skystone Select", stoneSelect);
 //        pressAToContinue();
