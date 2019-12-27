@@ -820,11 +820,15 @@ public class BasicAuto extends BasicOpMode {
 
     public void getStone2() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,  ( -52 - stoneSideways - 24 ) * sideColor, -180 * sideColor, "Left 45+ inches",this);
-                                                                                // was 48
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,( -44 - stoneSideways - 24 ) * sideColor, -180 * sideColor, "Left 45+ inches",this);
+                                                                                // was 52
 //        pressAToContinue();
 
         Billy.IMUDriveRotate( -90 * sideColor, "Rotate 90 degrees CW",this);
+
+//        pressAToContinue();
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-8 * sideColor, -90 * sideColor, "Left 8 inches",this);
 
 //        pressAToContinue();
 
@@ -850,6 +854,10 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,8 * sideColor, -90 * sideColor, "Right 8",this);
+
+//        pressAToContinue();
+
         Billy.IMUDriveRotate( -180 * sideColor, "Rotate 90 degrees CCW",this);
 
 //        pressAToContinue();
@@ -859,8 +867,8 @@ public class BasicAuto extends BasicOpMode {
 //
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (52 + stoneSideways + 24) * sideColor, -180 * sideColor, "Right with stone 2",this);
-                                                                            // was 48
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (44 + stoneSideways + 24) * sideColor, -180 * sideColor, "Right with stone 2",this);
+                                                                            // was 52
 //        pressAToContinue();
         //release skystone with servo arm
         Billy.stoneServoArm.setPosition(stoneArmUp);
