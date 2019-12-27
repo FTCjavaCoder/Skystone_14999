@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -55,6 +56,15 @@ public class BasicAuto extends BasicOpMode {
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
+    public boolean haveBlueFoundation = false;
+    public boolean haveRedFoundation = false;
+    public boolean haveBlueSkystone1 = false;
+    public boolean haveBlueSkystone2 = false;
+    public boolean haveRedSkystone1 = false;
+    public boolean haveRedSkystone2 = false;
+
+//    public Telemetry telemetry = new Telemetry();
+
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -75,9 +85,16 @@ public class BasicAuto extends BasicOpMode {
 
     public void initialize() {
 
-        readOrWriteHashMap();
+        if (testModeActive) {
 
-        Billy.init(hardwareMap, cons);
+            readOrWriteHashMapOffline();
+        }
+        else{
+
+            readOrWriteHashMap();
+        }
+
+        Billy.init(hardwareMap, testModeActive,cons);
 
         //Motor configuration, recommend Not Changing - Set all motors to forward direction, positive = clockwise when viewed from shaft side
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -166,9 +183,16 @@ public class BasicAuto extends BasicOpMode {
 
     public void initializeMiniBot() {
 
-        readOrWriteHashMap();
+        if (testModeActive) {
 
-        Billy.initMiniBot(hardwareMap, cons);
+            readOrWriteHashMapOffline();
+        }
+        else{
+
+            readOrWriteHashMap();
+        }
+
+        Billy.initMiniBot(hardwareMap, testModeActive, cons);
 
         //Motor configuration, recommend Not Changing - Set all motors to forward direction, positive = clockwise when viewed from shaft side
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -242,6 +266,8 @@ public class BasicAuto extends BasicOpMode {
         telemetry.update();//Update telemetry to update display
 
     }
+
+    public void updateIMU() {}
 
     public void vuforiaStoneIdentifyLoop() {
 
@@ -395,17 +421,46 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public void fwdToStone() {
+    public void vuforiaStoneLocateOffline(int stoneSelect) {
 
-//        Billy.slide.setPower(-cons.pHM.get("slidePowerLimit").value);
-//        sleep(400);// 0.400 of a second
-//        Billy.slide.setPower(0);
-//
-//        Billy.stoneServoLeft.setPosition(blockCamera);
-//        Billy.stoneServoRight.setPosition(blockCamera);
+        if(sideColor == 1) {
+            if(stoneSelect == 0) {
 
-        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,22, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 22 inches",this);
+                stoneSideways = -14;// was -12
+                stonePos = "Left";
+            }
+            if(stoneSelect == 1) {
+
+                stoneSideways = -6;// was -4
+                stonePos = "Center";
+            }
+            if(stoneSelect == 2) {
+
+                stoneSideways = 5;// was 8
+                stonePos = "Right";
+            }
+        }
+
+        if(sideColor == -1) {
+            if(stoneSelect == 0) {
+
+                stoneSideways = -14;// was -12
+                stonePos = "Right";
+            }
+            if(stoneSelect == 1) {
+
+                stoneSideways = -6;// was -4
+                stonePos = "Center";
+            }
+            if(stoneSelect == 2) {
+
+                stoneSideways = 5;// was 8
+                stonePos = "Left";
+            }
+        }
+        telemetry.addData("SkystonePos:", stonePos);
+        telemetry.addData("sideways to Skystone:", stoneSideways);
+//        pressAToContinue();
 
     }
 
@@ -426,339 +481,355 @@ public class BasicAuto extends BasicOpMode {
 
     public void nextStone() {
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft,(7.5 * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 7.5 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (7.5 * sideColor), 0, "Right 7.5 inches",this);
     }
 
-    public void grabSkyStone() {
-
-        Billy.angleUnWrap();
-
-//        Billy.stoneServoLeft.setPosition(0.15);
-//        Billy.stoneServoRight.setPosition(0.15);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (0 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate to 0 degrees CCW",this);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, (8 + extraFwdToBlock), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 8 inches",this);
-
-        //grab skystone with gripper
-//        Billy.stoneServoLeft.setPosition(0.5);
-//        Billy.stoneServoRight.setPosition(0.5);
-
-        sleep(250);
-
-    }
-
-    public void moveAcrossBridge() {
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CCW",this);
-
-        Billy.angleUnWrap();// think about commenting
-
-        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - Billy.robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate to 90 degrees CCW",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,45.5 + extraFwd + cons.pHM.get("foundationExtraFwd").value, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 45.5+ inches",this);//was 48
-
-    }
-
-    public void placeStoneOnFoundation() {
-
-        //pressAToContinue();
-        //move jack to be above Foundation WAS 5
-//        DeltaH = 5;
+//      Old Skystone Code from TT
+//    public void fwdToStone() {
+//
+////        Billy.slide.setPower(-cons.pHM.get("slidePowerLimit").value);
+////        sleep(400);// 0.400 of a second
+////        Billy.slide.setPower(0);
+////
+////        Billy.stoneServoLeft.setPosition(blockCamera);
+////        Billy.stoneServoRight.setPosition(blockCamera);
+//
+//        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,22, 0, "Forward 22 inches",this);
+//
+//    }
+//
+//
+//    public void grabSkyStone() {
+//
+//        Billy.angleUnWrap();
+//
+////        Billy.stoneServoLeft.setPosition(0.15);
+////        Billy.stoneServoRight.setPosition(0.15);
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (0 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate to 0 degrees CCW",this);
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (8 + extraFwdToBlock),  "Forward 8 inches",this);
+//
+//        //grab skystone with gripper
+////        Billy.stoneServoLeft.setPosition(0.5);
+////        Billy.stoneServoRight.setPosition(0.5);
+//
+//        sleep(250);
+//
+//    }
+//
+//    public void moveAcrossBridge() {
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CCW",this);
+//
+//        Billy.angleUnWrap();// think about commenting
+//
+//        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
+//        //pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - Billy.robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate to 90 degrees CCW",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,45.5 + extraFwd + cons.pHM.get("foundationExtraFwd").value,  "Forward 45.5+ inches",this);//was 48
+//
+//    }
+//
+//    public void placeStoneOnFoundation() {
+//
+//        //pressAToContinue();
+//        //move jack to be above Foundation WAS 5
+////        DeltaH = 5;
+////        Billy.moveJack(3, cons.pHM.get("jackPowerLimit").value,"Jack Up 3 Inches",this);
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,4, "Forward 6 inches",this);//was 8 in grab skystone??
+//
+//        //pressAToContinue();
+////        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,(8 - (foundationPosChange/13)),  "Forward 8 inches",this);
+//        //move slide OUT more
+////        Billy.slide.setPower(-cons.pHM.get("slidePowerLimit").value);
+////        sleep(400);// 0.400 of a second
+////        Billy.slide.setPower(0);
+////
+////        //pressAToContinue();
+////        //Place stone with gripper
+////        Billy.stoneServoLeft.setPosition(0.15);
+////        Billy.stoneServoRight.setPosition(0.15);
+////        sleep(250);
+////
+////        Billy.stoneServoLeft.setPosition(0.9);
+////        Billy.stoneServoRight.setPosition(0.9);
+////        sleep(200);
+////
+////        //pressAToContinue();
+////        //move slide IN
+////        Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
+////        sleep(400);// 0.400 of a second
+////        Billy.slide.setPower(0);
+//
+//        //pressAToContinue();
+//
+//    }
+//
+//    public void bridgeCrossSkyStone() {
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,(-4 - insideOutside),  "Back 4-24 inches",this);
+//        // make shorter for OUTSIDE
+//
+//        moveAcrossBridge();
+//
+//        //pressAToContinue();
 //        Billy.moveJack(3, cons.pHM.get("jackPowerLimit").value,"Jack Up 3 Inches",this);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,4, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Forward 6 inches",this);//was 8 in grab skystone??
-
-        //pressAToContinue();
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 8 inches",this);
-        //move slide OUT more
-//        Billy.slide.setPower(-cons.pHM.get("slidePowerLimit").value);
-//        sleep(400);// 0.400 of a second
-//        Billy.slide.setPower(0);
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,((insideOutside + foundationPosChange) * sideColor),  "Sideways 0-50ish inches",this);
+//
+//        Billy.angleUnWrap();
+//
+//        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
+//        //pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - (Billy.robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to -90 degrees CCW",this);
+//
+//        placeStoneOnFoundation();
+//    }
+//
+//    public void bridgeCrossSkyStoneF() {
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,(-4 - insideOutside),  "Back 4-24 inches",this);
+//        // make shorter for OUTSIDE
+//
+//        moveAcrossBridge();
+//
+//        //pressAToContinue();
+//        Billy.moveJack(5, cons.pHM.get("jackPowerLimit").value,"Jack Up 5 Inches",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,((insideOutside + foundationPosChange) * sideColor),  "Sideways 0-50ish inches",this);
+//
+//    }
+//
+//    public void grabAndRotateFoundation() {
+//
+//        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
+//        //pressAToContinue();
+//
+////        Billy.servoFoundationL.setPosition(0.10);
+////        Billy.servoFoundationR.setPosition(0.90);
+//
+//        //pressAToContinue();
+////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - Billy.robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to 90 degrees CCW",this);
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, (-5 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate -5 degrees CCW",this);
+//
+//        //pressAToContinue();
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,6,  "Forward 6 inches",this);// was 4
+//
+//        //pressAToContinue();
+//        // grab foundation with servos
+////        Billy.servoFoundationL.setPosition(0.80);
+////        Billy.servoFoundationR.setPosition(0.20);
+//
+//        sleep(250);
+//
+//        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
+//        //pressAToContinue();
+////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-80 * sideColor),  "Rotate 80 degrees CCW",this);
+//
+//        Billy.driveRotateIMU(-134 * sideColor, cons.pHM.get("rotatePowerLimit").value, "Rotate to 134 degrees CCW using the IMU", this);// was -130 needed a lil bit more
+//    }
+//
+//    public void straightToCorner() {
+//
+//        //pressAToContinue();
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,20,  "Forward 20 inches",this);
+//
+//        //pressAToContinue();
+//        Billy.moveJack(3, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
+//
+//        //move slide OUT more
+////        Billy.slide.setPower(-cons.pHM.get("slidePowerLimit").value);
+////        sleep(600);// 0.600 of a second
+////        Billy.slide.setPower(0);
 //
 //        //pressAToContinue();
 //        //Place stone with gripper
-//        Billy.stoneServoLeft.setPosition(0.15);
-//        Billy.stoneServoRight.setPosition(0.15);
-//        sleep(250);
+////        Billy.stoneServoLeft.setPosition(0.15);
+////        Billy.stoneServoRight.setPosition(0.15);
+////
+////        sleep(200);
+////        // Release foundation with servos
+////        Billy.servoFoundationL.setPosition(0.10);
+////        Billy.servoFoundationR.setPosition(0.90);
+//    }
 //
-//        Billy.stoneServoLeft.setPosition(0.9);
-//        Billy.stoneServoRight.setPosition(0.9);
-//        sleep(200);
-//
-//        //pressAToContinue();
-//        //move slide IN
-//        Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
-//        sleep(400);// 0.400 of a second
-//        Billy.slide.setPower(0);
-
-        //pressAToContinue();
-
-    }
-
-    public void bridgeCrossSkyStone() {
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 4-24 inches",this);
-        // make shorter for OUTSIDE
-
-        moveAcrossBridge();
-
-        //pressAToContinue();
-        Billy.moveJack(3, cons.pHM.get("jackPowerLimit").value,"Jack Up 3 Inches",this);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft,((insideOutside + foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Sideways 0-50ish inches",this);
-
-        Billy.angleUnWrap();
-
-        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - (Billy.robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to -90 degrees CCW",this);
-
-        placeStoneOnFoundation();
-    }
-
-    public void bridgeCrossSkyStoneF() {
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,(-4 - insideOutside), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 4-24 inches",this);
-        // make shorter for OUTSIDE
-
-        moveAcrossBridge();
-
-        //pressAToContinue();
-        Billy.moveJack(5, cons.pHM.get("jackPowerLimit").value,"Jack Up 5 Inches",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft,((insideOutside + foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Sideways 0-50ish inches",this);
-
-    }
-
-    public void grabAndRotateFoundation() {
-
-        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-        //pressAToContinue();
-
-//        Billy.servoFoundationL.setPosition(0.10);
-//        Billy.servoFoundationR.setPosition(0.90);
-
-        //pressAToContinue();
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - Billy.robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to 90 degrees CCW",this);
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, (-5 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate -5 degrees CCW",this);
-
-        //pressAToContinue();
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,6, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 6 inches",this);// was 4
-
-        //pressAToContinue();
-        // grab foundation with servos
-//        Billy.servoFoundationL.setPosition(0.80);
-//        Billy.servoFoundationR.setPosition(0.20);
-
-        sleep(250);
-
-        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-        //pressAToContinue();
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-80 * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 80 degrees CCW",this);
-
-        Billy.driveRotateIMU(-134 * sideColor, cons.pHM.get("rotatePowerLimit").value, "Rotate to 134 degrees CCW using the IMU", this);// was -130 needed a lil bit more
-    }
-
-    public void straightToCorner() {
-
-        //pressAToContinue();
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,20, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 20 inches",this);
-
-        //pressAToContinue();
-        Billy.moveJack(3, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
-
-        //move slide OUT more
-//        Billy.slide.setPower(-cons.pHM.get("slidePowerLimit").value);
-//        sleep(600);// 0.600 of a second
-//        Billy.slide.setPower(0);
-
-        //pressAToContinue();
-        //Place stone with gripper
-//        Billy.stoneServoLeft.setPosition(0.15);
-//        Billy.stoneServoRight.setPosition(0.15);
-//
-//        sleep(200);
-//        // Release foundation with servos
-//        Billy.servoFoundationL.setPosition(0.10);
-//        Billy.servoFoundationR.setPosition(0.90);
-    }
-
-    public void backSkyStoneAndFoundation() {
-
-        //pressAToContinue();
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-15, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backwards 15 inches",this);//was -20
-
-        //Stow gripper
-//        Billy.stoneServoLeft.setPosition(1);
-//        Billy.stoneServoRight.setPosition(1);
-//        sleep(200);
+//    public void backSkyStoneAndFoundation() {
 //
 //        //pressAToContinue();
-//        //move slide IN
-//        Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
-//        sleep(600);// 0.600 of a second
-//        Billy.slide.setPower(0);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, 50 * sideColor, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 45 degrees CW", this);
-    }
-
-    public void parkSkyStoneF() {
-
-        //pressAToContinue();
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft,((-insideOutside - foundationPosChange) * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Sideways 0-50ish inches",this);
-
-        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-        //pressAToContinue();
-
-
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - (Billy.robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to -90 degrees CCW",this);
-
-        //pressAToContinue();
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-13, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backward 13 inches",this);
-
-        //pressAToContinue();
-        // move jack down
-        Billy.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-11, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backward 11 inches",this);
-
-    }
-
-    public void parkSkyStone() {
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-(8 - (foundationPosChange/13)), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backward  inches",this);
-
-        //pressAToContinue();
-
-        Billy.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft,((-(-4 + insideOutside + foundationPosChange)) * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 16 inches",this);
-
-        Billy.angleUnWrap();
-
-        //pressAToContinue();
-
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - (Billy.robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to -90 degrees CCW",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-20, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Back 20 inches",this);
-
-    }
-
-    public void crossDropStonePark() {
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-4, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 4 inches",this);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 90 degrees CCW",this);
-
-        Billy.angleUnWrap();// think about commenting
-
-        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-
-//        if(sideColor == 1) {
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-15,  "Backwards 15 inches",this);//was -20
 //
-//            Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+//        //Stow gripper
+////        Billy.stoneServoLeft.setPosition(1);
+////        Billy.stoneServoRight.setPosition(1);
+////        sleep(200);
+////
+////        //pressAToContinue();
+////        //move slide IN
+////        Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
+////        sleep(600);// 0.600 of a second
+////        Billy.slide.setPower(0);
 //
-//        }
-
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,cons.pHM.get("dropStoneForward").value + extraFwd, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 35+ inches",this);//was 48
-
-        //Drop stone with gripper
-//        Billy.stoneServoLeft.setPosition(0.15);
-//        Billy.stoneServoRight.setPosition(0.15);
-        sleep(250);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-6, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 6 inches",this);//was 4
-
-    }
-
-    public void crossDropStoneFor2Old() {
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-4, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 4 inches",this);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CCW",this);
-
-        Billy.angleUnWrap();// think about commenting
-
+//        //pressAToContinue();
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, 50 * sideColor, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 45 degrees CW", this);
+//    }
+//
+//    public void parkSkyStoneF() {
+//
+//        //pressAToContinue();
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,((-insideOutside - foundationPosChange) * sideColor),  "Sideways 0-50ish inches",this);
+//
 //        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-
-//        if(sideColor == 1) {
+//        //pressAToContinue();
 //
-//            Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
 //
-//        }
-
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, cons.pHM.get("dropStoneForward").value + 35 + extraFwd, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 35+ inches",this);//was 48
-
-        //Drop stone with gripper
-//        Billy.stoneServoLeft.setPosition(0.15);
-//        Billy.stoneServoRight.setPosition(0.15);
-        sleep(250);
-
-    }
-
-    public void getSecondStoneOld() {
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-cons.pHM.get("dropStoneForward").value -35 - extraFwd - 24, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Backward to second stone",this);//was 48
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CW",this);
-
-        grabSkyStone();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-4, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 4 inches",this);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CCW",this);
-
+////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - (Billy.robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to -90 degrees CCW",this);
+//
+//        //pressAToContinue();
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-13,  "Backward 13 inches",this);
+//
+//        //pressAToContinue();
+//        // move jack down
+//        Billy.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-11,  "Backward 11 inches",this);
+//
+//    }
+//
+//    public void parkSkyStone() {
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-(8 - (foundationPosChange/13)),  "Backward  inches",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.moveJack(1, cons.pHM.get("jackPowerLimit").value,"Jack Down 2 Inches",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,((-(-4 + insideOutside + foundationPosChange)) * sideColor),  "Right 16 inches",this);
+//
+//        Billy.angleUnWrap();
+//
+//        //pressAToContinue();
+//
+////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - (Billy.robotHeading)) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to -90 degrees CCW",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-20, "Back 20 inches",this);
+//
+//    }
+//
+//    public void crossDropStonePark() {
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-4, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 4 inches",this);
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 90 degrees CCW",this);
+//
 //        Billy.angleUnWrap();// think about commenting
 //
 //        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
 //
-//        if(sideColor == 1) {
+////        if(sideColor == 1) {
+////
+////            Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+////
+////        }
 //
-//            Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
 //
-//        }
+//        //pressAToContinue();
 //
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
-
-        //pressAToContinue();
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,cons.pHM.get("dropStoneForward").value + 35 + extraFwd + 24, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward with second stone",this);//was 48
-
-        //Drop stone with gripper
-//        Billy.stoneServoLeft.setPosition(0.15);
-//        Billy.stoneServoRight.setPosition(0.15);
-        sleep(250);
-
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack,-6, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 6 inches",this);//was 4
-
-    }
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,cons.pHM.get("dropStoneForward").value + extraFwd, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 35+ inches",this);//was 48
+//
+//        //Drop stone with gripper
+////        Billy.stoneServoLeft.setPosition(0.15);
+////        Billy.stoneServoRight.setPosition(0.15);
+//        sleep(250);
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-6, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Back 6 inches",this);//was 4
+//
+//    }
+//
+//    public void crossDropStoneFor2Old() {
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-4,  "Back 4 inches",this);
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CCW",this);
+//
+//        Billy.angleUnWrap();// think about commenting
+//
+////        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
+//
+////        if(sideColor == 1) {
+////
+////            Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+////
+////        }
+//
+////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, cons.pHM.get("dropStoneForward").value + 35 + extraFwd,  "Forward 35+ inches",this);//was 48
+//
+//        //Drop stone with gripper
+////        Billy.stoneServoLeft.setPosition(0.15);
+////        Billy.stoneServoRight.setPosition(0.15);
+//        sleep(250);
+//
+//    }
+//
+//    public void getSecondStoneOld() {
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-cons.pHM.get("dropStoneForward").value -35 - extraFwd - 24, "Backward to second stone",this);//was 48
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CW",this);
+//
+//        grabSkyStone();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-4,  "Back 4 inches",this);
+//
+//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CCW",this);
+//
+////        Billy.angleUnWrap();// think about commenting
+////
+////        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
+////
+////        if(sideColor == 1) {
+////
+////            Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-90 - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+////
+////        }
+////
+////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 * sideColor) - Billy.robotHeading), cons.pHM.get("rotatePowerLimit").value, "Rotate to 90 degrees CCW",this);
+//
+//        //pressAToContinue();
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,cons.pHM.get("dropStoneForward").value + 35 + extraFwd + 24,  "Forward with second stone",this);//was 48
+//
+//        //Drop stone with gripper
+////        Billy.stoneServoLeft.setPosition(0.15);
+////        Billy.stoneServoRight.setPosition(0.15);
+//        sleep(250);
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-6,  "Back 6 inches",this);//was 4
+//
+//    }
 
     public void goToStone() {
         telemetry.addData("Stone sideways distance","%.2f",(stoneSideways * sideColor));
@@ -786,12 +857,23 @@ public class BasicAuto extends BasicOpMode {
 
         //Move commented below is for angle adjustment
 //        Billy.angleUnWrap();
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.Rotate, ((-90 - Billy.robotHeading) * sideColor), 0, "Rotate 90 degrees CW",this);
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft(HardwareBilly.moveDirection.Rotate, ((-90 - Billy.robotHeading) * sideColor), 0, "Rotate 90 degrees CW",this);
 
 //        pressAToContinue();
         //grab skystone with servo arm
         Billy.stoneServoArm.setPosition(stoneArmDown);
         sleep(500);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueSkystone1 = true;
+            }
+            if(sideColor == -1) {
+
+                haveRedSkystone1 = true;
+            }
+        }
 //        pressAToContinue();
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-sideGrabStone / 2) * sideColor, -90 * sideColor, "Left 8 inches",this);
@@ -803,7 +885,7 @@ public class BasicAuto extends BasicOpMode {
 //        pressAToContinue();
 
 //        Billy.angleUnWrap();
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.Rotate, ((-180 - Billy.robotHeading) * sideColor), 0, "Rotate 90 degrees CW",this);
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft(HardwareBilly.moveDirection.Rotate, ((-180 - Billy.robotHeading) * sideColor), 0, "Rotate 90 degrees CW",this);
 //
 //        pressAToContinue();
 
@@ -814,6 +896,17 @@ public class BasicAuto extends BasicOpMode {
         //release skystone with servo arm
         Billy.stoneServoArm.setPosition(stoneArmUp);
         sleep(500);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueSkystone1 = false;
+            }
+            if(sideColor == -1) {
+
+                haveRedSkystone1 = false;
+            }
+        }
 //        pressAToContinue();
 
     }
@@ -848,6 +941,17 @@ public class BasicAuto extends BasicOpMode {
         //grab skystone with servo arm
         Billy.stoneServoArm.setPosition(stoneArmDown);
         sleep(500);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueSkystone2 = true;
+            }
+            if(sideColor == -1) {
+
+                haveRedSkystone2 = true;
+            }
+        }
 //        pressAToContinue();
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-sideGrabStone/2) * sideColor, -90 * sideColor, "Left 8 inches",this);
@@ -874,6 +978,16 @@ public class BasicAuto extends BasicOpMode {
         Billy.stoneServoArm.setPosition(stoneArmUp);
         sleep(500);
 
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueSkystone2 = false;
+            }
+            if(sideColor == -1) {
+
+                haveRedSkystone2 = false;
+            }
+        }
 //        pressAToContinue();
 
     }
@@ -925,16 +1039,27 @@ public class BasicAuto extends BasicOpMode {
 
     public void grabFoundation() {
 
-//        Billy.servoFoundationL.setPosition(0.10);
-//        Billy.servoFoundationR.setPosition(0.90);
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, 30, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 32 inches to Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 30, 0,"Forward 32 inches to Foundation", this);
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, 2, (cons.pHM.get("drivePowerLimit").value / 2), cons.pHM.get("drivePowerMinimum").value,"Forward 2 inches to Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 2,0,"Forward 2 inches to Foundation", this);
 
         // grab foundation with servos
-//        Billy.servoFoundationL.setPosition(0.80);
-//        Billy.servoFoundationR.setPosition(0.20);
+        Billy.servoFoundationL.setPosition(0.80);
+        Billy.servoFoundationR.setPosition(0.20);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueFoundation = true;
+            }
+            if(sideColor == -1) {
+
+                haveRedFoundation = true;
+            }
+        }
 
         sleep(250);
 
@@ -942,33 +1067,44 @@ public class BasicAuto extends BasicOpMode {
 
     public void pullFoundation() {
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, -29, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backward 31 inches with Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -29, 0, "Backward 31 inches with Foundation", this);
 
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, -2, (cons.pHM.get("drivePowerLimit").value / 2), "Backward 2 inches with Foundation", this);
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -2, (cons.pHM.get("drivePowerLimit").value / 2), "Backward 2 inches with Foundation", this);
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-20 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 20 degrees CCW",this);//15 was too close
+        Billy.IMUDriveRotate((-20 * sideColor), "Rotate 20 degrees CCW",this);//15 was too close
 
         // release foundation from gripper
-//        Billy.servoFoundationL.setPosition(0.10);
-//        Billy.servoFoundationR.setPosition(0.90);
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueFoundation = false;
+            }
+            if(sideColor == -1) {
+
+                haveRedFoundation = false;
+            }
+        }
     }
 
     public void aroundFoundation() {
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, -2, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 2 inches away from Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -2,  0,"Backward 2 inches away from Foundation", this);
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, (26 * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Left 26 inches around Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (26 * sideColor),0,"Right 26 inches around Foundation", this);
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, 18, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backwards 18 inches around Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 18,0,"Forward 18 inches around Foundation", this);
 
     }
 
     public void pushFoundation() {
         // touching foundation to push it
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, (-foundationPush * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 8 inches pushing Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-foundationPush * sideColor), 0,"Right 8 inches pushing Foundation", this);
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, (foundationPush * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Left 8 inches away from Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (foundationPush * sideColor), 0,"Left 8 inches away from Foundation", this);
 
     }
 
@@ -976,7 +1112,7 @@ public class BasicAuto extends BasicOpMode {
 //
 //        //pressAToContinue();
 //
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, 18, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 20 inches towards wall", this);
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 18,  "Forward 20 inches towards wall", this);
 //
 //        //pressAToContinue();
 //
@@ -984,22 +1120,22 @@ public class BasicAuto extends BasicOpMode {
 ////
 ////        //pressAToContinue();
 //
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, -16 * sideColor, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Left 16 inches to park", this);
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -16 * sideColor,  "Left 16 inches to park", this);
 //
 //    }
 
     public void awayFromFoundation() {
 
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, (45 * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 45 inches to park", this);
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (45 * sideColor),  "Right 45 inches to park", this);
 //        //was 50
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, (25 * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 25 inches", this);//was 21
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (25 * sideColor),0,"Right 25 inches", this);//was 21
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(20 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate 20 degrees CW",this);//15 was too close
+        Billy.IMUDriveRotate( (0 * sideColor),"Rotate 20 degrees CW", this);//15 was too close
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.FwdBack, -10, cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Backward 14 inches to wall", this);//was 16
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -10, 0, "Backward 14 inches to wall", this);//was 16
 
-        Billy.driveGeneralPower(HardwareBilly.moveDirection.RightLeft, (20 * sideColor), cons.pHM.get("drivePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Right 20 inches", this);//was 24
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (20 * sideColor), 0, "Right 20 inches", this);//was 24
 
     }
 

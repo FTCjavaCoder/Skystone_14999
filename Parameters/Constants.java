@@ -6,6 +6,8 @@ import android.util.Log;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -332,6 +334,115 @@ public class Constants {
 
         }
     }
+
+    public void writeToFile(String fileName, BasicOpMode om) {
+
+        try {
+
+            FileOutputStream fos = new FileOutputStream(fileName);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+
+            for(String s : pHM.keySet()) {
+
+                osw.write(s + "\n");
+                om.telemetry.addData("Parameter Name", "%s", s);
+                osw.write(pHM.get(s).value + "\n");
+                om.telemetry.addData("Value", "%.2f", pHM.get(s).value);
+                osw.write(pHM.get(s).paramType + "\n");
+                om.telemetry.addData("Type", "%s", pHM.get(s).paramType);
+                osw.write(pHM.get(s).hasRange + "\n");
+                om.telemetry.addData("Range?", "%s", pHM.get(s).hasRange);
+                osw.write(pHM.get(s).min + "\n");
+                om.telemetry.addData("Min", "%.2f", pHM.get(s).min);
+                osw.write(pHM.get(s).max + "\n");
+                om.telemetry.addData("Max", "%.2f", pHM.get(s).max);
+                osw.write(pHM.get(s).increment + "\n");
+                om.telemetry.addData("Increment", "%.2f", pHM.get(s).increment);
+                om.telemetry.update();
+            }
+
+            osw.close();
+        }
+        catch(Exception e) {
+
+//            Log.e("Exception", e.toString());
+
+            om.telemetry.addData("Exception","%s", e.toString());
+            om.telemetry.update();
+        }
+    }
+
+    public void readFromFile(String fileName, BasicOpMode om) {
+
+        try {
+
+
+            FileReader fr = new FileReader(fileName);
+            BufferedReader br = new BufferedReader(fr);
+
+            String s;
+            while((s = br.readLine())!= null) {
+
+                double v = Double.parseDouble(br.readLine());
+                String t = br.readLine();
+                String hr = br.readLine();
+                double min = Double.parseDouble(br.readLine());
+                double max = Double.parseDouble(br.readLine());
+                double inc = Double.parseDouble(br.readLine());
+
+                switch (t) {
+
+                    case ("powerLimit") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.powerLimit));
+                        break;
+                    case ("counts") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.counts));
+                        break;
+
+                    case ("toleranceCounts") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.toleranceCounts));
+                        break;
+
+                    case ("distanceInches") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.distanceInches));
+                        break;
+
+                    case ("rotationDegrees") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.rotationDegrees));
+                        break;
+
+                    case ("servoPosition") :
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.servoPosition));
+                        break;
+                }
+
+                om.fileWasRead = true;
+
+                om.telemetry.addData("Parameter Name", "%s", s);
+                om.telemetry.addData("Value", "%.2f", v);
+                om.telemetry.addData("Type", "%s", t);
+                om.telemetry.addData("Range?", "%s", hr);
+                om.telemetry.addData("Min", "%.2f", min);
+                om.telemetry.addData("Max", "%.2f", max);
+                om.telemetry.addData("Increment", "%.2f", inc);
+                om.telemetry.addLine("/////////////////////////////");
+
+                om.idle();
+            }
+
+            fr.close();
+        }
+        catch(Exception e) {
+
+//            Log.e("Exception", e.toString());
+
+            om.fileWasRead = false;
+
+            om.telemetry.addData("Exception","%s", e.toString());
+            om.telemetry.update();
+        }
+    }
+
 
     // AUTONOMOUS OPTIONS
 //    public void defineAutoOptions() {

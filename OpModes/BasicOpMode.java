@@ -18,6 +18,8 @@ public class BasicOpMode extends LinearOpMode {
     public double DeltaH = 0;
     public double currentH = 0;
 
+    public boolean testModeActive = false;
+
     public BasicOpMode() {
 
     }
@@ -55,6 +57,21 @@ public class BasicOpMode extends LinearOpMode {
         }
 
         cons.initParameters();
+    }
+
+    public void readOrWriteHashMapOffline() {
+
+        cons.readFromFile(hashMapFile, this);
+        telemetry.addData("Existing File Was Read?","%s", fileWasRead);
+
+        if (!fileWasRead) {
+
+            cons.defineParameters();
+            cons.writeToFile(hashMapFile, this);
+
+            cons.readFromFile(hashMapFile, this);
+            telemetry.addData("Created File, File Was Read?","%s", fileWasRead);
+        }
     }
 
 //    public void readOrWriteHashMapAO() {

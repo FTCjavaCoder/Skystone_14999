@@ -31,103 +31,103 @@ public class OptionsSkyStone extends BasicAuto {
 
         runtime.reset();
 
-        switch(selected) {
-
-            case 0 :
-
-                foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
-                insideOutside = 0;// 0 for Inside, 24 for Outside
-
-                fwdToStone();
-
-                findSkyStone();
-
-                bridgeCrossSkyStone();
-
-                parkSkyStone();
-
-                break;
-
-            case 1 :
-
-                foundationPosChange = 0;
-                insideOutside = 24;// 0 for Inside, 24 for Outside
-
-                fwdToStone();
-
-                findSkyStone();
-
-                bridgeCrossSkyStone();
-
-                parkSkyStone();
-
-                break;
-
-            case 2 :
-
-                foundationPosChange = 26;
-                insideOutside = 0;// 0 for Inside, 24 for Outside
-
-                fwdToStone();
-
-                findSkyStone();
-
-                bridgeCrossSkyStone();
-
-                parkSkyStone();
-
-                break;
-
-            case 3 :
-
-                foundationPosChange = 26;
-                insideOutside = 24;// 0 for Inside, 24 for Outside
-
-                fwdToStone();
-
-                findSkyStone();
-
-                bridgeCrossSkyStone();
-
-                parkSkyStone();
-
-                break;
-
-            case 4 :
-                foundationInOut = 0;
-
-                grabFoundation();
-
-                pullFoundation();
-
-                aroundFoundation();
-
-                pushFoundation();
-
-                awayFromFoundation();
-
-                break;
-
-            case 5 :
-
-                foundationInOut = 26;
-
-                grabFoundation();
-
-                pullFoundation();
-
-                aroundFoundation();
-
-                pushFoundation();
-
-                awayFromFoundation();
-
-                break;
-
-        }
-
-        telemetry.addLine("OpMode Complete");
-        sleep(2000);
+//        switch(selected) {
+//
+//            case 0 :
+//
+//                foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
+//                insideOutside = 0;// 0 for Inside, 24 for Outside
+//
+//                fwdToStone();
+//
+//                findSkyStone();
+//
+//                bridgeCrossSkyStone();
+//
+//                parkSkyStone();
+//
+//                break;
+//
+//            case 1 :
+//
+//                foundationPosChange = 0;
+//                insideOutside = 24;// 0 for Inside, 24 for Outside
+//
+//                fwdToStone();
+//
+//                findSkyStone();
+//
+//                bridgeCrossSkyStone();
+//
+//                parkSkyStone();
+//
+//                break;
+//
+//            case 2 :
+//
+//                foundationPosChange = 26;
+//                insideOutside = 0;// 0 for Inside, 24 for Outside
+//
+//                fwdToStone();
+//
+//                findSkyStone();
+//
+//                bridgeCrossSkyStone();
+//
+//                parkSkyStone();
+//
+//                break;
+//
+//            case 3 :
+//
+//                foundationPosChange = 26;
+//                insideOutside = 24;// 0 for Inside, 24 for Outside
+//
+//                fwdToStone();
+//
+//                findSkyStone();
+//
+//                bridgeCrossSkyStone();
+//
+//                parkSkyStone();
+//
+//                break;
+//
+//            case 4 :
+//                foundationInOut = 0;
+//
+//                grabFoundation();
+//
+//                pullFoundation();
+//
+//                aroundFoundation();
+//
+//                pushFoundation();
+//
+//                awayFromFoundation();
+//
+//                break;
+//
+//            case 5 :
+//
+//                foundationInOut = 26;
+//
+//                grabFoundation();
+//
+//                pullFoundation();
+//
+//                aroundFoundation();
+//
+//                pushFoundation();
+//
+//                awayFromFoundation();
+//
+//                break;
+//
+//        }
+//
+//        telemetry.addLine("OpMode Complete");
+//        sleep(2000);
     }
 
 }

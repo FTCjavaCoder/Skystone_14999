@@ -41,19 +41,19 @@ public class SkyStoneFoundationOutside extends BasicAuto {
 
         Billy.initIMU(this);
 
-        fwdToStone();
-
-        findSkyStone();
-
-        bridgeCrossSkyStoneF();
-
-        grabAndRotateFoundation();
-
-        straightToCorner();
-
-        backSkyStoneAndFoundation();
-
-        parkSkyStoneF();
+//        fwdToStone();
+//
+//        findSkyStone();
+//
+//        bridgeCrossSkyStoneF();
+//
+//        grabAndRotateFoundation();
+//
+//        straightToCorner();
+//
+//        backSkyStoneAndFoundation();
+//
+//        parkSkyStoneF();
 
         telemetry.addLine("OpMode Complete");
         sleep(1000);
