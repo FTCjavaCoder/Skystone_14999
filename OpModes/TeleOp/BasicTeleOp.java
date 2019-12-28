@@ -2,6 +2,7 @@ package Skystone_14999.OpModes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import TestOpModesOffline.DcMotor;//ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;

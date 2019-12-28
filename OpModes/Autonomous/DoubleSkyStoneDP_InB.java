@@ -54,6 +54,7 @@ public class DoubleSkyStoneDP_InB extends BasicAuto {
         twoStonePark();
 
         telemetry.addLine("OpMode Complete");
+        telemetry.update();
         sleep(500);
     }
 }

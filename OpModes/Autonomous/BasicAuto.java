@@ -2,11 +2,10 @@ package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import TestOpModesOffline.DcMotor;//ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -58,12 +57,10 @@ public class BasicAuto extends BasicOpMode {
 
     public boolean haveBlueFoundation = false;
     public boolean haveRedFoundation = false;
-    public boolean haveBlueSkystone1 = false;
-    public boolean haveBlueSkystone2 = false;
-    public boolean haveRedSkystone1 = false;
-    public boolean haveRedSkystone2 = false;
-
-//    public Telemetry telemetry = new Telemetry();
+    public boolean haveBlueSkyStone1 = false;
+    public boolean haveBlueSkyStone2 = false;
+    public boolean haveRedSkyStone1 = false;
+    public boolean haveRedSkyStone2 = false;
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -143,34 +140,41 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationL.setPosition(0.80);
         Billy.servoFoundationR.setPosition(0.20);
 
-        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
-        stoneTarget.setName("Stone Target");
-        VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
-        blueRearBridge.setName("Blue Rear Bridge");
-        VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
-        redRearBridge.setName("Red Rear Bridge");
-        VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
-        redFrontBridge.setName("Red Front Bridge");
-        VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
-        blueFrontBridge.setName("Blue Front Bridge");
-        VuforiaTrackable red1 = targetsSkyStone.get(5);
-        red1.setName("Red Perimeter 1");
-        VuforiaTrackable red2 = targetsSkyStone.get(6);
-        red2.setName("Red Perimeter 2");
-        VuforiaTrackable front1 = targetsSkyStone.get(7);
-        front1.setName("Front Perimeter 1");
-        VuforiaTrackable front2 = targetsSkyStone.get(8);
-        front2.setName("Front Perimeter 2");
-        VuforiaTrackable blue1 = targetsSkyStone.get(9);
-        blue1.setName("Blue Perimeter 1");
-        VuforiaTrackable blue2 = targetsSkyStone.get(10);
-        blue2.setName("Blue Perimeter 2");
-        VuforiaTrackable rear1 = targetsSkyStone.get(11);
-        rear1.setName("Rear Perimeter 1");
-        VuforiaTrackable rear2 = targetsSkyStone.get(12);
-        rear2.setName("Rear Perimeter 2");
+        if (testModeActive) {
+            // DO NOTHING
+        }
+        else {
 
-        allTrackables.addAll(targetsSkyStone);
+
+            VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+            stoneTarget.setName("Stone Target");
+            VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
+            blueRearBridge.setName("Blue Rear Bridge");
+            VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
+            redRearBridge.setName("Red Rear Bridge");
+            VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
+            redFrontBridge.setName("Red Front Bridge");
+            VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
+            blueFrontBridge.setName("Blue Front Bridge");
+            VuforiaTrackable red1 = targetsSkyStone.get(5);
+            red1.setName("Red Perimeter 1");
+            VuforiaTrackable red2 = targetsSkyStone.get(6);
+            red2.setName("Red Perimeter 2");
+            VuforiaTrackable front1 = targetsSkyStone.get(7);
+            front1.setName("Front Perimeter 1");
+            VuforiaTrackable front2 = targetsSkyStone.get(8);
+            front2.setName("Front Perimeter 2");
+            VuforiaTrackable blue1 = targetsSkyStone.get(9);
+            blue1.setName("Blue Perimeter 1");
+            VuforiaTrackable blue2 = targetsSkyStone.get(10);
+            blue2.setName("Blue Perimeter 2");
+            VuforiaTrackable rear1 = targetsSkyStone.get(11);
+            rear1.setName("Rear Perimeter 1");
+            VuforiaTrackable rear2 = targetsSkyStone.get(12);
+            rear2.setName("Rear Perimeter 2");
+
+            allTrackables.addAll(targetsSkyStone);
+        }
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
@@ -228,36 +232,41 @@ public class BasicAuto extends BasicOpMode {
         Billy.backRight.setPower(0);
 
         Billy.stoneServoArm.setPosition(0);
+        if (testModeActive) {
+            // DO NOTHING
+        }
+        else {
 
-        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
-        stoneTarget.setName("Stone Target");
-        VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
-        blueRearBridge.setName("Blue Rear Bridge");
-        VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
-        redRearBridge.setName("Red Rear Bridge");
-        VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
-        redFrontBridge.setName("Red Front Bridge");
-        VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
-        blueFrontBridge.setName("Blue Front Bridge");
-        VuforiaTrackable red1 = targetsSkyStone.get(5);
-        red1.setName("Red Perimeter 1");
-        VuforiaTrackable red2 = targetsSkyStone.get(6);
-        red2.setName("Red Perimeter 2");
-        VuforiaTrackable front1 = targetsSkyStone.get(7);
-        front1.setName("Front Perimeter 1");
-        VuforiaTrackable front2 = targetsSkyStone.get(8);
-        front2.setName("Front Perimeter 2");
-        VuforiaTrackable blue1 = targetsSkyStone.get(9);
-        blue1.setName("Blue Perimeter 1");
-        VuforiaTrackable blue2 = targetsSkyStone.get(10);
-        blue2.setName("Blue Perimeter 2");
-        VuforiaTrackable rear1 = targetsSkyStone.get(11);
-        rear1.setName("Rear Perimeter 1");
-        VuforiaTrackable rear2 = targetsSkyStone.get(12);
-        rear2.setName("Rear Perimeter 2");
 
-        allTrackables.addAll(targetsSkyStone);
+            VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+            stoneTarget.setName("Stone Target");
+            VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
+            blueRearBridge.setName("Blue Rear Bridge");
+            VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
+            redRearBridge.setName("Red Rear Bridge");
+            VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
+            redFrontBridge.setName("Red Front Bridge");
+            VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
+            blueFrontBridge.setName("Blue Front Bridge");
+            VuforiaTrackable red1 = targetsSkyStone.get(5);
+            red1.setName("Red Perimeter 1");
+            VuforiaTrackable red2 = targetsSkyStone.get(6);
+            red2.setName("Red Perimeter 2");
+            VuforiaTrackable front1 = targetsSkyStone.get(7);
+            front1.setName("Front Perimeter 1");
+            VuforiaTrackable front2 = targetsSkyStone.get(8);
+            front2.setName("Front Perimeter 2");
+            VuforiaTrackable blue1 = targetsSkyStone.get(9);
+            blue1.setName("Blue Perimeter 1");
+            VuforiaTrackable blue2 = targetsSkyStone.get(10);
+            blue2.setName("Blue Perimeter 2");
+            VuforiaTrackable rear1 = targetsSkyStone.get(11);
+            rear1.setName("Rear Perimeter 1");
+            VuforiaTrackable rear2 = targetsSkyStone.get(12);
+            rear2.setName("Rear Perimeter 2");
 
+            allTrackables.addAll(targetsSkyStone);
+        }
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
         telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());
@@ -867,11 +876,11 @@ public class BasicAuto extends BasicOpMode {
         if(testModeActive) {
             if(sideColor == 1) {
 
-                haveBlueSkystone1 = true;
+                haveBlueSkyStone1 = true;
             }
             if(sideColor == -1) {
 
-                haveRedSkystone1 = true;
+                haveRedSkyStone1 = true;
             }
         }
 //        pressAToContinue();
@@ -900,11 +909,11 @@ public class BasicAuto extends BasicOpMode {
         if(testModeActive) {
             if(sideColor == 1) {
 
-                haveBlueSkystone1 = false;
+                haveBlueSkyStone1 = false;
             }
             if(sideColor == -1) {
 
-                haveRedSkystone1 = false;
+                haveRedSkyStone1 = false;
             }
         }
 //        pressAToContinue();
@@ -921,7 +930,7 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-8 * sideColor, -90 * sideColor, "Left 8 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,-8, -90 * sideColor, "Left 8 inches",this);
 
 //        pressAToContinue();
 
@@ -945,11 +954,11 @@ public class BasicAuto extends BasicOpMode {
         if(testModeActive) {
             if(sideColor == 1) {
 
-                haveBlueSkystone2 = true;
+                haveBlueSkyStone2 = true;
             }
             if(sideColor == -1) {
 
-                haveRedSkystone2 = true;
+                haveRedSkyStone2 = true;
             }
         }
 //        pressAToContinue();
@@ -958,7 +967,7 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,8 * sideColor, -90 * sideColor, "Right 8",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,8 , -90 * sideColor, "Right 8",this);
 
 //        pressAToContinue();
 
@@ -981,11 +990,11 @@ public class BasicAuto extends BasicOpMode {
         if(testModeActive) {
             if(sideColor == 1) {
 
-                haveBlueSkystone2 = false;
+                haveBlueSkyStone2 = false;
             }
             if(sideColor == -1) {
 
-                haveRedSkystone2 = false;
+                haveRedSkyStone2 = false;
             }
         }
 //        pressAToContinue();
@@ -1042,9 +1051,9 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationL.setPosition(0.10);
         Billy.servoFoundationR.setPosition(0.90);
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 30, 0,"Forward 32 inches to Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 30, 0,"Forward 32 inches to Foundation", this);
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 2,0,"Forward 2 inches to Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 2,0,"Forward 2 inches to Foundation", this);
 
         // grab foundation with servos
         Billy.servoFoundationL.setPosition(0.80);
@@ -1067,7 +1076,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void pullFoundation() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -29, 0, "Backward 31 inches with Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -29, 0, "Backward 31 inches with Foundation", this);
 
 //        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -2, (cons.pHM.get("drivePowerLimit").value / 2), "Backward 2 inches with Foundation", this);
 
@@ -1091,11 +1100,11 @@ public class BasicAuto extends BasicOpMode {
 
     public void aroundFoundation() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -2,  0,"Backward 2 inches away from Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -2,  (-20 * sideColor),"Backward 2 inches away from Foundation", this);
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (26 * sideColor),0,"Right 26 inches around Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (26 * sideColor),(-20 * sideColor),"Right 26 inches around Foundation", this);
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 18,0,"Forward 18 inches around Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 18,(-20 * sideColor),"Forward 18 inches around Foundation", this);
 
     }
 
@@ -1129,9 +1138,9 @@ public class BasicAuto extends BasicOpMode {
 //        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (45 * sideColor),  "Right 45 inches to park", this);
 //        //was 50
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (25 * sideColor),0,"Right 25 inches", this);//was 21
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (25 * sideColor),(-20 * sideColor),"Right 25 inches", this);//was 21
 
-        Billy.IMUDriveRotate( (0 * sideColor),"Rotate 20 degrees CW", this);//15 was too close
+        Billy.IMUDriveRotate( 0,"Rotate 20 degrees CW", this);//15 was too close
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -10, 0, "Backward 14 inches to wall", this);//was 16
 

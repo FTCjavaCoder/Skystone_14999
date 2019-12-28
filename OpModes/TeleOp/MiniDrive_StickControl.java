@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
  *
  */
 
-@TeleOp(name="MiniDrive Stick Control", group="TeleOp")
+@TeleOp(name="MiniDrive Scaled Stick Control", group="TeleOp")
 
 public class MiniDrive_StickControl extends BasicTeleOp {
 
@@ -30,10 +30,7 @@ public class MiniDrive_StickControl extends BasicTeleOp {
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            Billy.drivePowerAllLeftStick(gamepad1, gamepad2);
-
-            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
-            Billy.rotatePowerRightStick(gamepad1, gamepad2);
+            Billy.drivePowerAllLeftStickScaled(gamepad1, gamepad2);
 
             Billy.angleUnWrap();
 

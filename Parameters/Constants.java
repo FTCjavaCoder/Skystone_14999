@@ -24,8 +24,8 @@ public class Constants {
 //    public HashMap<String, OptionAutonomous> aOHM = new HashMap();
 
     // Define the static power levels, power/speed limits, and initial positions for motors and servos
-    public double DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-    public double ROTATE_POWER_LIMIT = 1;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+    public double DRIVE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+    public double ROTATE_POWER_LIMIT = 1.0;//clockwise rotation power/speed to be converted to individual motor powers/speeds
     public double DRIVE_POWER_MINIMUM = 0.1;
     public double STEERING_POWER_LIMIT = 0.5;
     public double STEERING_POWER_GAIN = 0.1;
@@ -36,8 +36,8 @@ public class Constants {
 
     public int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
 
-    public double TELEOP_DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-    public double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    public double TELEOP_DRIVE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    public double TELEOP_ROTATE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
 
     public double JACK_POWER_LIMIT = 0.75;
     public double SLIDE_POWER_LIMIT = 0.6;// was 0.6
@@ -85,7 +85,7 @@ public class Constants {
 
         pHM.put("drivePowerMinimum", new ParameterHM( 0.1, ParameterHM.instanceType.powerLimit));//was 0.2
 
-        pHM.put("rotatePowerLimit", new ParameterHM(1, ParameterHM.instanceType.powerLimit));// was 0.75
+        pHM.put("rotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.75
 
         pHM.put("powerGain", new ParameterHM(0.2, ParameterHM.instanceType.powerLimit));// new
 
@@ -99,9 +99,9 @@ public class Constants {
 
         pHM.put("steeringPowerLimit", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// new
 
-        pHM.put("teleOpDrivePowerLimit", new ParameterHM(1, ParameterHM.instanceType.powerLimit));// was 0.55
+        pHM.put("teleOpDrivePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.55
 
-        pHM.put("teleOpRotatePowerLimit", new ParameterHM(1, ParameterHM.instanceType.powerLimit));// was 0.40
+        pHM.put("teleOpRotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.40
 
         pHM.put("jackPowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
 

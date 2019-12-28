@@ -4,8 +4,14 @@ package Skystone_14999.HarwareConfig;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+//import TestOpModesOffline.DcMotor;//ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
+//import TestOpModesOffline.BNO055IMU; //ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
+//import TestOpModesOffline.JustLoggingAccelerationIntegrator; //ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
+//import TestOpModesOffline.Servo;//ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+//import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -33,7 +39,7 @@ public class HardwareBilly
     public DcMotor jack = null;
     public DcMotor  slide       = null;
 
-    public Servo  servoFoundationL  = null;
+    public Servo servoFoundationL  = null;
     public Servo  servoFoundationR  = null;
     public Servo    stoneServoArm   = null;
     public BNO055IMU    imu = null;
@@ -95,7 +101,7 @@ public class HardwareBilly
         // Save reference to Hardware map
         if(tm) {
 
-//            // Define and Initialize Motors
+            // Define and Initialize Motors
 //            frontLeft = new DcMotor();
 //            frontRight = new DcMotor();
 //            backLeft = new DcMotor();
@@ -111,28 +117,28 @@ public class HardwareBilly
 //            stoneServoRight = new Servo();
 ////        servoCapstoneRelease = new Servo();
 //            stoneServoArm = new Servo();
-
-//            imu = TestOpModesOffline.BNO055IMU;
-//            imu = hwMap.get(BNO055IMU.class, "imu");//PARAMETERS
+//
+//            imu = new TestOpModesOffline.BNO055IMU();
+//            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
 //            imu.initialize(parameters);
-
-            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-            POWER_GAIN = cons.POWER_GAIN;
-            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            dropStoneForward = cons.dropStoneForward;
-            foundationExtraFwd = cons.foundationExtraFwd;
-            foundationExtraSideways = cons.foundationExtraSideways;
+//
+//            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+//            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+//            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
+//            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
+//            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
+//            POWER_GAIN = cons.POWER_GAIN;
+//            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
+//            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
+//            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
+//            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
+//            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+//            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+//            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
+//            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
+//            dropStoneForward = cons.dropStoneForward;
+//            foundationExtraFwd = cons.foundationExtraFwd;
+//            foundationExtraSideways = cons.foundationExtraSideways;
 
         }
         else {
@@ -201,7 +207,7 @@ public class HardwareBilly
 
         if(tm) {
 
-//            // Define and Initialize Motors
+            // Define and Initialize Motors
 //            frontLeft = new DcMotor();
 //            frontRight = new DcMotor();
 //            backLeft = new DcMotor();
@@ -217,28 +223,27 @@ public class HardwareBilly
 //            stoneServoRight = new Servo();
 ////        servoCapstoneRelease = new Servo();
 //            stoneServoArm = new Servo();
-
-//            imu = TestOpModesOffline.BNO055IMU;
-//            imu = hwMap.get(BNO055IMU.class, "imu");//PARAMETERS
+//            imu = new TestOpModesOffline.BNO055IMU();
+//            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
 //            imu.initialize(parameters);
-
-            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-            POWER_GAIN = cons.POWER_GAIN;
-            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            dropStoneForward = cons.dropStoneForward;
-            foundationExtraFwd = cons.foundationExtraFwd;
-            foundationExtraSideways = cons.foundationExtraSideways;
+//
+//            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+//            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+//            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
+//            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
+//            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
+//            POWER_GAIN = cons.POWER_GAIN;
+//            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
+//            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
+//            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
+//            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
+//            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+//            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+//            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
+//            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
+//            dropStoneForward = cons.dropStoneForward;
+//            foundationExtraFwd = cons.foundationExtraFwd;
+//            foundationExtraSideways = cons.foundationExtraSideways;
 
         }
         else {
@@ -401,7 +406,7 @@ public class HardwareBilly
 
         setMotorPowerArray(prePower);
 
-        while( (Math.abs(scaledDistance - distanceTraveled) > IMU_DISTANCE_TOL) && om.opModeIsActive()) {
+        while( (Math.abs(scaledDistance - distanceTraveled) > IMU_DISTANCE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
 
             currentPos = motorStartPos();
 
@@ -428,19 +433,27 @@ public class HardwareBilly
 
             for(int i = 0; i < 4; i++){
 
-                prePower[i] = prePower[i] / max;
+                //*************** MODIFIED POWER CLIP FOR setPower TO HAVE DRIVE_POWER_MINIMUM ************************************
 
+//                prePower[i] = prePower[i] / max;//NOT LIMITED TO DRIVE_POWER_MINIMUM
+                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max),DRIVE_POWER_MINIMUM,DRIVE_POWER_LIMIT);
+                //*************** MODIFIED POWER CLIP FOR setPower TO HAVE DRIVE_POWER_MINIMUM ************************************
             }
+            //*************** MODIFIED TO setPower  ************************************
+            setMotorPowerArray(setPower);
+            //*************** MODIFIED TO setPower  ************************************
 
-            setMotorPowerArray(prePower);
-
+            //*************** MODIFIED TELEMETRY FOR DEBUGGING ************************************
             om.telemetry.addData("Driving: ", step);
-            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
-                    targetPos[0], targetPos[1],targetPos[2],targetPos[3]);
+//            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+//                    targetPos[0], targetPos[1],targetPos[2],targetPos[3]);
+            om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f",targetAngle,robotHeading);
             om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
-                    frontLeft.getCurrentPosition(), frontRight.getCurrentPosition(),
-                    backRight.getCurrentPosition(), backLeft.getCurrentPosition());
-            om.telemetry.addData("Move Tolerance: ", MOVE_TOL);
+                    currentPos[0],currentPos[1],currentPos[2],currentPos[3]);
+            om.telemetry.addData("Motor Power: ", "FL (%.2f) FR (%.2f) BR (%.2f) BL (%.2f)",
+                    setPower[0],setPower[1],setPower[2],setPower[3]);
+            om.telemetry.addData("Steering ", "Power: %.2f, Gain: %.3f", steeringPower,STEERING_POWER_GAIN);
+            om.telemetry.addData("Distance Moved: ", "%.2f",distanceTraveled);
             om.telemetry.addData("Time: ", om.runtime);
             om.telemetry.update();
         }
@@ -450,15 +463,18 @@ public class HardwareBilly
         angleUnWrap();
         om.updateIMU();
 
-        om.telemetry.addData("Driving: ", step);
-        om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
-                targetPos[0], targetPos[1],targetPos[2],targetPos[3]);
+        om.telemetry.addData("COMPLETED Driving: ", step);
+//        om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
+//                targetPos[0], targetPos[1],targetPos[2],targetPos[3]);
+        om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f",targetAngle,robotHeading);
         om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
                 frontLeft.getCurrentPosition(), frontRight.getCurrentPosition(),
                 backRight.getCurrentPosition(), backLeft.getCurrentPosition());
-        om.telemetry.addData("Move Tolerance: ", MOVE_TOL);
+        om.telemetry.addData("Distance Moved: ", "%.2f",distanceTraveled);
         om.telemetry.addData("Time: ", om.runtime);
+        om.telemetry.addLine("=========================================");
         om.telemetry.update();
+        //*************** MODIFIED TELEMETRY FOR DEBUGGING ************************************
     }
 
     public void IMUDriveRotate(double targetAngle, String step, BasicAuto om) {
@@ -482,7 +498,10 @@ public class HardwareBilly
         driveDirection[1] = -1;// FR
         driveDirection[2] = -1;// BR
         driveDirection[3] = -1;// BL
+        //*************** ADDED CURRENT POSITION CALCULATION  ************************************
 
+        currentPos = motorStartPos();
+        //*************** ADDED CURRENT POSITION CALCULATION  ************************************
 
         angleUnWrap();
         om.updateIMU();
@@ -497,7 +516,12 @@ public class HardwareBilly
 
         setMotorPowerArray(prePower);
 
-        while( (Math.abs(targetAngle - robotHeading) > IMU_ROTATE_TOL) && om.opModeIsActive()) {
+        while( (Math.abs(targetAngle - robotHeading) > IMU_ROTATE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
+            //*************** ADDED CURRENT POSITION CALCULATION  FOR TELEMETRY ************************************
+
+            currentPos = motorStartPos();
+            //*************** ADDED CURRENT POSITION CALCULATION  FOR TELEMETRY ************************************
+
 
             angleUnWrap();
             om.updateIMU();
@@ -511,12 +535,16 @@ public class HardwareBilly
             }
 
             setMotorPowerArray(prePower);
+            //*************** MODIFIED TELEMETRY FOR DEBUGGING ************************************
 
             om.telemetry.addData("Driving: ", step);
             om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
                     currentPos[0], currentPos[1], currentPos[2], currentPos[3]);
-            om.telemetry.addData("Move Tolerance: ", MOVE_TOL);
+            om.telemetry.addData("Motor Power: ", "FL (%.2f) FR (%.2f) BR (%.2f) BL (%.2f)",
+                    setPower[0],setPower[1],setPower[2],setPower[3]);
+            om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f",targetAngle,robotHeading);
             om.telemetry.addData("Time: ", om.runtime);
+            om.telemetry.addLine("=========================================");
             om.telemetry.update();
         }
 
@@ -526,12 +554,14 @@ public class HardwareBilly
         angleUnWrap();
         om.updateIMU();
 
-        om.telemetry.addData("Driving: ", step);
+        om.telemetry.addData("COMPLETED Driving: ", step);
         om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
                 currentPos[0], currentPos[1], currentPos[2], currentPos[3]);
-        om.telemetry.addData("Move Tolerance: ", MOVE_TOL);
+        om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f",targetAngle,robotHeading);
         om.telemetry.addData("Time: ", om.runtime);
         om.telemetry.update();
+        //*************** MODIFIED TELEMETRY FOR DEBUGGING ************************************
+
     }
 
     public double calcSteeringPowerIMU(double angleWanted) {
@@ -631,7 +661,7 @@ public class HardwareBilly
 //        backLeft.setTargetPosition(targetPos[3]);
 //
 //
-//        while(!motorsDone && om.opModeIsActive()) {
+//        while(!motorsDone && (om.opModeIsActive() || om.testModeActive)) {
 //
 //            motorsDone = targetPosTolerence();
 //
@@ -746,7 +776,7 @@ public class HardwareBilly
 //        om.runtime.reset();
 //        setMotorPowerArray(setPower);
 //
-//        while(!motorsDone && om.opModeIsActive()) {
+//        while(!motorsDone && (om.opModeIsActive() || om.testModeActive)) {
 //
 //            error[0] = targetPos[0] - frontLeft.getCurrentPosition();
 //            error[1] = targetPos[1] - frontRight.getCurrentPosition();
@@ -864,7 +894,7 @@ public class HardwareBilly
 //
 //        setMotorPower(powerLimit);
 //
-//        while(!motorsDone && om.opModeIsActive()) {
+//        while(!motorsDone && (om.opModeIsActive() || om.testModeActive)) {
 //
 //            motorsDone = targetPosTolerence();
 //
@@ -964,7 +994,7 @@ public class HardwareBilly
 
 //        jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
 
-        while((jackZoneC > MOVE_TOL) && om.opModeIsActive()) {
+        while((jackZoneC > MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
 
 //            jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
 
@@ -994,7 +1024,7 @@ public class HardwareBilly
 
         angleUnWrap();
         //Check tolerance zone to exit method
-        while (Math.abs(angle - robotHeading) > om.cons.IMU_ROTATE_TOL && (om.opModeIsActive())) {
+        while (Math.abs(angle - robotHeading) > om.cons.IMU_ROTATE_TOL && ((om.opModeIsActive() || om.testModeActive))) {
 
             error = angle - robotHeading;
             steering = Range.clip((error * om.cons.GAIN), -ROTATE_POWER_LIMIT, ROTATE_POWER_LIMIT);
@@ -1074,19 +1104,21 @@ public class HardwareBilly
 
     public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2) {
 
-        forwardDirection = (-g1.left_stick_y) * DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x) * DRIVE_POWER_LIMIT;
+        forwardDirection = (-g1.left_stick_y) * TELEOP_DRIVE_POWER_LIMIT;
+        rightDirection = (g1.left_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
+
+        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
 
         double maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
-        if (maxPower < DRIVE_POWER_LIMIT) {
-            maxPower = DRIVE_POWER_LIMIT;
+        if (maxPower < TELEOP_DRIVE_POWER_LIMIT) {
+            maxPower = TELEOP_DRIVE_POWER_LIMIT;
         }
 
-        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
-        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
-        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
-        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
 
     }
 

@@ -46,6 +46,7 @@ public class FoundationOutsideBlue extends BasicAuto {
         awayFromFoundation();
 
         telemetry.addLine("OpMode Complete");
+        telemetry.update();
         sleep(2000);
     }
 }
