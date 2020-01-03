@@ -1,19 +1,13 @@
-package Skystone_14999.OpModes.Autonomous.Foundation;
+package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import Skystone_14999.OpModes.Autonomous.BasicAuto;
+@Autonomous(name="Inch Double SkyStone Drop Park Inside Blue", group="Autonomous")
 
-@Autonomous(name="Foundation Inside", group="Foundation")
-@Disabled
-public class FoundationInside extends BasicAuto {
+public class InchDoubleSkyStoneDP_InB extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -30,9 +24,11 @@ public class FoundationInside extends BasicAuto {
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
-        foundationInOut = 0;// 0 for Inside, 22 for Outside
+        foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
+        insideOutside = 0;// 0 for Inside, 24 for Outside
+        sideColor = 1;// + for Blue, - for Red, KEEP BLUE
 
-        initialize();
+        initializeMiniBot();
 
         waitForStart();
 
@@ -40,12 +36,21 @@ public class FoundationInside extends BasicAuto {
 
         Billy.initIMU(this);
 
-        grabFoundation();
+        fwdToTwoStone();
 
-        pullFoundation();
+        vuforiaStoneLocateInches();
 
-        awayFromFoundation();
+        goToStone();
 
+        takeStone1();
+
+        getStone2();
+
+        takeStone2();
+
+        twoStonePark();
+
+        telemetry.addData("stoneYLocation","(%.2f)", stoneYLocation);
         telemetry.addLine("OpMode Complete");
         telemetry.update();
         sleep(2000);

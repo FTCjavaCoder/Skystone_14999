@@ -4,14 +4,12 @@ package Skystone_14999.HarwareConfig;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
-//import TestOpModesOffline.DcMotor;//ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
-//import TestOpModesOffline.BNO055IMU; //ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
-//import TestOpModesOffline.JustLoggingAccelerationIntegrator; //ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
-//import TestOpModesOffline.Servo;//ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
-
+//import TestOpModesOffline.BNO055IMU;
+//import TestOpModesOffline.JustLoggingAccelerationIntegrator;
+//import TestOpModesOffline.DcMotor;
+//import TestOpModesOffline.Servo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-//import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -32,7 +30,7 @@ import Skystone_14999.Parameters.Constants;
 public class HardwareBilly
 {
     /* Public OpMode members. */
-    public DcMotor  frontLeft   = null;
+    public DcMotor frontLeft   = null;
     public DcMotor  frontRight  = null;
     public DcMotor  backLeft    = null;
     public DcMotor  backRight   = null;
@@ -42,7 +40,7 @@ public class HardwareBilly
     public Servo servoFoundationL  = null;
     public Servo  servoFoundationR  = null;
     public Servo    stoneServoArm   = null;
-    public BNO055IMU    imu = null;
+    public BNO055IMU imu = null;
     public HardwareMap hwMap           =  null;
     public ElapsedTime period  = new ElapsedTime();
 
@@ -63,14 +61,17 @@ public class HardwareBilly
     public double ROTATE_POWER_GAIN = 0.02;
     public double IMU_ROTATE_TOL = 1.0;
     public double IMU_DISTANCE_TOL = 1.0;
-    int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
-    double TELEOP_DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-    double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-    double JACK_POWER_LIMIT = 0.75;
-    double SLIDE_POWER_LIMIT = 0.6;
-    double dropStoneForward = 35;
-    double foundationExtraFwd = 0;
-    double foundationExtraSideways = 0;
+    public int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
+    public double TELEOP_DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    public double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+    public double JACK_POWER_LIMIT = 0.75;
+    public double SLIDE_POWER_LIMIT = 0.6;
+    public double dropStoneForward = 35;
+    public double skystoneExtraBack = 8;
+    public double doRotateMethod = 0;
+    public double skystoneExtraSideways = 0;
+    public double skystoneExtraStoneGrab = 0;
+    public double adjustVuforiaPhone = 0;
 
     public double clockwise =0;
     public double forwardDirection =0;
@@ -121,24 +122,27 @@ public class HardwareBilly
 //            imu = new TestOpModesOffline.BNO055IMU();
 //            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
 //            imu.initialize(parameters);
-//
-//            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-//            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-//            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-//            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-//            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-//            POWER_GAIN = cons.POWER_GAIN;
-//            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-//            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-//            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-//            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-//            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-//            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-//            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-//            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-//            dropStoneForward = cons.dropStoneForward;
-//            foundationExtraFwd = cons.foundationExtraFwd;
-//            foundationExtraSideways = cons.foundationExtraSideways;
+
+            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
+            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
+            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
+            POWER_GAIN = cons.POWER_GAIN;
+            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
+            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
+            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
+            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
+            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
+            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
+            dropStoneForward = cons.dropStoneForward;
+            skystoneExtraBack = cons.skystoneExtraBack;
+            doRotateMethod = cons.doRotateMethod;
+            skystoneExtraSideways = cons.skystoneExtraSideways;
+            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
+            adjustVuforiaPhone = cons.adjustVuforiaPhone;
 
         }
         else {
@@ -197,8 +201,11 @@ public class HardwareBilly
             JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
             SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
             dropStoneForward = cons.dropStoneForward;
-            foundationExtraFwd = cons.foundationExtraFwd;
-            foundationExtraSideways = cons.foundationExtraSideways;
+            skystoneExtraBack = cons.skystoneExtraBack;
+            doRotateMethod = cons.doRotateMethod;
+            skystoneExtraSideways = cons.skystoneExtraSideways;
+            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
+            adjustVuforiaPhone = cons.adjustVuforiaPhone;
         }
 
     }
@@ -226,24 +233,27 @@ public class HardwareBilly
 //            imu = new TestOpModesOffline.BNO055IMU();
 //            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
 //            imu.initialize(parameters);
-//
-//            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-//            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-//            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-//            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-//            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-//            POWER_GAIN = cons.POWER_GAIN;
-//            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-//            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-//            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-//            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-//            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-//            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-//            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-//            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-//            dropStoneForward = cons.dropStoneForward;
-//            foundationExtraFwd = cons.foundationExtraFwd;
-//            foundationExtraSideways = cons.foundationExtraSideways;
+
+            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
+            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
+            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
+            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
+            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
+            POWER_GAIN = cons.POWER_GAIN;
+            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
+            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
+            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
+            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
+            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
+            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
+            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
+            dropStoneForward = cons.dropStoneForward;
+            skystoneExtraBack = cons.skystoneExtraBack;
+            doRotateMethod = cons.doRotateMethod;
+            skystoneExtraSideways = cons.skystoneExtraSideways;
+            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
+            adjustVuforiaPhone = cons.adjustVuforiaPhone;
 
         }
         else {
@@ -291,8 +301,11 @@ public class HardwareBilly
             JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
             SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
             dropStoneForward = cons.dropStoneForward;
-            foundationExtraFwd = cons.foundationExtraFwd;
-            foundationExtraSideways = cons.foundationExtraSideways;
+            skystoneExtraBack = cons.skystoneExtraBack;
+            doRotateMethod = cons.doRotateMethod;
+            skystoneExtraSideways = cons.skystoneExtraSideways;
+            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
+            adjustVuforiaPhone = cons.adjustVuforiaPhone;
         }
 
     }
@@ -333,7 +346,7 @@ public class HardwareBilly
         boolean motorsDone = false;
         double[] error = new double[4];
         double[] setPower = new double[4];
-        double scaledDistance = 0 ;
+        double scaledDistance = 0;
 
         setMotorPower(0);
 
@@ -344,9 +357,9 @@ public class HardwareBilly
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        switch(moveType) {
+        switch (moveType) {
 
-            case FwdBack :
+            case FwdBack:
                 scaledDistance = (distanceInch * om.cons.adjForward);
 
                 driveDirection[0] = -1;// FL
@@ -355,7 +368,7 @@ public class HardwareBilly
                 driveDirection[3] = -1;// BL
                 break;
 
-            case RightLeft :
+            case RightLeft:
                 scaledDistance = (distanceInch * om.cons.adjRight);
                 driveDirection[0] = -1;// FL
                 driveDirection[1] = -1;// FR
@@ -383,9 +396,9 @@ public class HardwareBilly
 
         double prePower[] = new double[4];
 
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
 
-            prePower[i] = Range.clip( ( (scaledDistance - distanceTraveled) * driveDirection[i] ) * POWER_GAIN, -DRIVE_POWER_LIMIT, DRIVE_POWER_LIMIT) + steeringPower;
+            prePower[i] = Range.clip(((scaledDistance - distanceTraveled) * driveDirection[i]) * POWER_GAIN, -DRIVE_POWER_LIMIT, DRIVE_POWER_LIMIT) + steeringPower;
 
         }
 
@@ -393,12 +406,12 @@ public class HardwareBilly
         double maxRight = Math.max(Math.abs(prePower[1]), Math.abs(prePower[2]));
         double max = Math.max(maxLeft, maxRight);
 
-        if(DRIVE_POWER_LIMIT >= max) {
+        if (DRIVE_POWER_LIMIT >= max) {
 
             max = 1;
         }
 
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
 
             prePower[i] = Range.clip(Math.abs(prePower[i] / max), DRIVE_POWER_MINIMUM, DRIVE_POWER_LIMIT) * Math.signum(prePower[i]);
 
@@ -406,7 +419,7 @@ public class HardwareBilly
 
         setMotorPowerArray(prePower);
 
-        while( (Math.abs(scaledDistance - distanceTraveled) > IMU_DISTANCE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
+        while ((Math.abs(scaledDistance - distanceTraveled) > IMU_DISTANCE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
 
             currentPos = motorStartPos();
 
@@ -416,9 +429,9 @@ public class HardwareBilly
 
             om.updateIMU();
 
-            for(int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
 
-                prePower[i] = Range.clip( ( (scaledDistance - distanceTraveled) * driveDirection[i] ) * POWER_GAIN, -DRIVE_POWER_LIMIT, DRIVE_POWER_LIMIT) + steeringPower;
+                prePower[i] = Range.clip(((scaledDistance - distanceTraveled) * driveDirection[i]) * POWER_GAIN, -DRIVE_POWER_LIMIT, DRIVE_POWER_LIMIT) + steeringPower;
 
             }
 
@@ -426,17 +439,17 @@ public class HardwareBilly
             maxRight = Math.max(Math.abs(prePower[1]), Math.abs(prePower[2]));
             max = Math.max(maxLeft, maxRight);
 
-            if(DRIVE_POWER_LIMIT >= max) {
+            if (DRIVE_POWER_LIMIT >= max) {
 
                 max = 1;
             }
 
-            for(int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
 
                 //*************** MODIFIED POWER CLIP FOR setPower TO HAVE DRIVE_POWER_MINIMUM ************************************
 
 //                prePower[i] = prePower[i] / max;//NOT LIMITED TO DRIVE_POWER_MINIMUM
-                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max),DRIVE_POWER_MINIMUM,DRIVE_POWER_LIMIT);
+                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max), DRIVE_POWER_MINIMUM, DRIVE_POWER_LIMIT);
                 //*************** MODIFIED POWER CLIP FOR setPower TO HAVE DRIVE_POWER_MINIMUM ************************************
             }
             //*************** MODIFIED TO setPower  ************************************
@@ -447,13 +460,13 @@ public class HardwareBilly
             om.telemetry.addData("Driving: ", step);
 //            om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
 //                    targetPos[0], targetPos[1],targetPos[2],targetPos[3]);
-            om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f",targetAngle,robotHeading);
+            om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f", targetAngle, robotHeading);
             om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
-                    currentPos[0],currentPos[1],currentPos[2],currentPos[3]);
+                    currentPos[0], currentPos[1], currentPos[2], currentPos[3]);
             om.telemetry.addData("Motor Power: ", "FL (%.2f) FR (%.2f) BR (%.2f) BL (%.2f)",
-                    setPower[0],setPower[1],setPower[2],setPower[3]);
-            om.telemetry.addData("Steering ", "Power: %.2f, Gain: %.3f", steeringPower,STEERING_POWER_GAIN);
-            om.telemetry.addData("Distance Moved: ", "%.2f",distanceTraveled);
+                    setPower[0], setPower[1], setPower[2], setPower[3]);
+            om.telemetry.addData("Steering ", "Power: %.2f, Gain: %.3f", steeringPower, STEERING_POWER_GAIN);
+            om.telemetry.addData("Distance Moved: ", "%.2f", distanceTraveled);
             om.telemetry.addData("Time: ", om.runtime);
             om.telemetry.update();
         }
@@ -466,15 +479,19 @@ public class HardwareBilly
         om.telemetry.addData("COMPLETED Driving: ", step);
 //        om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
 //                targetPos[0], targetPos[1],targetPos[2],targetPos[3]);
-        om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f",targetAngle,robotHeading);
+        om.telemetry.addData("Robot Heading: ", " Desired: %.2f, Actual: %.2f", targetAngle, robotHeading);
         om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
                 frontLeft.getCurrentPosition(), frontRight.getCurrentPosition(),
                 backRight.getCurrentPosition(), backLeft.getCurrentPosition());
-        om.telemetry.addData("Distance Moved: ", "%.2f",distanceTraveled);
+        om.telemetry.addData("Distance Moved: ", "%.2f", distanceTraveled);
         om.telemetry.addData("Time: ", om.runtime);
         om.telemetry.addLine("=========================================");
         om.telemetry.update();
         //*************** MODIFIED TELEMETRY FOR DEBUGGING ************************************
+
+        if (doRotateMethod == 1) {
+            IMUDriveRotate(targetAngle, "Post move Rotate", om);//********NEW*********
+        }
     }
 
     public void IMUDriveRotate(double targetAngle, String step, BasicAuto om) {
@@ -514,7 +531,7 @@ public class HardwareBilly
 
         }
 
-        setMotorPowerArray(prePower);
+        setMotorPowerArray(setPower);
 
         while( (Math.abs(targetAngle - robotHeading) > IMU_ROTATE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
             //*************** ADDED CURRENT POSITION CALCULATION  FOR TELEMETRY ************************************
@@ -534,7 +551,7 @@ public class HardwareBilly
 
             }
 
-            setMotorPowerArray(prePower);
+            setMotorPowerArray(setPower);
             //*************** MODIFIED TELEMETRY FOR DEBUGGING ************************************
 
             om.telemetry.addData("Driving: ", step);
@@ -1104,21 +1121,19 @@ public class HardwareBilly
 
     public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2) {
 
-        forwardDirection = (-g1.left_stick_y) * TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
-
-        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
+        forwardDirection = (-g1.left_stick_y) * DRIVE_POWER_LIMIT;
+        rightDirection = (g1.left_stick_x) * DRIVE_POWER_LIMIT;
 
         double maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
-        if (maxPower < TELEOP_DRIVE_POWER_LIMIT) {
-            maxPower = TELEOP_DRIVE_POWER_LIMIT;
+        if (maxPower < DRIVE_POWER_LIMIT) {
+            maxPower = DRIVE_POWER_LIMIT;
         }
 
-        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
 
     }
 

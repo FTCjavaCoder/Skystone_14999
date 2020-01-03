@@ -2,11 +2,10 @@ package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-//import TestOpModesOffline.DcMotor;//ADDED AND COMMENTED OUT ABOVE FOR OFFLINE
 import com.qualcomm.robotcore.hardware.DcMotor;
+//import TestOpModesOffline.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -44,6 +43,10 @@ public class BasicAuto extends BasicOpMode {
 
     public enum autoChoice {SkyStoneOutside, SkyStoneInside, SkyStoneOutsideUnmoved, SkyStoneInsideUnmoved}
 
+    private static final float mmPerInch        = 25.4f;
+
+    public double stoneYLocation;
+
     //Define all double variables
     public double start = 0;//timer variable to use for setting waits in the code
     public float hsvValues[] = {0F, 0F, 0F};
@@ -62,6 +65,25 @@ public class BasicAuto extends BasicOpMode {
     public boolean haveBlueSkyStone2 = false;
     public boolean haveRedSkyStone1 = false;
     public boolean haveRedSkyStone2 = false;
+/** COMMENTED OUT FOR EXPERIMENTAL CODE
+
+ //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+    public FieldConfiguration fc = new FieldConfiguration();
+    boolean writeBF = false;
+    boolean writeRF = false;
+    boolean writeBS1 = false;
+    boolean writeBS2 = false;
+    boolean writeRS1 = false;
+    boolean writeRS2 = false;
+
+    boolean robotSeeStone = false;
+
+    public int IMUCounter =0;
+    public int size = 300;
+ //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+
+ * END EXPERIMENTAL CODE
+ * */
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -80,7 +102,10 @@ public class BasicAuto extends BasicOpMode {
 
 
     }
+    public void runCode() {
 
+
+    }
     public void initialize() {
 
         if (testModeActive) {
@@ -277,7 +302,43 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public void updateIMU() {}
+    public void updateIMU(){
+        /** COMMENTED OUT AS EXPERIMENTAL CODE
+        //NEED TO COMMENT THIS OUT FOR RUNNING ON ROBOT
+        //ADDED FROM OfflineOpModeLIbs so that OfflineOpModeRunFile CAN WORK
+        //Move this imu portion to robot update method
+        Billy.imu.flCnt = Billy.frontLeft.getCurrentPosition();
+        Billy.imu.frCnt = Billy.frontRight.getCurrentPosition();
+        Billy.imu.brCnt = Billy.backRight.getCurrentPosition();
+        Billy.imu.blCnt = Billy.backLeft.getCurrentPosition();
+
+        Billy.imu.blueStoneServoPos = Billy.stoneServoArm.getPosition();
+//        Billy.imu.redStoneServoPos = Billy.servoRedStoneGrab.getPosition();
+
+        fc.updateField(this);
+
+        robotSeeStone= fc.stoneFound;
+
+        if(haveBlueFoundation){writeBF = true;}
+        if(haveRedFoundation){writeRF = true;}
+        if(haveBlueSkyStone1){writeBS1 = true;}
+        if(haveBlueSkyStone2){writeBS2 = true;}
+        if(haveRedSkyStone1){writeRS1 = true;}
+        if(haveRedSkyStone2){writeRS2 = true;}
+
+        try {
+//
+            if (IMUCounter >= size) {
+                int a = 1 / 0;
+            }
+        } catch (ArithmeticException e){
+            telemetry.addData("Exception:","%s, Exceeded %d counter steps", e.toString(),size);
+            telemetry.addData("IMU Counter"," %d", IMUCounter);
+        }
+* END EXPERIMENTAL CODE
+ */
+
+    }
 
     public void vuforiaStoneIdentifyLoop() {
 
@@ -399,30 +460,126 @@ public class BasicAuto extends BasicOpMode {
         if(sideColor == 1) {
             if(stonePos.equals("Left")) {
 
-                stoneSideways = -14;// was -12
+                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -6;// was -4
+                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
             }
             if(stonePos.equals("Right")) {
 
-                stoneSideways = 5;// was 8
+                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
             }
         }
 
         if(sideColor == -1) {
             if(stonePos.equals("Right")) {
 
-                stoneSideways = -14;// was -12
+                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -6;// was -4
+                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
             }
             if(stonePos.equals("Left")) {
 
-                stoneSideways = 5;// was 8
+                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
+            }
+        }
+        telemetry.addData("SkystonePos:", stonePos);
+        telemetry.addData("sideways to Skystone:", stoneSideways);
+//        pressAToContinue();
+
+    }
+
+    public void vuforiaStoneLocateInches() {
+
+        OpenGLMatrix pose = null;
+        VectorF translation = null;
+        double degreesToTurn = 0;
+
+        telemetry.update();
+
+        targetsSkyStone.activate();
+
+        start = runtime.time();
+        while ((runtime.time() - start < 2) && opModeIsActive()) {
+            for (VuforiaTrackable trackable : allTrackables) {
+                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                    telemetry.addData("Visible Target", trackable.getName());
+
+                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
+                    if (pose != null) {
+                        translation = pose.getTranslation();
+                        telemetry.addData(trackable.getName() + "-Translation", translation);
+                        degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
+                        telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
+
+                        if ((translation.get(1) / mmPerInch) >= ((100/mmPerInch) + cons.adjustVuforiaPhone)) {
+                            telemetry.addData("Skystone status", "Left");// was RIGHT for camera on robot left
+                            stonePos = "Left";
+                            stoneSelect = 0;
+                        }
+                        if ((translation.get(1) / mmPerInch) < ((100/mmPerInch) + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) >  ((-100/mmPerInch) + cons.adjustVuforiaPhone)) {
+                            telemetry.addData("Skystone status", "CENTER");
+                            stonePos = "Center";
+                            stoneSelect = 1;
+                        }
+                        if ((translation.get(1) / mmPerInch) <= ((-100/mmPerInch) + cons.adjustVuforiaPhone)) {
+                            telemetry.addData("Skystone status", "Right");// was LEFT for camera on robot left
+                            stonePos = "Right";
+                            stoneSelect = 2;
+                        }
+                        telemetry.addData("translation of stone INCHES", (translation.get(1) / mmPerInch));
+                        telemetry.update();
+                        stoneYLocation = (translation.get(1) / mmPerInch);
+                    }
+                }
+
+            }
+
+        }
+        if(stonePos.equals("Unknown") || stoneSelect == -1) /*NOT Visible*/ {
+            telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
+            stonePos = "Left";
+            stoneSelect = 0;
+            telemetry.update();
+        }
+
+        telemetry.addData("SkystonePos", stonePos);
+        telemetry.addData("Skystone Select", stoneSelect);
+        telemetry.addData("Skystone Y Location", stoneYLocation);
+//        pressAToContinue();
+
+        targetsSkyStone.deactivate();
+
+        if(sideColor == 1) {
+            if(stonePos.equals("Left")) {
+
+                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
+            }
+            if(stonePos.equals("Center")) {
+
+                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
+            }
+            if(stonePos.equals("Right")) {
+
+                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
+            }
+        }
+
+        if(sideColor == -1) {
+            if(stonePos.equals("Right")) {
+
+                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
+            }
+            if(stonePos.equals("Center")) {
+
+                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
+            }
+            if(stonePos.equals("Left")) {
+
+                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
             }
         }
         telemetry.addData("SkystonePos:", stonePos);
@@ -436,17 +593,17 @@ public class BasicAuto extends BasicOpMode {
         if(sideColor == 1) {
             if(stoneSelect == 0) {
 
-                stoneSideways = -14;// was -12
+                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
                 stonePos = "Left";
             }
             if(stoneSelect == 1) {
 
-                stoneSideways = -6;// was -4
+                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
                 stonePos = "Center";
             }
             if(stoneSelect == 2) {
 
-                stoneSideways = 5;// was 8
+                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
                 stonePos = "Right";
             }
         }
@@ -454,19 +611,24 @@ public class BasicAuto extends BasicOpMode {
         if(sideColor == -1) {
             if(stoneSelect == 0) {
 
-                stoneSideways = -14;// was -12
+                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
                 stonePos = "Right";
             }
             if(stoneSelect == 1) {
 
-                stoneSideways = -6;// was -4
+                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
                 stonePos = "Center";
             }
             if(stoneSelect == 2) {
 
-                stoneSideways = 5;// was 8
+                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
                 stonePos = "Left";
             }
+        }
+        //Added loop to simulate teh timedelay of waiting for Vuforia
+        for(int i=0;i<20;i++){
+            Billy.angleUnWrap();//update position - not moving
+            updateIMU();//update field positions while not moving
         }
         telemetry.addData("SkystonePos:", stonePos);
         telemetry.addData("sideways to Skystone:", stoneSideways);
@@ -620,34 +782,60 @@ public class BasicAuto extends BasicOpMode {
 //
 //    }
 //
-//    public void grabAndRotateFoundation() {
-//
-//        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-//        //pressAToContinue();
-//
-////        Billy.servoFoundationL.setPosition(0.10);
-////        Billy.servoFoundationR.setPosition(0.90);
-//
-//        //pressAToContinue();
-////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,( (-90 - Billy.robotHeading) * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate to 90 degrees CCW",this);
-//        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate, (-5 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Rotate -5 degrees CCW",this);
-//
-//        //pressAToContinue();
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,6,  "Forward 6 inches",this);// was 4
-//
-//        //pressAToContinue();
-//        // grab foundation with servos
-////        Billy.servoFoundationL.setPosition(0.80);
-////        Billy.servoFoundationR.setPosition(0.20);
-//
-//        sleep(250);
-//
-//        telemetry.addData("robotHeading: (%.2f)", Billy.robotHeading);
-//        //pressAToContinue();
-////        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(-80 * sideColor),  "Rotate 80 degrees CCW",this);
-//
-//        Billy.driveRotateIMU(-134 * sideColor, cons.pHM.get("rotatePowerLimit").value, "Rotate to 134 degrees CCW using the IMU", this);// was -130 needed a lil bit more
-//    }
+    public void grabAndRotateFoundation() {
+
+        //slide foudation away from wall
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,10 * sideColor,  0,"sideways with foundation",this);// was 4
+
+        //release foundation from servos
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+        if(sideColor == 1) {haveBlueFoundation = false;}
+        if(sideColor == -1) {haveRedFoundation = false;}
+
+        //drive along foundation to get to center to rotate it more directly
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,16 * sideColor,  0,"sideways without foundation",this);// was 4
+
+        // grab foundation with servos
+        Billy.servoFoundationL.setPosition(0.80);
+        Billy.servoFoundationR.setPosition(0.20);
+        if(sideColor == 1) {haveBlueFoundation = true;}
+        if(sideColor == -1) {haveRedFoundation = true;}
+
+        //Rotate foundation
+        Billy.IMUDriveRotate(-90*sideColor,"Rotate 90 deg so long side with parallel to wall",this);// was 4
+
+        //release foundation from servos
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+        if(sideColor == 1) {haveBlueFoundation = false;}
+        if(sideColor == -1) {haveRedFoundation = false;}
+        //drive along foundation to get to center to push it more straight to wall
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-6 * sideColor,  -90*sideColor,"sideways without foundation to push",this);// was 4
+
+        // grab foundation with servos
+        Billy.servoFoundationL.setPosition(0.80);
+        Billy.servoFoundationR.setPosition(0.20);
+        if(sideColor == 1) {haveBlueFoundation = true;}
+        if(sideColor == -1) {haveRedFoundation = true;}
+
+        //push foundation up to wall
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,13,  -90*sideColor,"Forward pushing foundation",this);// was 4
+
+        //release foundation from servos
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+        if(sideColor == 1) {haveBlueFoundation = false;}
+        if(sideColor == -1) {haveRedFoundation = false;}
+        //Back away from foundation
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -6, -90*sideColor, "backup to clear foundation", this);
+        //move right/left to align with bridge
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-2-insideOutside)*sideColor, -90*sideColor, "align to inside or outside", this);
+        //finish backing up to bridge
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -45, -90*sideColor, "backup", this);
+
+
+    }
 //
 //    public void straightToCorner() {
 //
@@ -931,7 +1119,7 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,-8, -90 * sideColor, "Left 8 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -cons.skystoneExtraBack, -90 * sideColor, "Left 8 inches",this);
 
 //        pressAToContinue();
 
@@ -968,7 +1156,7 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,8 , -90 * sideColor, "Right 8",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, cons.skystoneExtraBack, -90 * sideColor, "Right 8 inches",this);
 
 //        pressAToContinue();
 
@@ -1004,7 +1192,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void twoStonePark() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-18 * sideColor, -180 * sideColor, "Left 10 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-22 * sideColor, -180 * sideColor, "Left 10 inches",this);
 
     }
 
@@ -1052,7 +1240,8 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationL.setPosition(0.10);
         Billy.servoFoundationR.setPosition(0.90);
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 30, 0,"Forward 32 inches to Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 36, 0,"Forward 36 inches to Foundation", this);
+        //Added 6 inches for move - 2 for robot starting distance and 4 for distance to servos being 14: from back of robot vs. 18" from back
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 2,0,"Forward 2 inches to Foundation", this);
 
@@ -1077,7 +1266,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void pullFoundation() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -29, 0, "Backward 31 inches with Foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -29, 0, "Backward 29 inches with Foundation", this);
 
 //        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -2, (cons.pHM.get("drivePowerLimit").value / 2), "Backward 2 inches with Foundation", this);
 
@@ -1097,6 +1286,40 @@ public class BasicAuto extends BasicOpMode {
                 haveRedFoundation = false;
             }
         }
+    }
+
+    public void pullFoundationAngle() {
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -33, -10 * sideColor, "Backward 31 inches at 5 CCW with Foundation", this);
+
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 10 * sideColor, -15 * sideColor, "Right 10 inches with Foundation", this);
+
+        Billy.IMUDriveRotate((-20 * sideColor), "Rotate to 20 degrees CCW",this);
+//
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 5, -90 * sideColor, "Forward 5 inches with Foundation", this);
+
+        // release foundation from gripper
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueFoundation = false;
+            }
+            if(sideColor == -1) {
+
+                haveRedFoundation = false;
+            }
+        }
+    }
+
+    public void awayFromFoundationOneMove() {
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -2,  (-20 * sideColor),"Backward 2 inches away from Foundation", this);
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (50 * sideColor), 0,"Right 25 inches", this);//was 21
+
     }
 
     public void aroundFoundation() {
@@ -1149,4 +1372,38 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
+
+    public void foundationInCorner() {
+        int h=0;
+        for(h=1;h<4;h++) {
+            Billy.IMUDriveRotate((-10 * sideColor)*h, "rotate", this);
+            Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -12, (-10 * sideColor)*h, "backup", this);
+        }
+        Billy.IMUDriveRotate(-90*sideColor, "rotate parallel to wall", this);
+
+        // release foundation from gripper
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueFoundation = false;
+            }
+            if(sideColor == -1) {
+
+                haveRedFoundation = false;
+            }
+        }
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -6, -90*sideColor, "backup to clear foundation", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (24-insideOutside)*sideColor, -90*sideColor, "align to inside or outside", this);
+        /* Needed to change the Right/Left to be 24-insideOutside since robot alings on outside
+        /* without this move and insideOutside value for outside = 24
+        /*
+         */
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -44, -90*sideColor, "backup", this);
+
+    }
 }

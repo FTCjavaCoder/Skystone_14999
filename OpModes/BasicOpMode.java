@@ -2,11 +2,8 @@ package Skystone_14999.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.Parameters.Constants;
-import Skystone_14999.Parameters.OpModeParamFunctions;
 
 public class BasicOpMode extends LinearOpMode {
 
@@ -14,7 +11,7 @@ public class BasicOpMode extends LinearOpMode {
     public Constants cons = new Constants();// call using cons.(constant DRIVE_POWER_LIMIT etc.)
 
     //********************UPDATED 12/27/19 for OpMpde HashMap *********************************
-    public OpModeParamFunctions ompf = new OpModeParamFunctions();
+//    public OpModeParamFunctions ompf = new OpModeParamFunctions();
     public boolean loadFile = true;
     public String fileName = "AndroidHashMapFile.txt";
     public String fileNameEdited = "AndroidHashMapFileEdited.txt";

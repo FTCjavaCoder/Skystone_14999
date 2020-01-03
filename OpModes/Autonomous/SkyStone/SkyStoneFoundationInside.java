@@ -56,6 +56,7 @@ public class SkyStoneFoundationInside extends BasicAuto {
 //        parkSkyStoneF();
 
         telemetry.addLine("OpMode Complete");
+        telemetry.update();
         sleep(1000);
     }
 }
