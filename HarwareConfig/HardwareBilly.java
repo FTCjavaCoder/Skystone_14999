@@ -39,14 +39,17 @@ public class HardwareBilly
 
     public Servo servoFoundationL  = null;
     public Servo  servoFoundationR  = null;
-    public Servo    stoneServoArm   = null;
     public BNO055IMU imu = null;
     public HardwareMap hwMap           =  null;
     public ElapsedTime period  = new ElapsedTime();
 
     public Servo  stoneServoLeft    = null;
     public Servo  stoneServoRight   = null;
+    public Servo  armServoBlue    = null;
+    public Servo  armServoRed   = null;
 //      public Servo  servoCapstoneRelease   = null;
+
+    public Servo    stoneServoArm   = null;
 
     int targetPos[] = new int[4];
 
@@ -161,10 +164,12 @@ public class HardwareBilly
             servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
             servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
 
+            armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
+            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
+
             stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
             stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
 //        servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
-            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
 
             //Define all installed sensors
 
@@ -266,7 +271,9 @@ public class HardwareBilly
             backLeft = hwMap.get(DcMotor.class, "motor_bl");
             backRight = hwMap.get(DcMotor.class, "motor_br");
 
-            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
+//            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
+            armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
+            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
 
             // Set up the parameters with which we will use our IMU. Note that integration
             // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -1121,19 +1128,20 @@ public class HardwareBilly
 
     public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2) {
 
-        forwardDirection = (-g1.left_stick_y) * DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x) * DRIVE_POWER_LIMIT;
+        forwardDirection = (-g1.left_stick_y) * TELEOP_DRIVE_POWER_LIMIT;
+        rightDirection = (g1.left_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
+        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
 
         double maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
-        if (maxPower < DRIVE_POWER_LIMIT) {
-            maxPower = DRIVE_POWER_LIMIT;
+        if (maxPower < TELEOP_DRIVE_POWER_LIMIT) {
+            maxPower = TELEOP_DRIVE_POWER_LIMIT;
         }
 
-        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
-        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
-        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
-        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * DRIVE_POWER_LIMIT);
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
 
     }
 

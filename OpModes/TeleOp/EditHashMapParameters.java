@@ -17,7 +17,6 @@ public class EditHashMapParameters extends BasicTeleOp {
 
         cons.readFromPhone(hashMapFile, this);
         telemetry.addData("File Was Read?","%s", fileWasRead);
-        pressAToContinue();
 
         if (!fileWasRead) {
 

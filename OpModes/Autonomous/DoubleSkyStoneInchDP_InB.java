@@ -1,20 +1,19 @@
 package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Double SkyStone Drop Park Inside Blue", group="Autonomous")
-@Disabled
-public class DoubleSkyStoneDP_InB extends BasicAuto {
+@Autonomous(name="Double SkyStone Inch DP In Blue", group="Autonomous")
+
+public class DoubleSkyStoneInchDP_InB extends BasicAuto {
 
     @Override
     public void runOpMode() {
+
+        telemetry.addLine("NOT READY DON'T PRESS PLAY");
+        telemetry.update();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -32,7 +31,7 @@ public class DoubleSkyStoneDP_InB extends BasicAuto {
         insideOutside = 0;// 0 for Inside, 24 for Outside
         sideColor = 1;// + for Blue, - for Red, KEEP BLUE
 
-        initializeMiniBot();
+        initialize();
 
         waitForStart();
 
@@ -42,7 +41,7 @@ public class DoubleSkyStoneDP_InB extends BasicAuto {
 
         fwdToTwoStone();
 
-        vuforiaStoneLocate();
+        vuforiaStoneLocateInches();
 
         goToStone();
 
@@ -54,8 +53,9 @@ public class DoubleSkyStoneDP_InB extends BasicAuto {
 
         twoStonePark();
 
+        telemetry.addData("stoneYLocation","(%.2f)", stoneYLocation);
         telemetry.addLine("OpMode Complete");
         telemetry.update();
-        sleep(500);
+        sleep(2000);
     }
 }

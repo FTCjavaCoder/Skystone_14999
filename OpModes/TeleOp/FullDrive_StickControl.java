@@ -1,5 +1,6 @@
 package Skystone_14999.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -9,11 +10,14 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="FullDrive Stick Control", group="TeleOp")
-
+@Disabled
 public class FullDrive_StickControl extends BasicTeleOp {
 
     @Override
     public void runOpMode() {
+
+        telemetry.addLine("NOT READY DON'T PRESS PLAY");
+        telemetry.update();
 
         initializeTeleOp();
 
@@ -111,6 +115,7 @@ public class FullDrive_StickControl extends BasicTeleOp {
 
             idle();
         }
+        stopMotors();
 
     } // main opMode end methods go below
 

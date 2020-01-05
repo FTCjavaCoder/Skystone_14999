@@ -31,6 +31,8 @@ public class BasicTeleOp extends BasicOpMode {
     public double mineralBoxTrgtPos = 0;
     public double slidePwr = 0;
 
+    public int telemetryOption = 1;
+
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
     @Override
@@ -40,6 +42,11 @@ public class BasicTeleOp extends BasicOpMode {
 
 
     public void initializeTeleOp() {
+
+        telemetry.addLine("NOT READY DON'T PRESS PLAY");
+        telemetry.update();
+
+        telemetry.addData(">", "Press Play to start");
 
         readOrWriteHashMap();
 
@@ -100,6 +107,11 @@ public class BasicTeleOp extends BasicOpMode {
 
     public void initializeTeleOpMiniBot() {
 
+        telemetry.addLine("NOT READY DON'T PRESS PLAY");
+        telemetry.update();
+
+        telemetry.addData(">", "Press Play to start");
+
         readOrWriteHashMap();
 
         // initialize configuration to Billy
@@ -111,7 +123,6 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-
 
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -143,4 +154,50 @@ public class BasicTeleOp extends BasicOpMode {
 
     }
 
+    public void stopMotors() {
+
+        Billy.setMotorPower(0);
+        Billy.jack.setPower(0);
+        Billy.slide.setPower(0);
+    }
+
+    public void multiTelemetry(int option) {
+
+        switch (option) {
+
+            case 1 :
+            // Motors
+                telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
+                        forwardDirection, rightDirection, clockwise);
+                telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
+                        Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(),
+                        Billy.backRight.getPower());
+
+            case 2 :
+            // Jack and Slide
+                telemetry.addData("Jack Pos", "Center (%d)", Billy.jack.getCurrentPosition());
+                telemetry.addData("Jack TargetPos", "Center (%d)", Billy.jack.getTargetPosition());
+                telemetry.addData("Jack Power Cmd", "Vertical (%.2f)", verticalDirection);
+                telemetry.addData("Jack Motors", "Jack Center (%.2f)", Billy.jack.getPower());
+                telemetry.addData("Slide Pos", "Slide (%d)", Billy.slide.getCurrentPosition());
+                telemetry.addData("Slide TargetPos", "Slide (%d)", Billy.slide.getTargetPosition());
+                telemetry.addData("Slide Power", "Slide (%.2f)", Billy.slide.getPower());
+
+            case 3 :
+            // Servos
+                telemetry.addData("Foundation", "Servo Left (%.2f), Servo Right (%.2f)",
+                        Billy.servoFoundationL.getPosition(), Billy.servoFoundationR.getPosition());
+                telemetry.addData("Gripper", "Servo Left (%.2f), Servo Right (%.2f)",
+                        Billy.stoneServoLeft.getPosition(), Billy.stoneServoRight.getPosition());
+                telemetry.addData("Autonomous", "Servo Blue (%.2f), Servo Red (%.2f)",
+                        Billy.armServoBlue.getPosition(), Billy.armServoRed.getPosition());
+
+            case 4 :
+            // Status and Heading
+                telemetry.addData("Status", "Run Time: ",runtime.toString());
+                telemetry.addData("Robot Heading", "( %.2f )", Billy.robotHeading);
+
+        }
+        telemetry.update();
+    }
 }

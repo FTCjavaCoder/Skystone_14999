@@ -74,7 +74,7 @@ public class Constants {
      */
 
     public final double adjForward = 0.964;// may simply be the difference between the two robots wheel diameters
-    public final double adjRotate = 1.236;//
+    public final double adjRotate = 1.236;//NOT used because of using IMU to rotate to angle
     public final double adjRight = 1.079;//
 
     public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
@@ -109,15 +109,15 @@ public class Constants {
 
         pHM.put("teleOpRotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.40
 
-        pHM.put("jackPowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
+        pHM.put("jackPowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.75
 
-        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));
+        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));// was 0.40
 
         pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
 
         pHM.put("dropStoneForward", new ParameterHM(35, ParameterHM.instanceType.distanceInches));// For crossDropStonePark method
 
-        pHM.put("skystoneExtraBack", new ParameterHM(8, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
+        pHM.put("skystoneExtraBack", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
 
         pHM.put("doRotateMethod", new ParameterHM(0, ParameterHM.instanceType.toleranceCounts));// set to 1 to use IMURotate at the end of each IMUFwdRight move
 
@@ -207,20 +207,20 @@ public class Constants {
             for(String s : pHM.keySet()) {
 
                 osw.write(s + "\n");
-                om.telemetry.addData("Parameter Name", "%s", s);
+//                om.telemetry.addData("Parameter Name", "%s", s);
                 osw.write(pHM.get(s).value + "\n");
-                om.telemetry.addData("Value", "%.2f", pHM.get(s).value);
+//                om.telemetry.addData("Value", "%.2f", pHM.get(s).value);
                 osw.write(pHM.get(s).paramType + "\n");
-                om.telemetry.addData("Type", "%s", pHM.get(s).paramType);
+//                om.telemetry.addData("Type", "%s", pHM.get(s).paramType);
                 osw.write(pHM.get(s).hasRange + "\n");
-                om.telemetry.addData("Range?", "%s", pHM.get(s).hasRange);
+//                om.telemetry.addData("Range?", "%s", pHM.get(s).hasRange);
                 osw.write(pHM.get(s).min + "\n");
-                om.telemetry.addData("Min", "%.2f", pHM.get(s).min);
+//                om.telemetry.addData("Min", "%.2f", pHM.get(s).min);
                 osw.write(pHM.get(s).max + "\n");
-                om.telemetry.addData("Max", "%.2f", pHM.get(s).max);
+//                om.telemetry.addData("Max", "%.2f", pHM.get(s).max);
                 osw.write(pHM.get(s).increment + "\n");
-                om.telemetry.addData("Increment", "%.2f", pHM.get(s).increment);
-                om.telemetry.update();
+//                om.telemetry.addData("Increment", "%.2f", pHM.get(s).increment);
+//                om.telemetry.update();
             }
 
             osw.close();
@@ -280,14 +280,14 @@ public class Constants {
 
                 om.fileWasRead = true;
 
-                om.telemetry.addData("Parameter Name", "%s", s);
-                om.telemetry.addData("Value", "%.2f", v);
-                om.telemetry.addData("Type", "%s", t);
-                om.telemetry.addData("Range?", "%s", hr);
-                om.telemetry.addData("Min", "%.2f", min);
-                om.telemetry.addData("Max", "%.2f", max);
-                om.telemetry.addData("Increment", "%.2f", inc);
-                om.telemetry.addLine("/////////////////////////////");
+                om.telemetry.addData("Parameter", "%s = %.2f", s, v);
+//                om.telemetry.addData("Value", "%.2f", v);
+//                om.telemetry.addData("Type", "%s", t);
+//                om.telemetry.addData("Range?", "%s", hr);
+//                om.telemetry.addData("Min", "%.2f", min);
+//                om.telemetry.addData("Max", "%.2f", max);
+//                om.telemetry.addData("Increment", "%.2f", inc);
+                om.telemetry.addLine("---------------------------------");
 
                 om.idle();
             }

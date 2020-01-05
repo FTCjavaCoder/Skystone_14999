@@ -5,12 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Inch Double SkyStone Drop Park Inside Blue", group="Autonomous")
+@Autonomous(name="MiniBot ID SkyStone DP Inside Blue", group="Autonomous")
 
-public class InchDoubleSkyStoneDP_InB extends BasicAuto {
+public class Mini_IDSkyStoneDP_InB extends BasicAuto {
 
     @Override
     public void runOpMode() {
+
+        telemetry.addLine("NOT READY DON'T PRESS PLAY");
+        telemetry.update();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);

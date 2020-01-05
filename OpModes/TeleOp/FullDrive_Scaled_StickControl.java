@@ -1,16 +1,16 @@
 package Skystone_14999.OpModes.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
+
 
 /**
  *
  */
 
-@TeleOp(name="FullDrive", group="TeleOp")
-@Disabled
-public class FullDrive extends BasicTeleOp {
+@TeleOp(name="FullDrive Scaled Stick Control", group="TeleOp")
+
+public class FullDrive_Scaled_StickControl extends BasicTeleOp {
 
     @Override
     public void runOpMode() {
@@ -26,14 +26,17 @@ public class FullDrive extends BasicTeleOp {
 
         Billy.initIMU(this);
 
+        Billy.armServoBlue.setPosition(0);
+        Billy.armServoRed.setPosition(1);
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            Billy.drivePower(gamepad1, gamepad2);
+            Billy.drivePowerAllLeftStickScaled(gamepad1, gamepad2);
 
-            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
-            Billy.rotatePower(gamepad1, gamepad2);
+//            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
+//            Billy.rotatePowerRightStick(gamepad1, gamepad2);
 
             // use the left stick on gamepad2 to raise/lower the jack
             Billy.jackPower(gamepad1, gamepad2);
@@ -72,11 +75,6 @@ public class FullDrive extends BasicTeleOp {
                 sleep(300);
             }
 
-//            if (gamepad1.right_bumper && gamepad1.b) {
-//
-//                Billy.servoCapstoneRelease.setPosition(0);
-//            }
-
             // SERVOS FOUNDATION
             if(gamepad1.dpad_up) {
 
@@ -90,6 +88,11 @@ public class FullDrive extends BasicTeleOp {
 
                 Billy.servoFoundationR.setPosition(0.20);
             }
+
+//            if (gamepad1.right_bumper && gamepad1.b) {
+//
+//                Billy.servoCapstoneRelease.setPosition(0);
+//            }
 
             Billy.angleUnWrap();
 

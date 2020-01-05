@@ -5,12 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Inch Double SkyStone Drop Park Inside Red", group="Autonomous")
+@Autonomous(name="Double SkyStone Inch DP In Red", group="Autonomous")
 
-public class InchDoubleSkyStoneDP_InR extends BasicAuto {
+public class DoubleSkyStoneInchDP_InR extends BasicAuto {
 
     @Override
     public void runOpMode() {
+
+        telemetry.addLine("NOT READY DON'T PRESS PLAY");
+        telemetry.update();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -28,7 +31,7 @@ public class InchDoubleSkyStoneDP_InR extends BasicAuto {
         insideOutside = 0;// 0 for Inside, 24 for Outside
         sideColor = -1;// + for Blue, - for Red, KEEP RED
 
-        initializeMiniBot();
+        initialize();
 
         waitForStart();
 
