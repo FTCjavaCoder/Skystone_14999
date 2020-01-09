@@ -44,7 +44,7 @@ public class Constants {
 
 //    public final double TURN_POWER =  0.40;
 
-    public double dropStoneForward = 35;
+    public double forwardFirstMove = 14;
     public double skystoneExtraBack = 8;
 
     public double doRotateMethod = 0;
@@ -77,7 +77,7 @@ public class Constants {
     public final double adjRotate = 1.236;//NOT used because of using IMU to rotate to angle
     public final double adjRight = 1.079;//
 
-    public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+    public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT;// was BACK
     public static final String VUFORIA_KEY = " AUtTfjH/////AAAAGalBbST5Vkv8kqIoszZrsYOCBYcUVlFwYJ2rvrvVgm4ie/idQYx2x++SWi3UMEJnuP7Zww+cqOgyLepotRs9ppGxpCDcintIz0pIixMr+bievjJUDzdn0PyAJ6QUZK3xzoqDkTY1R99qvRORmTTqCx2/rGfYPlcOpdL5oWdhQsUatHyneF/eiWGBincPqBx3JfVwZnscF/B7J+u76YA4VTWLl8bl3iu26IYXMZE0zi7Pk+s9/pRQCCrLcxsvns4ouiSg3n61Z+jv8aS6y9ncwDdg0nm/XwDeiIrworkIPcPTW73LKpzX/63C1HprikXUJ+fm1eAkCfNy06n9SNTq20jxc7NXtGVUoE+WbNGmE4yb ";
 
 
@@ -115,7 +115,7 @@ public class Constants {
 
         pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
 
-        pHM.put("dropStoneForward", new ParameterHM(35, ParameterHM.instanceType.distanceInches));// For crossDropStonePark method
+        pHM.put("forwardFirstMove", new ParameterHM(14, ParameterHM.instanceType.distanceInches));// For forward before Vuforia in 2 stone (was forwardFirstMove)
 
         pHM.put("skystoneExtraBack", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
 
@@ -175,8 +175,8 @@ public class Constants {
             if(s.equals("moveTol")) {
                 MOVE_TOL = pHM.get(s).integerParameter();
             }
-            if(s.equals("dropStoneForward")) {
-                dropStoneForward = pHM.get(s).value;
+            if(s.equals("forwardFirstMove")) {
+                forwardFirstMove = pHM.get(s).value;
             }
             if(s.equals("skystoneExtraBack")) {
                 skystoneExtraBack = pHM.get(s).value;

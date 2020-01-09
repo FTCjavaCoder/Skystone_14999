@@ -56,16 +56,16 @@ public class BasicAuto extends BasicOpMode {
 
     public double secondStoneBackup = 8;
 
-    public double stoneArmUnderBridgeBlue = 0.25;// for blue oriented servo
-    public double stoneArmDownBlue = 0.5;// for blue oriented servo
+    public double stoneArmUnderBridgeBlue = 1;// for blue oriented servo
+    public double stoneArmDownBlue = 0.45;// for blue oriented servo was 0.5
 
-    public double stoneArmInitBlue = 0;// for blue oriented servo
-    public double stoneArmInitRed = 1;// for red oriented servo
+    public double stoneArmInitBlue = 1;// for blue oriented servo was 0
+    public double stoneArmInitRed = 0;// for red oriented servo was 1
 
-    public double stoneArmUnderBridgeRed = 0.75;// for red oriented servo
-    public double stoneArmDownRed = 0.3;// for red oriented servo (was 0.5, could adjust servo horn)
+    public double stoneArmUnderBridgeRed = 0;// for red oriented servo
+    public double stoneArmDownRed = 0.5;// for red oriented servo was 0.3
 
-    public double vuforiaWaitTime = 0.5;// was 2 could be 1
+    public double vuforiaWaitTime = 1;// was 2 and then 0.5
 
     public boolean drivingMiniBot = false;
 
@@ -136,12 +136,12 @@ public class BasicAuto extends BasicOpMode {
 
         drivingMiniBot = false;
         //Values For Full Robot
-        stoneArmInitBlue = 0;// for blue oriented servo
-        stoneArmInitRed = 1;// for red oriented servo
-        stoneArmUnderBridgeBlue = 0.25;// for blue oriented servo
-        stoneArmDownBlue = 0.5;// for blue oriented servo
-        stoneArmUnderBridgeRed = 0.75;// for red oriented servo
-        stoneArmDownRed = 0.3;// for red oriented servo (was 0.5, could adjust servo horn)
+        stoneArmInitBlue = 1;// for blue oriented servo
+        stoneArmInitRed = 0;// for red oriented servo
+        stoneArmUnderBridgeBlue = 1;// for blue oriented servo
+        stoneArmDownBlue = 0.45;// for blue oriented servo
+        stoneArmUnderBridgeRed = 0;// for red oriented servo
+        stoneArmDownRed = 0.5;// for red oriented servo (was 0.5, could adjust servo horn)
 
         Billy.init(hardwareMap, testModeActive,cons);
 
@@ -544,7 +544,7 @@ public class BasicAuto extends BasicOpMode {
         telemetry.addData("sideways to Skystone:", stoneSideways);
 //        pressAToContinue();
 
-    }
+    }// HAS OLD MiniBot Values
 
     public void vuforiaStoneLocateInches() {
 
@@ -553,6 +553,8 @@ public class BasicAuto extends BasicOpMode {
         double degreesToTurn = 0;
 
         telemetry.update();
+
+        //? Use local variable in place of cons.adjustVuforiaPhone that gets set to cons.adjustVuforiaPhone but then can be set to -1.0 for Blue only to shift camera zones to the left
 
         targetsSkyStone.activate();
 
@@ -569,17 +571,17 @@ public class BasicAuto extends BasicOpMode {
                         degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
                         telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
 
-                        if ((translation.get(1) / mmPerInch) >= ((100/mmPerInch) + cons.adjustVuforiaPhone)) {
+                        if ((translation.get(1) / mmPerInch) <= (-7.0 + cons.adjustVuforiaPhone)) {// FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
                             telemetry.addData("Skystone status", "Left");// was RIGHT for camera on robot left
                             stonePos = "Left";
                             stoneSelect = 0;
                         }
-                        if ((translation.get(1) / mmPerInch) < ((100/mmPerInch) + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) >  ((-100/mmPerInch) + cons.adjustVuforiaPhone)) {
+                        if ((translation.get(1) / mmPerInch) < (2.0 + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) > (-6.0 + cons.adjustVuforiaPhone)) {// FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
                             telemetry.addData("Skystone status", "CENTER");
                             stonePos = "Center";
                             stoneSelect = 1;
                         }
-                        if ((translation.get(1) / mmPerInch) <= ((-100/mmPerInch) + cons.adjustVuforiaPhone)) {
+                        if ((translation.get(1) / mmPerInch) >= (2.0 + cons.adjustVuforiaPhone)) {// FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
                             telemetry.addData("Skystone status", "Right");// was LEFT for camera on robot left
                             stonePos = "Right";
                             stoneSelect = 2;
@@ -610,36 +612,36 @@ public class BasicAuto extends BasicOpMode {
         if(sideColor == 1) {
             if(stonePos.equals("Left")) {
 
-                stoneSideways = -15 + Billy.skystoneExtraSideways;// was -14
-                secondStoneBackup = 10 + cons.skystoneExtraBack;// was 8
+                stoneSideways = -13.0 + Billy.skystoneExtraSideways;// was -15
+                secondStoneBackup = 10.0 + cons.skystoneExtraBack;// was 8
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -5 + Billy.skystoneExtraSideways;// was -6
-                secondStoneBackup = 8 + cons.skystoneExtraBack;
+                stoneSideways = -5.0 + Billy.skystoneExtraSideways;// was -6
+                secondStoneBackup = 8.0 + cons.skystoneExtraBack;
             }
             if(stonePos.equals("Right")) {
 
-                stoneSideways = 5 + Billy.skystoneExtraSideways;//
-                secondStoneBackup = 8 + cons.skystoneExtraBack;
+                stoneSideways = 3.0 + Billy.skystoneExtraSideways;// was 5
+                secondStoneBackup = 10.0 + cons.skystoneExtraBack;// was 8
             }
         }
 
         if(sideColor == -1) {
             if(stonePos.equals("Right")) {
 
-                stoneSideways = -14.5 + Billy.skystoneExtraSideways;// was -14
-                secondStoneBackup = 8.5 + cons.skystoneExtraBack;
+                stoneSideways = -14.5 + Billy.skystoneExtraSideways;// was -14.5
+                secondStoneBackup = 4.0 + cons.skystoneExtraBack;// was 8.5
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -6 + Billy.skystoneExtraSideways;
-                secondStoneBackup = 9 + cons.skystoneExtraBack;// was 8
+                stoneSideways = -7.0 + Billy.skystoneExtraSideways;//was -6
+                secondStoneBackup = 5.0 + cons.skystoneExtraBack;// was 9
             }
             if(stonePos.equals("Left")) {
 
-                stoneSideways = 5 + Billy.skystoneExtraSideways;
-                secondStoneBackup = 8 + cons.skystoneExtraBack;
+                stoneSideways = 2.0 + Billy.skystoneExtraSideways;// was 5
+                secondStoneBackup = 3.0 + cons.skystoneExtraBack;// was 8
             }
         }
         telemetry.addData("SkystonePos:", stonePos);
@@ -708,7 +710,7 @@ public class BasicAuto extends BasicOpMode {
         }
 
         telemetry.addData("robotHeading:","(%.2f)", Billy.robotHeading);
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,16, 0,"Forward 16 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, cons.forwardFirstMove, 0,"Forward 16 inches",this);
 
 //        pressAToContinue();
     }
@@ -1014,7 +1016,7 @@ public class BasicAuto extends BasicOpMode {
 //
 //        //pressAToContinue();
 //
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,cons.pHM.get("dropStoneForward").value + extraFwd, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 35+ inches",this);//was 48
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,cons.pHM.get("forwardFirstMove").value + extraFwd, cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value, "Forward 35+ inches",this);//was 48
 //
 //        //Drop stone with gripper
 ////        Billy.stoneServoLeft.setPosition(0.15);
@@ -1045,7 +1047,7 @@ public class BasicAuto extends BasicOpMode {
 //
 //        //pressAToContinue();
 //
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, cons.pHM.get("dropStoneForward").value + 35 + extraFwd,  "Forward 35+ inches",this);//was 48
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, cons.pHM.get("forwardFirstMove").value + 35 + extraFwd,  "Forward 35+ inches",this);//was 48
 //
 //        //Drop stone with gripper
 ////        Billy.stoneServoLeft.setPosition(0.15);
@@ -1056,7 +1058,7 @@ public class BasicAuto extends BasicOpMode {
 //
 //    public void getSecondStoneOld() {
 //
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-cons.pHM.get("dropStoneForward").value -35 - extraFwd - 24, "Backward to second stone",this);//was 48
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-cons.pHM.get("forwardFirstMove").value -35 - extraFwd - 24, "Backward to second stone",this);//was 48
 //
 //        Billy.driveGeneralPower(HardwareBilly.moveDirection.Rotate,(90 * sideColor), cons.pHM.get("rotatePowerLimit").value, cons.pHM.get("drivePowerMinimum").value,"Rotate 90 degrees CW",this);
 //
@@ -1080,7 +1082,7 @@ public class BasicAuto extends BasicOpMode {
 //
 //        //pressAToContinue();
 //
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,cons.pHM.get("dropStoneForward").value + 35 + extraFwd + 24,  "Forward with second stone",this);//was 48
+//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,cons.pHM.get("forwardFirstMove").value + 35 + extraFwd + 24,  "Forward with second stone",this);//was 48
 //
 //        //Drop stone with gripper
 ////        Billy.stoneServoLeft.setPosition(0.15);
@@ -1098,6 +1100,17 @@ public class BasicAuto extends BasicOpMode {
         telemetry.addData("sideColor Variable","%.2f",sideColor);
 
 //        pressAToContinue();
+
+        if(!drivingMiniBot) {
+
+            Billy.stoneServoLeft.setPosition(1);
+            Billy.stoneServoRight.setPosition(1);
+            sleep(400);// 0.400 of a second
+
+            Billy.slide.setPower(cons.pHM.get("slidePowerLimit").value);
+            sleep(350);// 0.350 of a second
+            Billy.slide.setPower(0);
+        }
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, stoneSideways * sideColor, 0, "Sideways to face stone",this);
 

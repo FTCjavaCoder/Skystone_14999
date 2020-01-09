@@ -26,8 +26,8 @@ public class FullDrive_Scaled_StickControl extends BasicTeleOp {
 
         Billy.initIMU(this);
 
-        Billy.armServoBlue.setPosition(0);
-        Billy.armServoRed.setPosition(1);
+        Billy.armServoBlue.setPosition(1);
+        Billy.armServoRed.setPosition(0);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -39,7 +39,8 @@ public class FullDrive_Scaled_StickControl extends BasicTeleOp {
 //            Billy.rotatePowerRightStick(gamepad1, gamepad2);
 
             // use the left stick on gamepad2 to raise/lower the jack
-            Billy.jackPower(gamepad1, gamepad2);
+//            Billy.jackPower(gamepad1, gamepad2);
+            Billy.jackPowerEncoderStop(gamepad1, gamepad2);
 
             // use the right stick on gamepad2 to extend/retract the slide
             Billy.slidePower(gamepad1, gamepad2);
@@ -89,10 +90,22 @@ public class FullDrive_Scaled_StickControl extends BasicTeleOp {
                 Billy.servoFoundationR.setPosition(0.20);
             }
 
-//            if (gamepad1.right_bumper && gamepad1.b) {
-//
-//                Billy.servoCapstoneRelease.setPosition(0);
-//            }
+            // SERVOS FOUNDATION
+            if(gamepad1.dpad_left) {
+
+                Billy.armServoBlue.setPosition(1);
+                Billy.armServoRed.setPosition(0);
+            }
+
+            // Not determined
+            if (gamepad2.left_trigger < 0) {
+
+                Billy.servoCapstoneRelease.setPosition(0);//
+            }
+            if (gamepad2.right_trigger < 0) {
+
+                Billy.servoCapstoneRelease.setPosition(1);//
+            }
 
             Billy.angleUnWrap();
 

@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="FullDrive", group="TeleOp")
-@Disabled
+
 public class FullDrive extends BasicTeleOp {
 
     @Override

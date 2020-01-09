@@ -51,16 +51,34 @@ public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
 
             }
 
-            multiTelemetry(telemetryOption);
+            if(Billy.jackStopSensor.isPressed()){
+                telemetry.addLine("TouchSensor Pressed");
+            }
+            if(Billy.jackStopSensor.getValue() == 0){
+                telemetry.addLine("TouchSensor Equals 0");
+            }
+            if(Billy.jackStopSensor.getValue() == 1){
+                telemetry.addLine("TouchSensor Equals 1");
+            }
+            if(Billy.jackStopSensor.getValue() > 0){
+                telemetry.addLine("TouchSensor > 0");
+            }
+            if(Billy.jackStopSensor.getValue() < 1){
+                telemetry.addLine("TouchSensor < 1");
+            }
 
-//            telemetry.addData("Status", "Run Time: ",runtime.toString());
-//            telemetry.addData("Robot Heading", "( %.2f )", Billy.robotHeading);
-//            telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
-//                    forwardDirection, rightDirection, clockwise);
-//            telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
-//                    Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(),
-//                    Billy.backRight.getPower());
-//            telemetry.update();
+//            multiTelemetry(telemetryOption);
+
+            telemetry.addData("Status", "Run Time: ",runtime.toString());
+            telemetry.addData("Touch Sensor", "%s", Billy.jackStopSensor.isPressed());
+            telemetry.addData("Touch Sensor Value", "%.2f", Billy.jackStopSensor.getValue());
+            telemetry.addData("Robot Heading", "( %.2f )", Billy.robotHeading);
+            telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
+                    forwardDirection, rightDirection, clockwise);
+            telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
+                    Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(),
+                    Billy.backRight.getPower());
+            telemetry.update();
 
             idle();
         }

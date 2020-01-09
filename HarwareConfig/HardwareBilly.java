@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.TouchSensorMultiplexer;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -47,9 +49,11 @@ public class HardwareBilly
     public Servo  stoneServoRight   = null;
     public Servo  armServoBlue    = null;
     public Servo  armServoRed   = null;
-//      public Servo  servoCapstoneRelease   = null;
+    public Servo  servoCapstoneRelease   = null;
 
     public Servo    stoneServoArm   = null;
+
+    public TouchSensor jackStopSensor = null;
 
     int targetPos[] = new int[4];
 
@@ -69,7 +73,7 @@ public class HardwareBilly
     public double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
     public double JACK_POWER_LIMIT = 0.75;
     public double SLIDE_POWER_LIMIT = 0.6;
-    public double dropStoneForward = 35;
+    public double forwardFirstMove = 14;
     public double skystoneExtraBack = 8;
     public double doRotateMethod = 0;
     public double skystoneExtraSideways = 0;
@@ -140,7 +144,7 @@ public class HardwareBilly
             TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
             JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
             SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            dropStoneForward = cons.dropStoneForward;
+            forwardFirstMove = cons.forwardFirstMove;
             skystoneExtraBack = cons.skystoneExtraBack;
             doRotateMethod = cons.doRotateMethod;
             skystoneExtraSideways = cons.skystoneExtraSideways;
@@ -169,7 +173,7 @@ public class HardwareBilly
 
             stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
             stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
-//        servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
+            servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
 
             //Define all installed sensors
 
@@ -205,7 +209,7 @@ public class HardwareBilly
             TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
             JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
             SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            dropStoneForward = cons.dropStoneForward;
+            forwardFirstMove = cons.forwardFirstMove;
             skystoneExtraBack = cons.skystoneExtraBack;
             doRotateMethod = cons.doRotateMethod;
             skystoneExtraSideways = cons.skystoneExtraSideways;
@@ -253,7 +257,7 @@ public class HardwareBilly
             TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
             JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
             SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            dropStoneForward = cons.dropStoneForward;
+            forwardFirstMove = cons.forwardFirstMove;
             skystoneExtraBack = cons.skystoneExtraBack;
             doRotateMethod = cons.doRotateMethod;
             skystoneExtraSideways = cons.skystoneExtraSideways;
@@ -274,6 +278,8 @@ public class HardwareBilly
 //            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
             armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
             armServoRed = hwMap.get(Servo.class, "red_arm_servo");
+
+            jackStopSensor = hwMap.get(TouchSensor.class, "touch_sensor");
 
             // Set up the parameters with which we will use our IMU. Note that integration
             // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -307,7 +313,7 @@ public class HardwareBilly
             TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
             JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
             SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            dropStoneForward = cons.dropStoneForward;
+            forwardFirstMove = cons.forwardFirstMove;
             skystoneExtraBack = cons.skystoneExtraBack;
             doRotateMethod = cons.doRotateMethod;
             skystoneExtraSideways = cons.skystoneExtraSideways;
@@ -601,13 +607,15 @@ public class HardwareBilly
     public void calcDistanceIMU(int[] driveDirection, BasicAuto om) {
         int deltaPos[] = new int[4];
         int adjustedPos[] = new int[4];
+        double rotationOffset;
+        double incrementalDistance;
 
         for(int i=0; i < 4; i++){
 
             deltaPos[i] = currentPos[i] - priorPos[i];
         }
 
-        double rotationOffset = (deltaPos[0] + deltaPos[1] + deltaPos[2] + deltaPos[3] ) / 4;
+        rotationOffset = (deltaPos[0] + deltaPos[1] + deltaPos[2] + deltaPos[3] ) / 4;
 
         for(int i = 0; i < 4; i++){
 
@@ -615,7 +623,7 @@ public class HardwareBilly
 
         }
 
-        double incrementalDistance = ((deltaPos[0] * driveDirection[0]) + (deltaPos[1] * driveDirection[1]) + (deltaPos[2] * driveDirection[2]) + (deltaPos[3] * driveDirection[3]) ) / 4;
+        incrementalDistance = ((deltaPos[0] * driveDirection[0]) + (deltaPos[1] * driveDirection[1]) + (deltaPos[2] * driveDirection[2]) + (deltaPos[3] * driveDirection[3])) / 4;
 
         distanceTraveled += incrementalDistance / om.cons.DEGREES_TO_COUNTS / om.cons.ROBOT_INCH_TO_MOTOR_DEG;
 
@@ -1107,10 +1115,11 @@ public class HardwareBilly
 
     }
 
-    public void drivePowerAllLeftStick(Gamepad g1, Gamepad g2) {
+    public void drivePowerAll(Gamepad g1, Gamepad g2) {
 
         forwardDirection = (-g1.left_stick_y) * TELEOP_DRIVE_POWER_LIMIT;
         rightDirection = (g1.left_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
+        clockwise = (g1.right_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
 
         frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
         frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
@@ -1118,21 +1127,23 @@ public class HardwareBilly
         backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
     }
 
-    public void rotatePowerRightStick(Gamepad g1, Gamepad g2) {
-
-        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
-
-        clockwise = Range.clip(clockwise, -TELEOP_ROTATE_POWER_LIMIT, TELEOP_ROTATE_POWER_LIMIT);
-
-    }
+//    public void rotatePowerRightStick(Gamepad g1, Gamepad g2) {
+//
+//        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
+//
+//        clockwise = Range.clip(clockwise, -TELEOP_ROTATE_POWER_LIMIT, TELEOP_ROTATE_POWER_LIMIT);
+//
+//    }
 
     public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2) {
+
+        double maxPower;
 
         forwardDirection = (-g1.left_stick_y) * TELEOP_DRIVE_POWER_LIMIT;
         rightDirection = (g1.left_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
         clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
 
-        double maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
+        maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
         if (maxPower < TELEOP_DRIVE_POWER_LIMIT) {
             maxPower = TELEOP_DRIVE_POWER_LIMIT;
@@ -1150,6 +1161,28 @@ public class HardwareBilly
         verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * JACK_POWER_LIMIT;
 
         jack.setPower(Range.clip(verticalDirection, -JACK_POWER_LIMIT, JACK_POWER_LIMIT));
+
+    }
+
+    public void jackPowerEncoderStop(Gamepad g1, Gamepad g2) {
+
+        double localJackPowerLimit;
+        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * JACK_POWER_LIMIT;
+
+        if(verticalDirection < 0 && jack.getCurrentPosition() < 2000) {
+            localJackPowerLimit = 0.3;
+            if(verticalDirection < 0 && jack.getCurrentPosition() < 1000){// could be 500??
+                verticalDirection = 0;
+            }
+        }
+        else {
+            localJackPowerLimit = JACK_POWER_LIMIT;
+        }
+//        if(jackStopSensor.isPressed() && verticalDirection < 0 ){
+//            verticalDirection = 0;
+//        }
+
+        jack.setPower(Range.clip(verticalDirection, -localJackPowerLimit, localJackPowerLimit));
 
     }
 

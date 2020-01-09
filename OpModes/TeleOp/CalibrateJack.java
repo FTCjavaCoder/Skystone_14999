@@ -23,8 +23,7 @@ public class CalibrateJack extends BasicTeleOp {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-//            Billy.jack.setPower(Range.clip(-gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2), -0.15, 0.15));
-//            Billy.jackRight.setPower(Range.clip(-gamepad2.right_stick_y * Math.pow(gamepad2.left_stick_y, 2), -0.15, 0.15));
+            Billy.jack.setPower(Range.clip(-gamepad2.left_stick_y * Math.pow(gamepad2.left_stick_y, 2), -0.15, 0.15));
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
             telemetry.addData("Commands Jack", "Vertical (%.2f)", verticalDirection);

@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="FullDrive Stick Control", group="TeleOp")
-@Disabled
+
 public class FullDrive_StickControl extends BasicTeleOp {
 
     @Override
@@ -27,17 +27,24 @@ public class FullDrive_StickControl extends BasicTeleOp {
 
         Billy.initIMU(this);
 
+        if(gamepad1.dpad_left) {
+
+            Billy.armServoBlue.setPosition(1);
+            Billy.armServoRed.setPosition(0);
+        }
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            Billy.drivePowerAllLeftStick(gamepad1, gamepad2);
+            Billy.drivePowerAll(gamepad1, gamepad2);
 
-            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
-            Billy.rotatePowerRightStick(gamepad1, gamepad2);
+//            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
+//            Billy.rotatePowerRightStick(gamepad1, gamepad2);
 
             // use the left stick on gamepad2 to raise/lower the jack
-            Billy.jackPower(gamepad1, gamepad2);
+//            Billy.jackPower(gamepad1, gamepad2);
+            Billy.jackPowerEncoderStop(gamepad1, gamepad2);
 
             // use the right stick on gamepad2 to extend/retract the slide
             Billy.slidePower(gamepad1, gamepad2);
@@ -87,10 +94,16 @@ public class FullDrive_StickControl extends BasicTeleOp {
                 Billy.servoFoundationR.setPosition(0.20);
             }
 
-//            if (gamepad1.right_bumper && gamepad1.b) {
-//
-//                Billy.servoCapstoneRelease.setPosition(0);
-//            }
+            if(gamepad1.dpad_left) {
+
+                Billy.armServoBlue.setPosition(1);
+                Billy.armServoRed.setPosition(0);
+            }
+
+            if (gamepad1.right_bumper && gamepad1.b) {
+
+                Billy.servoCapstoneRelease.setPosition(0);
+            }
 
             Billy.angleUnWrap();
 
