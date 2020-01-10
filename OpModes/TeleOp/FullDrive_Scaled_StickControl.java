@@ -97,15 +97,23 @@ public class FullDrive_Scaled_StickControl extends BasicTeleOp {
                 Billy.armServoRed.setPosition(0);
             }
 
-            // Not determined
-            if (gamepad2.left_trigger < 0) {
+            // Values Not determined
+            if (Math.abs(gamepad2.left_trigger) > 0) {
 
-                Billy.servoCapstoneRelease.setPosition(0);//
+                capstoneServoPosition -= 0.005;
+                Billy.servoCapstoneRelease.setPosition(capstoneServoPosition);//
             }
-            if (gamepad2.right_trigger < 0) {
+            if (Math.abs(gamepad2.right_trigger) > 0) {
 
-                Billy.servoCapstoneRelease.setPosition(1);//
+                capstoneServoPosition += 0.005;
+                Billy.servoCapstoneRelease.setPosition(capstoneServoPosition);//
             }
+            if (gamepad2.dpad_left) {
+
+                capstoneServoPosition = 0.15;
+                Billy.servoCapstoneRelease.setPosition(capstoneServoPosition);//
+            }
+
 
             Billy.angleUnWrap();
 

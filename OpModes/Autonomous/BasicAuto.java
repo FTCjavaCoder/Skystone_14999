@@ -56,14 +56,14 @@ public class BasicAuto extends BasicOpMode {
 
     public double secondStoneBackup = 8;
 
-    public double stoneArmUnderBridgeBlue = 1;// for blue oriented servo
-    public double stoneArmDownBlue = 0.45;// for blue oriented servo was 0.5
+    public double stoneArmUnderBridgeBlue = 0.65;// for blue oriented servo
+    public double stoneArmDownBlue = 0.05;// for blue oriented servo was 0.5
 
-    public double stoneArmInitBlue = 1;// for blue oriented servo was 0
-    public double stoneArmInitRed = 0;// for red oriented servo was 1
+    public double stoneArmInitBlue = 0.65;// for blue oriented servo was 0
+    public double stoneArmInitRed = 0.25;// for red oriented servo was 1
 
-    public double stoneArmUnderBridgeRed = 0;// for red oriented servo
-    public double stoneArmDownRed = 0.5;// for red oriented servo was 0.3
+    public double stoneArmUnderBridgeRed = 0.25;// for red oriented servo
+    public double stoneArmDownRed = 0.80;// for red oriented servo was 0.3
 
     public double vuforiaWaitTime = 1;// was 2 and then 0.5
 
@@ -136,12 +136,12 @@ public class BasicAuto extends BasicOpMode {
 
         drivingMiniBot = false;
         //Values For Full Robot
-        stoneArmInitBlue = 1;// for blue oriented servo
-        stoneArmInitRed = 0;// for red oriented servo
-        stoneArmUnderBridgeBlue = 1;// for blue oriented servo
-        stoneArmDownBlue = 0.45;// for blue oriented servo
-        stoneArmUnderBridgeRed = 0;// for red oriented servo
-        stoneArmDownRed = 0.5;// for red oriented servo (was 0.5, could adjust servo horn)
+        stoneArmInitBlue = 0.65;// for blue oriented servo
+        stoneArmInitRed = 0.25;// for red oriented servo
+        stoneArmUnderBridgeBlue = 0.65;// for blue oriented servo
+        stoneArmDownBlue = 0.05;// for blue oriented servo
+        stoneArmUnderBridgeRed = 0.25;// for red oriented servo
+        stoneArmDownRed = 0.80;// for red oriented servo (was 0.5, could adjust servo horn)
 
         Billy.init(hardwareMap, testModeActive,cons);
 
@@ -571,18 +571,18 @@ public class BasicAuto extends BasicOpMode {
                         degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
                         telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
 
-                        if ((translation.get(1) / mmPerInch) <= (-7.0 + cons.adjustVuforiaPhone)) {// FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
-                            telemetry.addData("Skystone status", "Left");// was RIGHT for camera on robot left
+                        if ((translation.get(1) / mmPerInch) <= (-7.0 + cons.adjustVuforiaPhone)) {                                                                                         // FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
+                            telemetry.addData("Skystone status", "Left");                                                                                                        // was RIGHT for camera on robot left
                             stonePos = "Left";
                             stoneSelect = 0;
                         }
-                        if ((translation.get(1) / mmPerInch) < (2.0 + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) > (-6.0 + cons.adjustVuforiaPhone)) {// FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
+                        if ((translation.get(1) / mmPerInch) < (2.0 + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) > (-6.0 + cons.adjustVuforiaPhone)) {                    // FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
                             telemetry.addData("Skystone status", "CENTER");
                             stonePos = "Center";
                             stoneSelect = 1;
                         }
-                        if ((translation.get(1) / mmPerInch) >= (2.0 + cons.adjustVuforiaPhone)) {// FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
-                            telemetry.addData("Skystone status", "Right");// was LEFT for camera on robot left
+                        if ((translation.get(1) / mmPerInch) >= (2.0 + cons.adjustVuforiaPhone)) {                                                                                        // FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
+                            telemetry.addData("Skystone status", "Right");                                                                                                      // was LEFT for camera on robot left
                             stonePos = "Right";
                             stoneSelect = 2;
                         }
@@ -613,17 +613,17 @@ public class BasicAuto extends BasicOpMode {
             if(stonePos.equals("Left")) {
 
                 stoneSideways = -13.0 + Billy.skystoneExtraSideways;// was -15
-                secondStoneBackup = 10.0 + cons.skystoneExtraBack;// was 8
+                secondStoneBackup = 14.0 + cons.skystoneExtraBack;// was 10 and 8
             }
             if(stonePos.equals("Center")) {
 
                 stoneSideways = -5.0 + Billy.skystoneExtraSideways;// was -6
-                secondStoneBackup = 8.0 + cons.skystoneExtraBack;
+                secondStoneBackup = 12.0 + cons.skystoneExtraBack;// ws 8
             }
             if(stonePos.equals("Right")) {
 
                 stoneSideways = 3.0 + Billy.skystoneExtraSideways;// was 5
-                secondStoneBackup = 10.0 + cons.skystoneExtraBack;// was 8
+                secondStoneBackup = 14.0 + cons.skystoneExtraBack;// was 10 and 8
             }
         }
 
@@ -631,17 +631,17 @@ public class BasicAuto extends BasicOpMode {
             if(stonePos.equals("Right")) {
 
                 stoneSideways = -14.5 + Billy.skystoneExtraSideways;// was -14.5
-                secondStoneBackup = 4.0 + cons.skystoneExtraBack;// was 8.5
+                secondStoneBackup = 8.0 + cons.skystoneExtraBack;// was 4 and 8.5
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -7.0 + Billy.skystoneExtraSideways;//was -6
-                secondStoneBackup = 5.0 + cons.skystoneExtraBack;// was 9
+                stoneSideways = -6.0 + Billy.skystoneExtraSideways;//was -7 too far right but got second stone
+                secondStoneBackup = 8.0 + cons.skystoneExtraBack;// was 9.0 and 5
             }
             if(stonePos.equals("Left")) {
 
                 stoneSideways = 2.0 + Billy.skystoneExtraSideways;// was 5
-                secondStoneBackup = 3.0 + cons.skystoneExtraBack;// was 8
+                secondStoneBackup = 7.0 + cons.skystoneExtraBack;// was 3 and 8
             }
         }
         telemetry.addData("SkystonePos:", stonePos);
@@ -1177,8 +1177,8 @@ public class BasicAuto extends BasicOpMode {
 
     public void getStone2() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,( -44 - stoneSideways - 24 ) * sideColor, -180 * sideColor, "Left 45+ inches",this);
-                                                                                // was 52
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,( -40 - stoneSideways - 24 ) * sideColor, -180 * sideColor, "Left 45+ inches",this);
+                                                                                // was 44
 //        pressAToContinue();
 
         Billy.IMUDriveRotate( -90 * sideColor, "Rotate 90 degrees CW",this);
@@ -1226,8 +1226,8 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (44 + stoneSideways + 24) * sideColor, -180 * sideColor, "Right with stone 2",this);
-                                                                            // was 52
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (40 + stoneSideways + 24) * sideColor, -180 * sideColor, "Right with stone 2",this);
+                                                                            // was 44
 //        pressAToContinue();
         //release skystone with servo arm
         if(sideColor == 1){Billy.armServoBlue.setPosition(stoneArmUnderBridgeBlue);}

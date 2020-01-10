@@ -3,6 +3,7 @@ package Skystone_14999.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import TestOpModesOffline.BNO055IMU;
 //import TestOpModesOffline.JustLoggingAccelerationIntegrator;
@@ -12,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.hardware.TouchSensorMultiplexer;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -49,7 +49,7 @@ public class HardwareBilly
     public Servo  stoneServoRight   = null;
     public Servo  armServoBlue    = null;
     public Servo  armServoRed   = null;
-    public Servo  servoCapstoneRelease   = null;
+    public Servo servoCapstoneRelease   = null;
 
     public Servo    stoneServoArm   = null;
 
@@ -279,7 +279,7 @@ public class HardwareBilly
             armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
             armServoRed = hwMap.get(Servo.class, "red_arm_servo");
 
-            jackStopSensor = hwMap.get(TouchSensor.class, "touch_sensor");
+//            jackStopSensor = hwMap.get(TouchSensor.class, "touch_sensor");
 
             // Set up the parameters with which we will use our IMU. Note that integration
             // algorithm here just reports accelerations to the logcat log; it doesn't actually

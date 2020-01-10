@@ -31,6 +31,8 @@ public class BasicTeleOp extends BasicOpMode {
     public double mineralBoxTrgtPos = 0;
     public double slidePwr = 0;
 
+    public double capstoneServoPosition = 0;
+
     public int telemetryOption = 1;
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
