@@ -1156,6 +1156,74 @@ public class HardwareBilly
 
     }
 
+    public void williamDrivePower(Gamepad g1, Gamepad g2) {
+
+        double maxPower;
+        double x;
+        double y;
+        double absY;
+        double absX;
+        double powerLimit;
+
+        x = g1.right_stick_x;
+        y = g1.left_stick_y;
+        absX = Math.abs(x);
+        absY = Math.abs(y);
+        powerLimit = TELEOP_DRIVE_POWER_LIMIT;
+
+        counterclockwiseDirection = (-g1.left_trigger * g1.left_trigger) * powerLimit;
+        clockwiseDirection = (g1.right_trigger * g1.right_trigger) * powerLimit;
+
+        forwardDirection = ((-y * Math.pow(absY, 2) * (1 - absY)) + (-y * absY)) * powerLimit;
+        rightDirection = ((x * Math.pow(absX, 2) * (1 - absX)) + (x * absX)) * powerLimit;
+
+        clockwise = (clockwiseDirection + counterclockwiseDirection) * powerLimit;
+
+        maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
+
+        if (maxPower < powerLimit) {
+            maxPower = powerLimit;
+        }
+
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+
+    }
+
+    public void weightedDrivePower(Gamepad g1, Gamepad g2) {
+
+        double maxPower;
+        double x;
+        double y;
+        double absY;
+        double absX;
+        double powerLimit;
+
+        x = g1.left_stick_x;
+        y = g1.left_stick_y;
+        absX = Math.abs(x);
+        absY = Math.abs(y);
+        powerLimit = TELEOP_DRIVE_POWER_LIMIT;
+
+        forwardDirection = ((-y * Math.pow(absY, 2) * (1 - absY)) + (-y * absY)) * powerLimit;
+        rightDirection = ((x * Math.pow(absX, 2) * (1 - absX)) + (x * absX)) * powerLimit;
+        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
+
+        maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
+
+        if (maxPower < powerLimit) {
+            maxPower = powerLimit;
+        }
+
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * powerLimit);
+
+    }
+
     public void jackPower(Gamepad g1, Gamepad g2) {
 
         verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * JACK_POWER_LIMIT;
