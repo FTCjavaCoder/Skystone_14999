@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="New Vuforia Test", group="Test")
-@Disabled
+//@Disabled
 public class NewVuforiaTest extends BasicAuto {
 
     @Override
@@ -73,6 +73,9 @@ public class NewVuforiaTest extends BasicAuto {
         vuforiaStoneLocate();
 
         telemetry.addLine("OpMode Complete");
-        sleep(2000);
+
+        telemetry.update();
+
+        sleep(5000);
     }
 }

@@ -13,7 +13,7 @@ import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Auto Driving Test", group="Test")
-@Disabled
+//@Disabled
 public class AutoDrivingTest extends BasicAuto {
 
     @Override
@@ -42,19 +42,19 @@ public class AutoDrivingTest extends BasicAuto {
 
         Billy.initIMU(this);
 
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 60, 0, "IMU Forward 60 Inches", this);
-//
-//        pressAToContinue();
-//        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -60, 0, "IMU Backward 60 Inches", this);
-//
-//        pressAToContinue();
-//        Billy.IMUDriveRotate(-90,"Rotate 90 deg CCW", this);
-
-//        pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 60, 0, "IMU Right 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 60, 0, "IMU Forward 60 Inches", this);
 
         pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -60, 0, "IMU Left 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -60, 0, "IMU Backward 60 Inches", this);
+
+        pressAToContinue();
+        Billy.IMUDriveRotate(-90,"Rotate 90 deg CCW", this);
+
+        pressAToContinue();
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 60, -90, "IMU Right 60 Inches", this);
+
+        pressAToContinue();
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -60, -90, "IMU Left 60 Inches", this);
 
 //        pressAToContinue();
 //        Billy.IMUDriveRotate(0,"Rotate 90 deg CW", this);
