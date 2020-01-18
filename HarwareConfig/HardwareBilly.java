@@ -96,6 +96,8 @@ public class HardwareBilly
     public int priorPos[] = new int[4];
     public double distanceTraveled = 0;
 
+    public double jackDirection = -1; // -1 for 20:1 gear box; +1 for the other gear boxes
+
     /* local OpMode members. */
     public Orientation angles;
 
@@ -1226,7 +1228,7 @@ public class HardwareBilly
 
     public void jackPower(Gamepad g1, Gamepad g2) {
 
-        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * JACK_POWER_LIMIT;
+        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * jackDirection * JACK_POWER_LIMIT;
 
         jack.setPower(Range.clip(verticalDirection, -JACK_POWER_LIMIT, JACK_POWER_LIMIT));
 
@@ -1234,18 +1236,32 @@ public class HardwareBilly
 
     public void jackPowerEncoderStop(Gamepad g1, Gamepad g2) {
 
-        double localJackPowerLimit;
-        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * JACK_POWER_LIMIT;
+        double localJackPowerLimit = JACK_POWER_LIMIT;
+        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2)) * jackDirection * JACK_POWER_LIMIT;
 
-        if(verticalDirection < 0 && jack.getCurrentPosition() < 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
-            localJackPowerLimit = 0.3;
-            if(verticalDirection < 0 && jack.getCurrentPosition() < 334){// was 1000 for original 60:1 motor and 667 for 40:1
-                verticalDirection = 0;
+        if (jackDirection < 0) {
+            if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
+                localJackPowerLimit = 0.3;
+                if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
+                    verticalDirection = 0;
+                }
+            }
+
+        }
+        else if (jackDirection > 0) {
+
+            if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
+                localJackPowerLimit = 0.3;
+                if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
+                    verticalDirection = 0;
+                }
             }
         }
         else {
             localJackPowerLimit = JACK_POWER_LIMIT;
-        }
+            }
+
+
 //        if(jackStopSensor.isPressed() && verticalDirection < 0 ){
 //            verticalDirection = 0;
 //        }
