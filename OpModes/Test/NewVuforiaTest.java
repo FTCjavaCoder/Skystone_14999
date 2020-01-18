@@ -1,6 +1,7 @@
 package Skystone_14999.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="New Vuforia Test", group="Test")
-
+@Disabled
 public class NewVuforiaTest extends BasicAuto {
 
     @Override

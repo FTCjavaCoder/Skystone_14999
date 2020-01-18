@@ -52,18 +52,18 @@ public class FullDrive_StickControl extends BasicTeleOp {
             //
             if (gamepad2.right_bumper) {
 
-                servoStonePos = Billy.stoneServoRight.getPosition() + 0.05;
+                servoStonePos = Billy.stoneServoRight.getPosition() + 0.005;// was 0.05 with 300 millisecond sleep
                 Range.clip(servoStonePos, 0.15, 1);
                 Billy.setServoPos(servoStonePos);
-                sleep(300);
+//                sleep(300);
             }
 
             if (gamepad2.left_bumper) {
 
-                servoStonePos = Billy.stoneServoRight.getPosition() - 0.05;
+                servoStonePos = Billy.stoneServoRight.getPosition() - 0.005;// was 0.05 with 300 millisecond sleep
                 Range.clip(servoStonePos, 0.15, 1);
                 Billy.setServoPos(servoStonePos);
-                sleep(300);
+//                sleep(300);
             }
 
             // sets the position of the servos to 8"

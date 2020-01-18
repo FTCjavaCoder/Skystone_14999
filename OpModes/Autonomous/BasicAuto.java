@@ -613,35 +613,35 @@ public class BasicAuto extends BasicOpMode {
             if(stonePos.equals("Left")) {
 
                 stoneSideways = -13.0 + Billy.skystoneExtraSideways;// was -15
-                secondStoneBackup = 14.0 + cons.skystoneExtraBack;// was 10 and 8
+                secondStoneBackup = 10.0 + cons.skystoneExtraBack;// was 14.0
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -5.0 + Billy.skystoneExtraSideways;// was -6
-                secondStoneBackup = 12.0 + cons.skystoneExtraBack;// ws 8
+                stoneSideways = -6.0 + Billy.skystoneExtraSideways;// was -5
+                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// ws 10.0
             }
             if(stonePos.equals("Right")) {
 
                 stoneSideways = 3.0 + Billy.skystoneExtraSideways;// was 5
-                secondStoneBackup = 14.0 + cons.skystoneExtraBack;// was 10 and 8
+                secondStoneBackup = 10.5 + cons.skystoneExtraBack;// was 11.0
             }
         }
 
         if(sideColor == -1) {
             if(stonePos.equals("Right")) {
 
-                stoneSideways = -14.5 + Billy.skystoneExtraSideways;// was -14.5
-                secondStoneBackup = 8.0 + cons.skystoneExtraBack;// was 4 and 8.5
+                stoneSideways = -14.0 + Billy.skystoneExtraSideways;// was -14.5
+                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 8.0
             }
             if(stonePos.equals("Center")) {
 
                 stoneSideways = -6.0 + Billy.skystoneExtraSideways;//was -7 too far right but got second stone
-                secondStoneBackup = 8.0 + cons.skystoneExtraBack;// was 9.0 and 5
+                secondStoneBackup = 9.0 + cons.skystoneExtraBack;// was 10.0
             }
             if(stonePos.equals("Left")) {
 
-                stoneSideways = 2.0 + Billy.skystoneExtraSideways;// was 5
-                secondStoneBackup = 7.0 + cons.skystoneExtraBack;// was 3 and 8
+                stoneSideways = 2.5 + Billy.skystoneExtraSideways;// was 2.0
+                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 7.0
             }
         }
         telemetry.addData("SkystonePos:", stonePos);
@@ -1144,7 +1144,7 @@ public class BasicAuto extends BasicOpMode {
         }
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-sideGrabStone / 2) * sideColor, -90 * sideColor, "Left 8 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-(sideGrabStone + cons.skystoneExtraStoneGrab) / 2) * sideColor, -90 * sideColor, "Left 8 inches",this);
 
 //        pressAToContinue();
 
@@ -1178,7 +1178,7 @@ public class BasicAuto extends BasicOpMode {
     public void getStone2() {
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,( -40 - stoneSideways - 24 ) * sideColor, -180 * sideColor, "Left 45+ inches",this);
-                                                                                // was 44
+                                                                                // was -44
 //        pressAToContinue();
 
         Billy.IMUDriveRotate( -90 * sideColor, "Rotate 90 degrees CW",this);
@@ -1214,7 +1214,7 @@ public class BasicAuto extends BasicOpMode {
         }
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-sideGrabStone/2) * sideColor, -90 * sideColor, "Left 8 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (-(sideGrabStone + cons.skystoneExtraStoneGrab) / 2) * sideColor, -90 * sideColor, "Left 8 inches",this);
 
 //        pressAToContinue();
 

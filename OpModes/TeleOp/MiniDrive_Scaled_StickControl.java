@@ -1,5 +1,6 @@
 package Skystone_14999.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
  */
 
 @TeleOp(name="MiniDrive Scaled Stick Control", group="TeleOp")
-
+@Disabled
 public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
 
     @Override

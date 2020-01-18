@@ -77,7 +77,7 @@ public class HardwareBilly
     public double skystoneExtraBack = 8;
     public double doRotateMethod = 0;
     public double skystoneExtraSideways = 0;
-    public double skystoneExtraStoneGrab = 0;
+    public double skystoneExtraStoneGrab = -1;
     public double adjustVuforiaPhone = 0;
 
     public double clockwise =0;
@@ -1014,7 +1014,7 @@ public class HardwareBilly
 
     public void moveJack(double height, double jackPowerLimit, String step, BasicOpMode om) {
 //        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-        int countDistance = (int) ( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!!
+        int countDistance = (int) ( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
 //        int startPosL;
 //        int startPosR;
         int jackZoneC = countDistance;// remove: = countDistance
@@ -1169,9 +1169,9 @@ public class HardwareBilly
         double localJackPowerLimit;
         verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * JACK_POWER_LIMIT;
 
-        if(verticalDirection < 0 && jack.getCurrentPosition() < 2000) {
+        if(verticalDirection < 0 && jack.getCurrentPosition() < 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
             localJackPowerLimit = 0.3;
-            if(verticalDirection < 0 && jack.getCurrentPosition() < 1000){// could be 500??
+            if(verticalDirection < 0 && jack.getCurrentPosition() < 334){// was 1000 for original 60:1 motor and 667 for 40:1
                 verticalDirection = 0;
             }
         }

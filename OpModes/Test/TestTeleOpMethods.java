@@ -1,11 +1,12 @@
 package Skystone_14999.OpModes.Test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import Skystone_14999.OpModes.TeleOp.BasicTeleOp;
 
 
 @TeleOp(name="Capstone Servo Test", group="TeleOp")
-
+@Disabled
 public class TestTeleOpMethods extends BasicTeleOp {
 
     public double StoneArmPosBlue = 0.5;

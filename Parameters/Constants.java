@@ -50,7 +50,7 @@ public class Constants {
     public double doRotateMethod = 0;
 
     public double skystoneExtraSideways = 0;
-    public double skystoneExtraStoneGrab = 0;
+    public double skystoneExtraStoneGrab = -1;
 
     public double adjustVuforiaPhone = 0;
 
@@ -123,7 +123,7 @@ public class Constants {
 
         pHM.put("skystoneExtraSideways", new ParameterHM(0, ParameterHM.instanceType.distanceInches));//
 
-        pHM.put("skystoneExtraStoneGrab", new ParameterHM(0, ParameterHM.instanceType.distanceInches));//
+        pHM.put("skystoneExtraStoneGrab", new ParameterHM(-2, ParameterHM.instanceType.distanceInches));// was 0 and unused to move more or less when pulling stone out
 
         pHM.put("adjustVuforiaPhone", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of phone to adjust values Vuforia uses to determine Left, Center, or Right
 
