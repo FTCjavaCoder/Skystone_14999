@@ -24,7 +24,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @Autonomous(name="SKYSTONE Vuforia Test", group ="Autonomous")
-@Disabled
+//@Disabled
 public class TestVuforiaSkyStone extends BasicAuto {
 
     @Override public void runOpMode() {

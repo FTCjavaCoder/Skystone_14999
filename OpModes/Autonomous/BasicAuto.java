@@ -390,8 +390,11 @@ public class BasicAuto extends BasicOpMode {
 
     public void vuforiaStoneIdentifyLoop() {
 
+        OpenGLMatrix pose = null;
+        VectorF translation = null;
+
         targetsSkyStone.activate();
-        while (!isStopRequested()) {
+        while (!gamepad1.dpad_up && opModeIsActive()) {
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
@@ -400,6 +403,14 @@ public class BasicAuto extends BasicOpMode {
                     telemetry.addData("Visible Target", trackable.getName());
                     targetVisible = true;
 
+                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
+                    if (pose != null) {
+                        translation = pose.getTranslation();
+                        telemetry.addData(trackable.getName() + " X Translation", translation.get(0) / mmPerInch);
+                        telemetry.addData(trackable.getName() + " Y Translation", translation.get(1) / mmPerInch);
+
+                    }
+
                     break;
                 }
 
@@ -407,6 +418,7 @@ public class BasicAuto extends BasicOpMode {
             if(!targetVisible) {
                 telemetry.addData("Visible Target", "none");
             }
+            telemetry.addLine("Press dpad up to exit");
             telemetry.update();
         }
         targetsSkyStone.deactivate();

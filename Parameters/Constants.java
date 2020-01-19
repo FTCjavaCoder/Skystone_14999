@@ -77,7 +77,7 @@ public class Constants {
     public final double adjRotate = 1.236;//NOT used because of using IMU to rotate to angle
     public final double adjRight = 1.079;//
 
-    public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT;// was BACK
+    public static VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT;// was BACK
     public static final String VUFORIA_KEY = " AUtTfjH/////AAAAGalBbST5Vkv8kqIoszZrsYOCBYcUVlFwYJ2rvrvVgm4ie/idQYx2x++SWi3UMEJnuP7Zww+cqOgyLepotRs9ppGxpCDcintIz0pIixMr+bievjJUDzdn0PyAJ6QUZK3xzoqDkTY1R99qvRORmTTqCx2/rGfYPlcOpdL5oWdhQsUatHyneF/eiWGBincPqBx3JfVwZnscF/B7J+u76YA4VTWLl8bl3iu26IYXMZE0zi7Pk+s9/pRQCCrLcxsvns4ouiSg3n61Z+jv8aS6y9ncwDdg0nm/XwDeiIrworkIPcPTW73LKpzX/63C1HprikXUJ+fm1eAkCfNy06n9SNTq20jxc7NXtGVUoE+WbNGmE4yb ";
 
 

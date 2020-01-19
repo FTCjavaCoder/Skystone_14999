@@ -19,6 +19,24 @@ public class NewVuforiaTest extends BasicAuto {
     @Override
     public void runOpMode() {
 
+        while(!gamepad1.x) {
+
+            if(gamepad1.a) {
+
+                cons.CAMERA_CHOICE = VuforiaLocalizer.CameraDirection.BACK;
+            }
+
+            if(gamepad1.b) {
+
+                cons.CAMERA_CHOICE = VuforiaLocalizer.CameraDirection.FRONT;
+            }
+
+            telemetry.addData("Current camera", cons.CAMERA_CHOICE);
+            telemetry.addLine("Press A to select BACK and B to select FRONT");
+            telemetry.addLine("Press X to exit");
+            telemetry.update();
+        }
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -70,12 +88,29 @@ public class NewVuforiaTest extends BasicAuto {
 
         runtime.reset();
 
-        vuforiaStoneLocate();
+        while(opModeIsActive()) {
+
+            vuforiaStoneIdentifyLoop();// press dpad up to exit
+
+            while(!gamepad1.dpad_right && opModeIsActive()) {
+
+                telemetry.addLine("Press Y for autonomous method and dpad right to go back to looped vuforia");
+                telemetry.update();
+
+                if(gamepad1.y) {
+
+                    vuforiaStoneLocateInches();
+
+                    telemetry.update();
+
+                    sleep(3000);
+                }
+            }
+
+        }
 
         telemetry.addLine("OpMode Complete");
 
         telemetry.update();
-
-        sleep(5000);
     }
 }
