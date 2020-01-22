@@ -1199,19 +1199,24 @@ public class HardwareBilly
         double maxPower;
         double x;
         double y;
+        double RX;
         double absY;
         double absX;
+        double absRX;
         double powerLimit;
 
         x = g1.left_stick_x;
-        y = g1.left_stick_y;
+        y = -g1.left_stick_y;
+        RX = g1.right_stick_x;
         absX = Math.abs(x);
         absY = Math.abs(y);
+        absRX = Math.abs(RX);
         powerLimit = TELEOP_DRIVE_POWER_LIMIT;
 
-        forwardDirection = ((-y * Math.pow(absY, 2) * (1 - absY)) + (-y * absY)) * powerLimit;
+        forwardDirection = ((y * Math.pow(absY, 2) * (1 - absY)) + (y * absY)) * powerLimit;
         rightDirection = ((x * Math.pow(absX, 2) * (1 - absX)) + (x * absX)) * powerLimit;
-        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
+//        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
+        clockwise = ((RX * Math.pow(absRX, 2) * (1 - absRX)) + (RX * absRX)) * TELEOP_ROTATE_POWER_LIMIT;
 
         maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
