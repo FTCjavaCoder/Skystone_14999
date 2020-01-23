@@ -69,12 +69,20 @@ public class FullDrive_Scaled_StickControl extends BasicTeleOp {
                 sleep(300);
             }
 
+            // sets the position of the servos to 4"
+            if (gamepad2.y) {
+                servoStonePos = 1;
+                Billy.setServoPos(servoStonePos);
+                sleep(300);
+            }
+
             // sets the position of the servos to open
             if (gamepad2.b) {
                 servoStonePos = 0.15;
                 Billy.setServoPos(servoStonePos);
                 sleep(300);
             }
+
 
             // SERVOS FOUNDATION
             if(gamepad1.dpad_up) {

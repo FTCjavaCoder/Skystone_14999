@@ -73,7 +73,7 @@ public class HardwareBilly
     public double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
     public double JACK_POWER_LIMIT = 0.75;
     public double SLIDE_POWER_LIMIT = 0.6;
-    public double forwardFirstMove = 14;
+    public double forwardFirstMove = 13;
     public double skystoneExtraBack = 8;
     public double doRotateMethod = 0;
     public double skystoneExtraSideways = 0;

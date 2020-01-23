@@ -44,7 +44,7 @@ public class Constants {
 
 //    public final double TURN_POWER =  0.40;
 
-    public double forwardFirstMove = 14;
+    public double forwardFirstMove = 13;
     public double skystoneExtraBack = 8;
 
     public double doRotateMethod = 0;
@@ -115,7 +115,7 @@ public class Constants {
 
         pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
 
-        pHM.put("forwardFirstMove", new ParameterHM(14, ParameterHM.instanceType.distanceInches));// For forward before Vuforia in 2 stone (was forwardFirstMove)
+        pHM.put("forwardFirstMove", new ParameterHM(13, ParameterHM.instanceType.distanceInches));// For forward before Vuforia in 2 stone (was forwardFirstMove)
 
         pHM.put("skystoneExtraBack", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
 
