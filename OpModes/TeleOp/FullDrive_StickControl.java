@@ -27,11 +27,8 @@ public class FullDrive_StickControl extends BasicTeleOp {
 
         Billy.initIMU(this);
 
-        if(gamepad1.dpad_left) {
-
-            Billy.armServoBlue.setPosition(1);
-            Billy.armServoRed.setPosition(0);
-        }
+            Billy.armServoBlue.setPosition(0.6);
+            Billy.armServoRed.setPosition(0.15);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -102,9 +99,8 @@ public class FullDrive_StickControl extends BasicTeleOp {
             }
 
             if(gamepad1.dpad_left) {
-
-                Billy.armServoBlue.setPosition(1);
-                Billy.armServoRed.setPosition(0);
+                Billy.armServoBlue.setPosition(0.6);
+                Billy.armServoRed.setPosition(0.15);
             }
 
 //            if (gamepad1.right_bumper && gamepad1.b) {

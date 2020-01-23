@@ -26,14 +26,15 @@ public class FullDrive_Scaled_StickControl extends BasicTeleOp {
 
         Billy.initIMU(this);
 
-        Billy.armServoBlue.setPosition(1);
-        Billy.armServoRed.setPosition(0);
+        Billy.armServoBlue.setPosition(0.6);
+        Billy.armServoRed.setPosition(0.15);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            Billy.drivePowerAllLeftStickScaled(gamepad1, gamepad2);
+//            Billy.drivePowerAllLeftStickScaled(gamepad1, gamepad2);
+            Billy.drivePowerAllLeftStickScaledSquared(gamepad1, gamepad2);
 
 //            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
 //            Billy.rotatePowerRightStick(gamepad1, gamepad2);

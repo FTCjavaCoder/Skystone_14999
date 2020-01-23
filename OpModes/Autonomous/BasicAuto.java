@@ -31,7 +31,7 @@ public class BasicAuto extends BasicOpMode {
 
     public double extraFwd = 0;
     public double stoneSideways = 0;
-    public double sideGrabStone = 19;// was 18
+    public double sideGrabStone = 19;// was 18 {} decide how to make robo tmove forward and still grab stones
     public double foundationPosChange = 0;// 26 for unmoved Foundation, 0 for moved Foundation
     public double insideOutside = 0;// 0 for Inside, 24 for Outside
     public double foundationInOut = 0;// 0 for Inside, 26 for Outside
@@ -608,10 +608,20 @@ public class BasicAuto extends BasicOpMode {
 
         }
         if(stonePos.equals("Unknown") || stoneSelect == -1) /*NOT Visible*/ {
-            telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
-            stonePos = "Left";
-            stoneSelect = 0;
-            telemetry.update();
+
+            if(sideColor == -1) {
+                telemetry.addData("Skystone status", "Not Visible: Right");// was RIGHT for camera on robot left
+                stonePos = "Right";
+                stoneSelect = 2;
+                telemetry.update();
+
+            }
+            else {
+                telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
+                stonePos = "Left";
+                stoneSelect = 0;
+                telemetry.update();
+            }
         }
 
         telemetry.addData("SkystonePos", stonePos);
@@ -625,35 +635,35 @@ public class BasicAuto extends BasicOpMode {
             if(stonePos.equals("Left")) {
 
                 stoneSideways = -10.0 + Billy.skystoneExtraSideways;// was -13
-                secondStoneBackup = 14.5 + cons.skystoneExtraBack;// was 14.0
+                secondStoneBackup = 13.0 + cons.skystoneExtraBack;// was 14.5
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -3.0 + Billy.skystoneExtraSideways;// was -6
-                secondStoneBackup = 16.0 + cons.skystoneExtraBack;// ws 11.0
+                stoneSideways = -2.0 + Billy.skystoneExtraSideways;// was -3.0
+                secondStoneBackup = 15.0 + cons.skystoneExtraBack;// ws 16.0
             }
             if(stonePos.equals("Right")) {
 
-                stoneSideways = 7.0 + Billy.skystoneExtraSideways;// was 3
-                secondStoneBackup = 16.5 + cons.skystoneExtraBack;// was 11.0
+                stoneSideways = 6.0 + Billy.skystoneExtraSideways;// was 8.0
+                secondStoneBackup = 14.0 + cons.skystoneExtraBack;// was 12.0
             }
         }
 
         if(sideColor == -1) {
             if(stonePos.equals("Right")) {
 
-                stoneSideways = -12.0 + Billy.skystoneExtraSideways;// was -14
-                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 8.0
+                stoneSideways = -17.0 + Billy.skystoneExtraSideways;// was -12.0
+                secondStoneBackup = 8.0 + cons.skystoneExtraBack;// was 11.0
             }
             if(stonePos.equals("Center")) {
 
-                stoneSideways = -12.0 + Billy.skystoneExtraSideways;//was -6
+                stoneSideways = -10.0 + Billy.skystoneExtraSideways;//was -12.0
                 secondStoneBackup = 9.0 + cons.skystoneExtraBack;// was 10.0
             }
             if(stonePos.equals("Left")) {
 
-                stoneSideways = 0 + Billy.skystoneExtraSideways;// was 2.5
-                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 7.0
+                stoneSideways = -3.0 + Billy.skystoneExtraSideways;// was -4.0
+                secondStoneBackup = 7.5 + cons.skystoneExtraBack;// was 9.0
             }
         }
         telemetry.addData("SkystonePos:", stonePos);
@@ -1164,8 +1174,8 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (52 + stoneSideways) * sideColor, -180 * sideColor, "Right 52+ inches",this);
-                                                                            // was 48
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (46 + stoneSideways) * sideColor, -180 * sideColor, "Right 52+ inches",this);
+                                                                            // was 52
 //        pressAToContinue();
 
         //release skystone with servo arm
@@ -1189,8 +1199,8 @@ public class BasicAuto extends BasicOpMode {
 
     public void getStone2() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,( -40 - stoneSideways - 24 ) * sideColor, -180 * sideColor, "Left 45+ inches",this);
-                                                                                // was -44
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,( -34 - stoneSideways - 24 ) * sideColor, -180 * sideColor, "Left 45+ inches",this);
+                                                                                // was -40
 //        pressAToContinue();
 
         Billy.IMUDriveRotate( -90 * sideColor, "Rotate 90 degrees CW",this);
@@ -1238,8 +1248,8 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (40 + stoneSideways + 24) * sideColor, -180 * sideColor, "Right with stone 2",this);
-                                                                            // was 44
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, (34 + stoneSideways + 24) * sideColor, -180 * sideColor, "Right with stone 2",this);
+                                                                            // was 40
 //        pressAToContinue();
         //release skystone with servo arm
         if(sideColor == 1){Billy.armServoBlue.setPosition(stoneArmUnderBridgeBlue);}
@@ -1262,7 +1272,16 @@ public class BasicAuto extends BasicOpMode {
 
     public void twoStonePark() {
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-16 * sideColor, -180 * sideColor, "Left 10 inches",this);
+        if(sideColor == 1) {
+
+            Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-16 * sideColor, -180 * sideColor, "Left 10 inches",this);
+
+        }
+        if(sideColor == -1) {
+
+            Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-8 * sideColor, -180 * sideColor, "Left 10 inches",this);
+
+        }
 
     }
 
