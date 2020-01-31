@@ -128,6 +128,12 @@ public class Weighted_Teleop extends BasicTeleOp {
                 setJackHeightPos = Range.clip(setJackHeightPos, 0, 30);
 
             }
+
+            if (gamepad2.dpad_right) {
+
+                Billy.moveJackTeleOp(1, 0.4, "Raising Jack to the next level",this);
+            }
+
             if (gamepad2.dpad_down) {
 
                 setJackHeightPos -= 5;
