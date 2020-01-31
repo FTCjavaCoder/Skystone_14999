@@ -27,11 +27,8 @@ public class FullDrive_StickControl extends BasicTeleOp {
 
         Billy.initIMU(this);
 
-        if(gamepad1.dpad_left) {
-
-            Billy.armServoBlue.setPosition(1);
-            Billy.armServoRed.setPosition(0);
-        }
+            Billy.armServoBlue.setPosition(0.6);
+            Billy.armServoRed.setPosition(0.15);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -70,21 +67,21 @@ public class FullDrive_StickControl extends BasicTeleOp {
             if (gamepad2.a) {
                 servoStonePos = 0.5;
                 Billy.setServoPos(servoStonePos);
-                sleep(300);
+//                sleep(300);
             }
 
             // sets the position of the servos to 4"
             if (gamepad2.y) {
                 servoStonePos = 1;
                 Billy.setServoPos(servoStonePos);
-                sleep(300);
+//                sleep(300);
             }
 
             // sets the position of the servos to open
             if (gamepad2.b) {
                 servoStonePos = 0.15;
                 Billy.setServoPos(servoStonePos);
-                sleep(300);
+//                sleep(300);
             }
 
             // SERVOS FOUNDATION
@@ -102,9 +99,8 @@ public class FullDrive_StickControl extends BasicTeleOp {
             }
 
             if(gamepad1.dpad_left) {
-
-                Billy.armServoBlue.setPosition(1);
-                Billy.armServoRed.setPosition(0);
+                Billy.armServoBlue.setPosition(0.6);
+                Billy.armServoRed.setPosition(0.15);
             }
 
 //            if (gamepad1.right_bumper && gamepad1.b) {

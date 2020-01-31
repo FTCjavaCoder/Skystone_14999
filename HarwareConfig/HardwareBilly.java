@@ -1158,6 +1158,27 @@ public class HardwareBilly
 
     }
 
+    public void drivePowerAllLeftStickScaledSquared(Gamepad g1, Gamepad g2) {
+
+        double maxPower;
+
+        forwardDirection = (-g1.left_stick_y * Math.abs(g1.left_stick_y)) * TELEOP_DRIVE_POWER_LIMIT;
+        rightDirection = (g1.left_stick_x * Math.abs(g1.left_stick_x)) * TELEOP_DRIVE_POWER_LIMIT;
+        clockwise = (g1.right_stick_x * Math.abs(g1.right_stick_x)) * TELEOP_ROTATE_POWER_LIMIT;
+
+        maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
+
+        if (maxPower < TELEOP_DRIVE_POWER_LIMIT) {
+            maxPower = TELEOP_DRIVE_POWER_LIMIT;
+        }
+
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+
+    }
+
     public void williamDrivePower(Gamepad g1, Gamepad g2) {
 
         double maxPower;

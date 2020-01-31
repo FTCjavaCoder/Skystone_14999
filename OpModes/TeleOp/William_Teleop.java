@@ -26,8 +26,8 @@ public class William_Teleop extends BasicTeleOp {
 
         Billy.initIMU(this);
 
-        Billy.armServoBlue.setPosition(1);
-        Billy.armServoRed.setPosition(0);
+        Billy.armServoBlue.setPosition(0.6);
+        Billy.armServoRed.setPosition(0.15);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -61,6 +61,13 @@ public class William_Teleop extends BasicTeleOp {
             // sets the position of the servos to 8"
             if (gamepad2.a) {
                 servoStonePos = 0.5;
+                Billy.setServoPos(servoStonePos);
+                sleep(300);
+            }
+
+            // sets the position of the servos to 4"
+            if (gamepad2.y) {
+                servoStonePos = 1;
                 Billy.setServoPos(servoStonePos);
                 sleep(300);
             }
