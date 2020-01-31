@@ -97,6 +97,8 @@ public class HardwareBilly
     public double distanceTraveled = 0;
 
     public double jackDirection = -1; // -1 for 20:1 gear box; +1 for the other gear boxes
+    public int jackZoneCTeleOp =0;
+    public int countDistance = 0;
 
     /* local OpMode members. */
     public Orientation angles;
@@ -1023,10 +1025,10 @@ public class HardwareBilly
 
 //        startPosL = jack.getCurrentPosition();
 //        startPosR = jackRight.getCurrentPosition();
-//        jack.setPower(jackPowerLimit);
-//        jack.setTargetPosition(countDistance);
+        jack.setPower(jackPowerLimit);
+        jack.setTargetPosition(countDistance);
 
-//        jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
+        jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
 
         while((jackZoneC > MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
 
@@ -1040,10 +1042,29 @@ public class HardwareBilly
 
             om.idle();
         }
-//        jack.setPower(0);
+        jack.setPower(0);
 
         om.telemetry.addLine("Jack Motion Done");
     }
+
+    public void moveJackTeleOp(double height, double jackPowerLimit, String step, BasicOpMode om) {
+//        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
+        countDistance = (int) ( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
+
+        jack.setPower(jackPowerLimit);
+        jack.setTargetPosition(countDistance);
+
+    }
+
+    public void moveJackInOpMode(BasicOpMode om) {
+
+        jackZoneCTeleOp = Math.abs(countDistance - jack.getCurrentPosition() );
+
+        if (!(jackZoneCTeleOp > MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
+            jack.setPower(0);
+        }
+    }
+
 
     public void driveRotateIMU(double angle, double powerLimit, String step, BasicAuto om) {
 

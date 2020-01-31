@@ -30,6 +30,7 @@ public class BasicTeleOp extends BasicOpMode {
     public double desiredRotate = 0;
     public double mineralBoxTrgtPos = 0;
     public double slidePwr = 0;
+    public double setJackHeightPos = 3;
 
     public double capstoneServoPosition = 0;
 
@@ -41,7 +42,6 @@ public class BasicTeleOp extends BasicOpMode {
     public void runOpMode() {
 
     }
-
 
     public void initializeTeleOp() {
 

@@ -121,6 +121,26 @@ public class Weighted_Teleop extends BasicTeleOp {
                 Billy.servoCapstoneRelease.setPosition(capstoneServoPosition);//
             }
 
+            if (gamepad2.dpad_up) {
+                Billy.moveJackTeleOp(setJackHeightPos, 0.4, "Raising Jack to the next level",this);
+
+                setJackHeightPos += 5;
+                setJackHeightPos = Range.clip(setJackHeightPos, 0, 30);
+
+            }
+            if (gamepad2.dpad_down) {
+
+                setJackHeightPos -= 5;
+                setJackHeightPos = Range.clip(setJackHeightPos, 0, 30);
+
+                Billy.moveJackTeleOp(setJackHeightPos, 0.4, "Raising Jack to the next level",this);
+
+                setJackHeightPos += 5;
+                setJackHeightPos = Range.clip(setJackHeightPos, 0, 30);
+
+            }
+
+            Billy.moveJackInOpMode(this);
 
             Billy.angleUnWrap();
 
