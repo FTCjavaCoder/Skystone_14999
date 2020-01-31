@@ -1065,7 +1065,6 @@ public class HardwareBilly
         }
     }
 
-
     public void driveRotateIMU(double angle, double powerLimit, String step, BasicAuto om) {
 
         double error;
