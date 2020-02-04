@@ -23,6 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 import Skystone_14999.OpModes.BasicOpMode;
+import Skystone_14999.OpModes.TeleOp.BasicTeleOp;
 import Skystone_14999.Parameters.Constants;
 
 /*
@@ -59,27 +60,6 @@ public class HardwareBilly
 
     public enum moveDirection {FwdBack, RightLeft, Rotate}
 
-    public double DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-    public double ROTATE_POWER_LIMIT = 1;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-    public double DRIVE_POWER_MINIMUM = 0.1;
-    public double STEERING_POWER_LIMIT = 0.5;
-    public double STEERING_POWER_GAIN = 0.1;
-    public double POWER_GAIN = 0.2;
-    public double ROTATE_POWER_GAIN = 0.02;
-    public double IMU_ROTATE_TOL = 1.0;
-    public double IMU_DISTANCE_TOL = 1.0;
-    public int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
-    public double TELEOP_DRIVE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-    public double TELEOP_ROTATE_POWER_LIMIT = 1;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-    public double JACK_POWER_LIMIT = 0.75;
-    public double SLIDE_POWER_LIMIT = 0.6;
-    public double forwardFirstMove = 13;
-    public double skystoneExtraBack = 8;
-    public double doRotateMethod = 0;
-    public double skystoneExtraSideways = 0;
-    public double skystoneExtraStoneGrab = -1;
-    public double adjustVuforiaPhone = 0;
-
     public double clockwise =0;
     public double forwardDirection =0;
     public double rightDirection =0;
@@ -109,7 +89,7 @@ public class HardwareBilly
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap, boolean tm, Constants cons) {
+    public void init(HardwareMap ahwMap, boolean tm) {
         // Save reference to Hardware map
         if(tm) {
 
@@ -133,27 +113,6 @@ public class HardwareBilly
 //            imu = new TestOpModesOffline.BNO055IMU();
 //            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
 //            imu.initialize(parameters);
-
-            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-            POWER_GAIN = cons.POWER_GAIN;
-            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            forwardFirstMove = cons.forwardFirstMove;
-            skystoneExtraBack = cons.skystoneExtraBack;
-            doRotateMethod = cons.doRotateMethod;
-            skystoneExtraSideways = cons.skystoneExtraSideways;
-            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
-            adjustVuforiaPhone = cons.adjustVuforiaPhone;
 
         }
         else {
@@ -199,31 +158,11 @@ public class HardwareBilly
             imu = hwMap.get(BNO055IMU.class, "imu");
             imu.initialize(parameters);
 
-            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-            POWER_GAIN = cons.POWER_GAIN;
-            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            forwardFirstMove = cons.forwardFirstMove;
-            skystoneExtraBack = cons.skystoneExtraBack;
-            doRotateMethod = cons.doRotateMethod;
-            skystoneExtraSideways = cons.skystoneExtraSideways;
-            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
-            adjustVuforiaPhone = cons.adjustVuforiaPhone;
         }
 
     }
 
-    public void initMiniBot(HardwareMap ahwMap, boolean tm, Constants cons) {
+    public void initMiniBot(HardwareMap ahwMap, boolean tm) {
 
         if(tm) {
 
@@ -246,27 +185,6 @@ public class HardwareBilly
 //            imu = new TestOpModesOffline.BNO055IMU();
 //            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
 //            imu.initialize(parameters);
-
-            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-            POWER_GAIN = cons.POWER_GAIN;
-            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            forwardFirstMove = cons.forwardFirstMove;
-            skystoneExtraBack = cons.skystoneExtraBack;
-            doRotateMethod = cons.doRotateMethod;
-            skystoneExtraSideways = cons.skystoneExtraSideways;
-            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
-            adjustVuforiaPhone = cons.adjustVuforiaPhone;
 
         }
         else {
@@ -303,26 +221,6 @@ public class HardwareBilly
             imu = hwMap.get(BNO055IMU.class, "imu");
             imu.initialize(parameters);
 
-            DRIVE_POWER_LIMIT = cons.DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit
-            ROTATE_POWER_LIMIT = cons.ROTATE_POWER_LIMIT;//clockwise rotation power/speed to be converted to individual motor powers/speeds
-            DRIVE_POWER_MINIMUM = cons.DRIVE_POWER_MINIMUM;
-            STEERING_POWER_LIMIT = cons.STEERING_POWER_LIMIT;
-            STEERING_POWER_GAIN = cons.STEERING_POWER_GAIN;
-            POWER_GAIN = cons.POWER_GAIN;
-            ROTATE_POWER_GAIN = cons.ROTATE_POWER_GAIN;
-            IMU_ROTATE_TOL = cons.IMU_ROTATE_TOL;
-            IMU_DISTANCE_TOL = cons.IMU_DISTANCE_TOL;
-            MOVE_TOL = cons.MOVE_TOL;// tolerance for motor reaching final positions in drive methods
-            TELEOP_DRIVE_POWER_LIMIT = cons.TELEOP_DRIVE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            TELEOP_ROTATE_POWER_LIMIT = cons.TELEOP_ROTATE_POWER_LIMIT;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
-            JACK_POWER_LIMIT = cons.JACK_POWER_LIMIT;
-            SLIDE_POWER_LIMIT = cons.SLIDE_POWER_LIMIT;
-            forwardFirstMove = cons.forwardFirstMove;
-            skystoneExtraBack = cons.skystoneExtraBack;
-            doRotateMethod = cons.doRotateMethod;
-            skystoneExtraSideways = cons.skystoneExtraSideways;
-            skystoneExtraStoneGrab = cons.skystoneExtraStoneGrab;
-            adjustVuforiaPhone = cons.adjustVuforiaPhone;
         }
 
     }
@@ -407,7 +305,7 @@ public class HardwareBilly
 
         calcDistanceIMU(driveDirection, om);
 
-        double steeringPower = calcSteeringPowerIMU(targetAngle);
+        double steeringPower = calcSteeringPowerIMU(targetAngle, om);
 
         om.updateIMU();
 
@@ -415,7 +313,7 @@ public class HardwareBilly
 
         for (int i = 0; i < 4; i++) {
 
-            prePower[i] = Range.clip(((scaledDistance - distanceTraveled) * driveDirection[i]) * POWER_GAIN, -DRIVE_POWER_LIMIT, DRIVE_POWER_LIMIT) + steeringPower;
+            prePower[i] = Range.clip(((scaledDistance - distanceTraveled) * driveDirection[i]) * om.cons.POWER_GAIN, -om.cons.DRIVE_POWER_LIMIT, om.cons.DRIVE_POWER_LIMIT) + steeringPower;
 
         }
 
@@ -423,32 +321,32 @@ public class HardwareBilly
         double maxRight = Math.max(Math.abs(prePower[1]), Math.abs(prePower[2]));
         double max = Math.max(maxLeft, maxRight);
 
-        if (DRIVE_POWER_LIMIT >= max) {
+        if (om.cons.DRIVE_POWER_LIMIT >= max) {
 
             max = 1;
         }
 
         for (int i = 0; i < 4; i++) {
 
-            prePower[i] = Range.clip(Math.abs(prePower[i] / max), DRIVE_POWER_MINIMUM, DRIVE_POWER_LIMIT) * Math.signum(prePower[i]);
+            prePower[i] = Range.clip(Math.abs(prePower[i] / max), om.cons.DRIVE_POWER_MINIMUM, om.cons.DRIVE_POWER_LIMIT) * Math.signum(prePower[i]);
 
         }
 
         setMotorPowerArray(prePower);
 
-        while ((Math.abs(scaledDistance - distanceTraveled) > IMU_DISTANCE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
+        while ((Math.abs(scaledDistance - distanceTraveled) > om.cons.IMU_DISTANCE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
 
             currentPos = motorStartPos();
 
             calcDistanceIMU(driveDirection, om);
 
-            steeringPower = calcSteeringPowerIMU(targetAngle);
+            steeringPower = calcSteeringPowerIMU(targetAngle, om);
 
             om.updateIMU();
 
             for (int i = 0; i < 4; i++) {
 
-                prePower[i] = Range.clip(((scaledDistance - distanceTraveled) * driveDirection[i]) * POWER_GAIN, -DRIVE_POWER_LIMIT, DRIVE_POWER_LIMIT) + steeringPower;
+                prePower[i] = Range.clip(((scaledDistance - distanceTraveled) * driveDirection[i]) * om.cons.POWER_GAIN, -om.cons.DRIVE_POWER_LIMIT, om.cons.DRIVE_POWER_LIMIT) + steeringPower;
 
             }
 
@@ -456,7 +354,7 @@ public class HardwareBilly
             maxRight = Math.max(Math.abs(prePower[1]), Math.abs(prePower[2]));
             max = Math.max(maxLeft, maxRight);
 
-            if (DRIVE_POWER_LIMIT >= max) {
+            if (om.cons.DRIVE_POWER_LIMIT >= max) {
 
                 max = 1;
             }
@@ -466,7 +364,7 @@ public class HardwareBilly
                 //*************** MODIFIED POWER CLIP FOR setPower TO HAVE DRIVE_POWER_MINIMUM ************************************
 
 //                prePower[i] = prePower[i] / max;//NOT LIMITED TO DRIVE_POWER_MINIMUM
-                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max), DRIVE_POWER_MINIMUM, DRIVE_POWER_LIMIT);
+                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max), om.cons.DRIVE_POWER_MINIMUM, om.cons.DRIVE_POWER_LIMIT);
                 //*************** MODIFIED POWER CLIP FOR setPower TO HAVE DRIVE_POWER_MINIMUM ************************************
             }
             //*************** MODIFIED TO setPower  ************************************
@@ -482,7 +380,7 @@ public class HardwareBilly
                     currentPos[0], currentPos[1], currentPos[2], currentPos[3]);
             om.telemetry.addData("Motor Power: ", "FL (%.2f) FR (%.2f) BR (%.2f) BL (%.2f)",
                     setPower[0], setPower[1], setPower[2], setPower[3]);
-            om.telemetry.addData("Steering ", "Power: %.2f, Gain: %.3f", steeringPower, STEERING_POWER_GAIN);
+            om.telemetry.addData("Steering ", "Power: %.2f, Gain: %.3f", steeringPower, om.cons.STEERING_POWER_GAIN);
             om.telemetry.addData("Distance Moved: ", "%.2f", distanceTraveled);
             om.telemetry.addData("Time: ", om.runtime);
             om.telemetry.update();
@@ -506,7 +404,7 @@ public class HardwareBilly
         om.telemetry.update();
         //*************** MODIFIED TELEMETRY FOR DEBUGGING ************************************
 
-        if (doRotateMethod == 1) {
+        if (om.cons.doRotateMethod == 1) {
             IMUDriveRotate(targetAngle, "Post move Rotate", om);//********NEW*********
         }
     }
@@ -542,15 +440,15 @@ public class HardwareBilly
 
         for(int i = 0; i < 4; i++){
 
-            prePower[i] = driveDirection[i] * (targetAngle - robotHeading) * ROTATE_POWER_GAIN;
+            prePower[i] = driveDirection[i] * (targetAngle - robotHeading) * om.cons.ROTATE_POWER_GAIN;
 
-            setPower[i] = Math.signum(prePower[i]) * Range.clip( Math.abs(prePower[i]), DRIVE_POWER_MINIMUM, ROTATE_POWER_LIMIT);
+            setPower[i] = Math.signum(prePower[i]) * Range.clip( Math.abs(prePower[i]), om.cons.DRIVE_POWER_MINIMUM, om.cons.ROTATE_POWER_LIMIT);
 
         }
 
         setMotorPowerArray(setPower);
 
-        while( (Math.abs(targetAngle - robotHeading) > IMU_ROTATE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
+        while( (Math.abs(targetAngle - robotHeading) > om.cons.IMU_ROTATE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
             //*************** ADDED CURRENT POSITION CALCULATION  FOR TELEMETRY ************************************
 
             currentPos = motorStartPos();
@@ -562,9 +460,9 @@ public class HardwareBilly
 
             for(int i = 0; i < 4; i++){
 
-                prePower[i] = driveDirection[i] * (targetAngle - robotHeading) * ROTATE_POWER_GAIN;
+                prePower[i] = driveDirection[i] * (targetAngle - robotHeading) * om.cons.ROTATE_POWER_GAIN;
 
-                setPower[i] = Math.signum(prePower[i]) * Range.clip( Math.abs(prePower[i]) , DRIVE_POWER_MINIMUM, ROTATE_POWER_LIMIT);
+                setPower[i] = Math.signum(prePower[i]) * Range.clip( Math.abs(prePower[i]) , om.cons.DRIVE_POWER_MINIMUM, om.cons.ROTATE_POWER_LIMIT);
 
             }
 
@@ -598,12 +496,12 @@ public class HardwareBilly
 
     }
 
-    public double calcSteeringPowerIMU(double angleWanted) {
+    public double calcSteeringPowerIMU(double angleWanted, BasicAuto om) {
 
         angleUnWrap();
-        double steerPower = (angleWanted - robotHeading) * STEERING_POWER_GAIN;
+        double steerPower = (angleWanted - robotHeading) * om.cons.STEERING_POWER_GAIN;
 
-        double clippedSteering = -1.0 * (Range.clip(steerPower, -STEERING_POWER_LIMIT, STEERING_POWER_LIMIT) );
+        double clippedSteering = -1.0 * (Range.clip(steerPower, -om.cons.STEERING_POWER_LIMIT, om.cons.STEERING_POWER_LIMIT) );
 
         return clippedSteering;
     }
@@ -990,7 +888,7 @@ public class HardwareBilly
 
     }
 
-    public boolean targetPosTolerence() {
+    public boolean targetPosTolerence(BasicAuto om) {
 
         int countTol = 0;
         Boolean motorFinish = false;
@@ -999,7 +897,7 @@ public class HardwareBilly
         motorPos = motorStartPos();
         for (int i = 0; i < 4; i++) {
 
-            if (MOVE_TOL >= Math.abs(motorPos[i] - targetPos[i])) {
+            if (om.cons.MOVE_TOL >= Math.abs(motorPos[i] - targetPos[i])) {
 
                 countTol += 1;
 
@@ -1030,14 +928,14 @@ public class HardwareBilly
 
         jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
 
-        while((jackZoneC > MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
+        while((jackZoneC > om.cons.MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
 
 //            jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
 
             om.telemetry.addData("Jack: ", step);
 //            om.telemetry.addData("Motor Commands: ", "Jack Center (%d)", jack.getTargetPosition());
 //            om.telemetry.addData("Motor Counts: ", "Jack Center (%d)", jack.getCurrentPosition());
-            om.telemetry.addData("Move Tolerance: ", MOVE_TOL);
+            om.telemetry.addData("Move Tolerance: ", om.cons.MOVE_TOL);
             om.telemetry.update();
 
             om.idle();
@@ -1060,7 +958,7 @@ public class HardwareBilly
 
         jackZoneCTeleOp = Math.abs(countDistance - jack.getCurrentPosition() );
 
-        if (!(jackZoneCTeleOp > MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
+        if (!(jackZoneCTeleOp > om.cons.MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
             jack.setPower(0);
         }
     }
@@ -1081,7 +979,7 @@ public class HardwareBilly
         while (Math.abs(angle - robotHeading) > om.cons.IMU_ROTATE_TOL && ((om.opModeIsActive() || om.testModeActive))) {
 
             error = angle - robotHeading;
-            steering = Range.clip((error * om.cons.GAIN), -ROTATE_POWER_LIMIT, ROTATE_POWER_LIMIT);
+            steering = Range.clip((error * om.cons.GAIN), -om.cons.ROTATE_POWER_LIMIT, om.cons.ROTATE_POWER_LIMIT);
 
             //update power limit
             frontLeft.setPower(powerLimit - steering);
@@ -1117,89 +1015,89 @@ public class HardwareBilly
     }
 
     //TeleOp
-    public void drivePower(Gamepad g1, Gamepad g2) {
+    public void drivePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
-        forwardDirection = (-g1.left_stick_y * Math.pow(g1.left_stick_y, 2) ) * TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.right_stick_x * Math.pow(g1.right_stick_x, 2) ) * TELEOP_DRIVE_POWER_LIMIT;
+        forwardDirection = (-g1.left_stick_y * Math.pow(g1.left_stick_y, 2) ) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        rightDirection = (g1.right_stick_x * Math.pow(g1.right_stick_x, 2) ) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
-        frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
-        frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
-        backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
-        backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
+        frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
+        frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
+        backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
+        backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
     }
 
-    public void rotatePower(Gamepad g1, Gamepad g2) {
+    public void rotatePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
-        counterclockwiseDirection = (-g1.left_trigger * Math.pow(g1.left_trigger, 2) ) * TELEOP_ROTATE_POWER_LIMIT;
-        clockwiseDirection = (g1.right_trigger * Math.pow(g1.right_trigger, 2) ) * TELEOP_ROTATE_POWER_LIMIT;
+        counterclockwiseDirection = (-g1.left_trigger * Math.pow(g1.left_trigger, 2) ) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
+        clockwiseDirection = (g1.right_trigger * Math.pow(g1.right_trigger, 2) ) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
 
-        clockwise = Range.clip(clockwiseDirection + counterclockwiseDirection, -TELEOP_ROTATE_POWER_LIMIT, TELEOP_ROTATE_POWER_LIMIT);
+        clockwise = Range.clip(clockwiseDirection + counterclockwiseDirection, -om.cons.TELEOP_ROTATE_POWER_LIMIT, om.cons.TELEOP_ROTATE_POWER_LIMIT);
 
     }
 
-    public void drivePowerAll(Gamepad g1, Gamepad g2) {
+    public void drivePowerAll(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
-        forwardDirection = (-g1.left_stick_y) * TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
-        clockwise = (g1.right_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
+        forwardDirection = (-g1.left_stick_y) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        rightDirection = (g1.left_stick_x) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        clockwise = (g1.right_stick_x) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
-        frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
-        frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
-        backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
-        backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -TELEOP_DRIVE_POWER_LIMIT, TELEOP_DRIVE_POWER_LIMIT));
+        frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
+        frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
+        backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
+        backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
     }
 
 //    public void rotatePowerRightStick(Gamepad g1, Gamepad g2) {
 //
-//        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
+//        clockwise = (g1.right_stick_x) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
 //
-//        clockwise = Range.clip(clockwise, -TELEOP_ROTATE_POWER_LIMIT, TELEOP_ROTATE_POWER_LIMIT);
+//        clockwise = Range.clip(clockwise, -om.cons.TELEOP_ROTATE_POWER_LIMIT, om.cons.TELEOP_ROTATE_POWER_LIMIT);
 //
 //    }
 
-    public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2) {
+    public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
         double maxPower;
 
-        forwardDirection = (-g1.left_stick_y) * TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x) * TELEOP_DRIVE_POWER_LIMIT;
-        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
+        forwardDirection = (-g1.left_stick_y) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        rightDirection = (g1.left_stick_x) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        clockwise = (g1.right_stick_x) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
 
         maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
-        if (maxPower < TELEOP_DRIVE_POWER_LIMIT) {
-            maxPower = TELEOP_DRIVE_POWER_LIMIT;
+        if (maxPower < om.cons.TELEOP_DRIVE_POWER_LIMIT) {
+            maxPower = om.cons.TELEOP_DRIVE_POWER_LIMIT;
         }
 
-        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
 
     }
 
-    public void drivePowerAllLeftStickScaledSquared(Gamepad g1, Gamepad g2) {
+    public void drivePowerAllLeftStickScaledSquared(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
         double maxPower;
 
-        forwardDirection = (-g1.left_stick_y * Math.abs(g1.left_stick_y)) * TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x * Math.abs(g1.left_stick_x)) * TELEOP_DRIVE_POWER_LIMIT;
-        clockwise = (g1.right_stick_x * Math.abs(g1.right_stick_x)) * TELEOP_ROTATE_POWER_LIMIT;
+        forwardDirection = (-g1.left_stick_y * Math.abs(g1.left_stick_y)) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        rightDirection = (g1.left_stick_x * Math.abs(g1.left_stick_x)) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        clockwise = (g1.right_stick_x * Math.abs(g1.right_stick_x)) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
 
         maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
-        if (maxPower < TELEOP_DRIVE_POWER_LIMIT) {
-            maxPower = TELEOP_DRIVE_POWER_LIMIT;
+        if (maxPower < om.cons.TELEOP_DRIVE_POWER_LIMIT) {
+            maxPower = om.cons.TELEOP_DRIVE_POWER_LIMIT;
         }
 
-        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
-        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * TELEOP_DRIVE_POWER_LIMIT);
+        frontLeft.setPower((-(forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
+        frontRight.setPower(((forwardDirection/maxPower) - (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
+        backRight.setPower(((forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
+        backLeft.setPower((-(forwardDirection/maxPower) + (rightDirection/maxPower) - (clockwise/maxPower)) * om.cons.TELEOP_DRIVE_POWER_LIMIT);
 
     }
 
-    public void williamDrivePower(Gamepad g1, Gamepad g2) {
+    public void williamDrivePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
         double maxPower;
         double x;
@@ -1212,7 +1110,7 @@ public class HardwareBilly
         y = g1.left_stick_y;
         absX = Math.abs(x);
         absY = Math.abs(y);
-        powerLimit = TELEOP_DRIVE_POWER_LIMIT;
+        powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
         counterclockwiseDirection = (-g1.left_trigger * g1.left_trigger) * powerLimit;
         clockwiseDirection = (g1.right_trigger * g1.right_trigger) * powerLimit;
@@ -1235,7 +1133,7 @@ public class HardwareBilly
 
     }
 
-    public void weightedDrivePower(Gamepad g1, Gamepad g2) {
+    public void weightedDrivePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
         double maxPower;
         double x;
@@ -1252,12 +1150,12 @@ public class HardwareBilly
         absX = Math.abs(x);
         absY = Math.abs(y);
         absRX = Math.abs(RX);
-        powerLimit = TELEOP_DRIVE_POWER_LIMIT;
+        powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
         forwardDirection = ((y * Math.pow(absY, 2) * (1 - absY)) + (y * absY)) * powerLimit;
         rightDirection = ((x * Math.pow(absX, 2) * (1 - absX)) + (x * absX)) * powerLimit;
-//        clockwise = (g1.right_stick_x) * TELEOP_ROTATE_POWER_LIMIT;
-        clockwise = ((RX * Math.pow(absRX, 2) * (1 - absRX)) + (RX * absRX)) * TELEOP_ROTATE_POWER_LIMIT;
+//        clockwise = (g1.right_stick_x) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
+        clockwise = ((RX * Math.pow(absRX, 2) * (1 - absRX)) + (RX * absRX)) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
 
         maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
@@ -1272,18 +1170,18 @@ public class HardwareBilly
 
     }
 
-    public void jackPower(Gamepad g1, Gamepad g2) {
+    public void jackPower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
-        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * jackDirection * JACK_POWER_LIMIT;
+        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * jackDirection * om.cons.JACK_POWER_LIMIT;
 
-        jack.setPower(Range.clip(verticalDirection, -JACK_POWER_LIMIT, JACK_POWER_LIMIT));
+        jack.setPower(Range.clip(verticalDirection, -om.cons.JACK_POWER_LIMIT, om.cons.JACK_POWER_LIMIT));
 
     }
 
-    public void jackPowerEncoderStop(Gamepad g1, Gamepad g2) {
+    public void jackPowerEncoderStop(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
-        double localJackPowerLimit = JACK_POWER_LIMIT;
-        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2)) * jackDirection * JACK_POWER_LIMIT;
+        double localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
+        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2)) * jackDirection * om.cons.JACK_POWER_LIMIT;
 
         if (jackDirection < 0) {
             if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
@@ -1304,7 +1202,7 @@ public class HardwareBilly
             }
         }
         else {
-            localJackPowerLimit = JACK_POWER_LIMIT;
+            localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
             }
 
 
@@ -1316,11 +1214,11 @@ public class HardwareBilly
 
     }
 
-    public void slidePower(Gamepad g1, Gamepad g2) {
+    public void slidePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
-        slideDirection = (g2.right_stick_y * Math.pow(g2.right_stick_y, 2) ) * SLIDE_POWER_LIMIT;
+        slideDirection = (g2.right_stick_y * Math.pow(g2.right_stick_y, 2) ) * om.cons.SLIDE_POWER_LIMIT;
 
-        slide.setPower(Range.clip(slideDirection, -SLIDE_POWER_LIMIT, SLIDE_POWER_LIMIT));
+        slide.setPower(Range.clip(slideDirection, -om.cons.SLIDE_POWER_LIMIT, om.cons.SLIDE_POWER_LIMIT));
 
     }
 

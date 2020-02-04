@@ -37,7 +37,7 @@ public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            Billy.drivePowerAllLeftStickScaled(gamepad1, gamepad2);
+            Billy.drivePowerAllLeftStickScaled(gamepad1, gamepad2, this);
 
             Billy.angleUnWrap();
 

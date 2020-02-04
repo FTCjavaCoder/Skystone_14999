@@ -30,16 +30,16 @@ public class FullDrive extends BasicTeleOp {
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            Billy.drivePower(gamepad1, gamepad2);
+            Billy.drivePower(gamepad1, gamepad2, this);
 
             // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
-            Billy.rotatePower(gamepad1, gamepad2);
+            Billy.rotatePower(gamepad1, gamepad2, this);
 
             // use the left stick on gamepad2 to raise/lower the jack
-            Billy.jackPower(gamepad1, gamepad2);
+            Billy.jackPower(gamepad1, gamepad2, this);
 
             // use the right stick on gamepad2 to extend/retract the slide
-            Billy.slidePower(gamepad1, gamepad2);
+            Billy.slidePower(gamepad1, gamepad2, this);
 
             //
             if (gamepad2.right_bumper) {

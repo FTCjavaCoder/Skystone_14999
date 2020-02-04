@@ -53,7 +53,7 @@ public class BasicTeleOp extends BasicOpMode {
         readOrWriteHashMap();
 
         // initialize configuration to Billy
-        Billy.init(hardwareMap, testModeActive, cons);
+        Billy.init(hardwareMap, testModeActive);
         // define variables for OpMode powers and positions
         // Initialize all powers and variables to zero
 
@@ -117,7 +117,7 @@ public class BasicTeleOp extends BasicOpMode {
         readOrWriteHashMap();
 
         // initialize configuration to Billy
-        Billy.initMiniBot(hardwareMap, testModeActive, cons);
+        Billy.initMiniBot(hardwareMap, testModeActive);
         // define variables for OpMode powers and positions
         // Initialize all powers and variables to zero
 

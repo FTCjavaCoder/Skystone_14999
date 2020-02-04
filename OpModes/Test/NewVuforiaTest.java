@@ -19,6 +19,7 @@ public class NewVuforiaTest extends BasicAuto {
     @Override
     public void runOpMode() {
 
+        boolean cameraFill = false;
         while(!gamepad1.x) {
 
             if(gamepad1.a) {
@@ -37,11 +38,31 @@ public class NewVuforiaTest extends BasicAuto {
             telemetry.update();
         }
 
+        while(!gamepad1.y) {
+
+            if(gamepad1.a) {
+
+                cameraFill = true;
+            }
+
+            if(gamepad1.b) {
+
+                cameraFill = false;
+            }
+
+            telemetry.addData("Current camera Fill", cameraFill);
+            telemetry.addLine("Press A to select TRUE and B to select FALSE");
+            telemetry.addLine("Press Y to exit");
+            telemetry.update();
+        }
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = cons.VUFORIA_KEY;
         parameters.cameraDirection   = cons.CAMERA_CHOICE;
+        parameters.fillCameraMonitorViewParent = cameraFill;
+
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -52,7 +73,7 @@ public class NewVuforiaTest extends BasicAuto {
         foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
         insideOutside = 0;// 0 for Inside, 24 for Outside
 
-        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+        stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
 //        VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
 //        blueRearBridge.setName("Blue Rear Bridge");

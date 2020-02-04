@@ -6,12 +6,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 //import TestOpModesOffline.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +57,8 @@ public class BasicAuto extends BasicOpMode {
     public double start = 0;//timer variable to use for setting waits in the code
     public float hsvValues[] = {0F, 0F, 0F};
     public String stonePos = "Unknown";
+
+    public boolean skystoneFound = false;
 
     public int stoneSelect = -1;// FOR BLUE: 0 nearest to bridge, 1 center, 2 farthest from bridge FOR RED: 0 farthest from bridge, 1 center, 2 nearest to bridge
 
@@ -110,6 +116,14 @@ public class BasicAuto extends BasicOpMode {
 
     public List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
 
+    public VuforiaTrackable stoneTarget = null;
+
+    public static final String TFOD_MODEL_ASSET = "Skystone.tflite";
+    public static final String LABEL_FIRST_ELEMENT = "Stone";
+    public static final String LABEL_SECOND_ELEMENT = "Skystone";
+
+    public TFObjectDetector tfod;
+
     @Override
     //    public void runOpMode() throws InterruptedException {
     public void runOpMode() {
@@ -120,6 +134,7 @@ public class BasicAuto extends BasicOpMode {
 
 
     }
+
     public void initialize() {
 
         telemetry.addLine("NOT READY DON'T PRESS PLAY");
@@ -145,7 +160,7 @@ public class BasicAuto extends BasicOpMode {
         stoneArmUnderBridgeRed = 0.15;// for red oriented servo
         stoneArmDownRed = 0.7;// for red oriented servo (was 0.5, could adjust servo horn)
 
-        Billy.init(hardwareMap, testModeActive,cons);
+        Billy.init(hardwareMap, testModeActive);
 
         //Motor configuration, recommend Not Changing - Set all motors to forward direction, positive = clockwise when viewed from shaft side
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -206,7 +221,7 @@ public class BasicAuto extends BasicOpMode {
         else {
 
 
-            VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+            stoneTarget = targetsSkyStone.get(0);
             stoneTarget.setName("Stone Target");
 //            VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
 //            blueRearBridge.setName("Blue Rear Bridge");
@@ -244,7 +259,7 @@ public class BasicAuto extends BasicOpMode {
         telemetry.addData(">", "Press Play to start");
         telemetry.update();//Update telemetry to update display
 
-    }// sets: RUN_TO_POSITION, ZeroPowerBehaviour.FLOAT, and 0 power & targetPos
+    }// sets: RUN_TO_POSITION, ZeroPowerBehaviour.BRAKE, and 0 power & targetPos
 
     public void initializeMiniBot() {
 
@@ -271,7 +286,7 @@ public class BasicAuto extends BasicOpMode {
         stoneArmUnderBridgeRed = 0.75;// for red oriented servo
         stoneArmDownRed = 0.3;// for red oriented servo (was 0.5, could adjust servo horn)
 
-        Billy.initMiniBot(hardwareMap, testModeActive, cons);
+        Billy.initMiniBot(hardwareMap, testModeActive);
 
         //Motor configuration, recommend Not Changing - Set all motors to forward direction, positive = clockwise when viewed from shaft side
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -353,41 +368,47 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public void updateIMU(){
-        /** COMMENTED OUT AS EXPERIMENTAL CODE
-        //NEED TO COMMENT THIS OUT FOR RUNNING ON ROBOT
-        //ADDED FROM OfflineOpModeLIbs so that OfflineOpModeRunFile CAN WORK
-        //Move this imu portion to robot update method
-        Billy.imu.flCnt = Billy.frontLeft.getCurrentPosition();
-        Billy.imu.frCnt = Billy.frontRight.getCurrentPosition();
-        Billy.imu.brCnt = Billy.backRight.getCurrentPosition();
-        Billy.imu.blCnt = Billy.backLeft.getCurrentPosition();
+    public void updateIMU() {
 
-        Billy.imu.blueStoneServoPos = Billy.stoneServoArm.getPosition();
-//        Billy.imu.redStoneServoPos = Billy.servoRedStoneGrab.getPosition();
+    }
 
-        fc.updateField(this);
 
-        robotSeeStone= fc.stoneFound;
+    public void tensorFlowIdentifyLoop() {// TOP LEFT CORNER IS (0,0) SCREEN WIDTH OF 1280 PIXELS VIEW OF 38 INCHES WIDE
+        OpenGLMatrix pose = null;
+        VectorF translation = null;
 
-        if(haveBlueFoundation){writeBF = true;}
-        if(haveRedFoundation){writeRF = true;}
-        if(haveBlueSkyStone1){writeBS1 = true;}
-        if(haveBlueSkyStone2){writeBS2 = true;}
-        if(haveRedSkyStone1){writeRS1 = true;}
-        if(haveRedSkyStone2){writeRS2 = true;}
+        while (!gamepad1.dpad_up && opModeIsActive()) {
+            if (tfod != null) {
+                // getUpdatedRecognitions() will return null if no new information is available since
+                // the last time that call was made.
+                // getRecognitions should always return what's being seen
+                List<Recognition> recognitionList = tfod.getRecognitions();
+                if (recognitionList != null) {
+                    telemetry.addData("# Object Detected", recognitionList.size());
 
-        try {
-//
-            if (IMUCounter >= size) {
-                int a = 1 / 0;
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
+                    for (Recognition recognition : recognitionList) {
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        telemetry.addData(String.format("  left,right (%d)", i), "%.03f , %.03f",
+                                recognition.getLeft(), recognition.getRight());
+                        telemetry.addData(String.format("  top,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getTop(), recognition.getBottom());
+                        telemetry.addData("Center Pixels", "recog(%d): %.3f",i,
+                                (recognition.getRight()+recognition.getLeft())/2);
+                    }
+                }
             }
-        } catch (ArithmeticException e){
-            telemetry.addData("Exception:","%s, Exceeded %d counter steps", e.toString(),size);
-            telemetry.addData("IMU Counter"," %d", IMUCounter);
+            telemetry.addLine("--------------------------");
+            telemetry.addLine("Press dpad up to exit");
+            telemetry.update();
+
         }
-* END EXPERIMENTAL CODE
- */
+
+
+        if (tfod != null) {
+            tfod.shutdown();
+        }
 
     }
 
@@ -401,20 +422,16 @@ public class BasicAuto extends BasicOpMode {
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
-                    targetVisible = true;
+            if (((VuforiaTrackableDefaultListener) stoneTarget.getListener()).isVisible()) {
+                telemetry.addData("Visible Target", stoneTarget.getName());
+                targetVisible = true;
 
-                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
-                    if (pose != null) {
-                        translation = pose.getTranslation();
-                        telemetry.addData(trackable.getName() + " X Translation", translation.get(0) / mmPerInch);
-                        telemetry.addData(trackable.getName() + " Y Translation", translation.get(1) / mmPerInch);
+                pose = ((VuforiaTrackableDefaultListener)stoneTarget.getListener()).getPose();
+                if (pose != null) {
+                    translation = pose.getTranslation();
+                    telemetry.addData(stoneTarget.getName() + " X Translation", translation.get(0) / mmPerInch);
+                    telemetry.addData(stoneTarget.getName() + " Y Translation", translation.get(1) / mmPerInch);
 
-                    }
-
-                    break;
                 }
 
             }
@@ -427,190 +444,50 @@ public class BasicAuto extends BasicOpMode {
         targetsSkyStone.deactivate();
     }
 
-    public boolean vuforiaStoneIdentifyExit() {
-        boolean skystone = false;
-
-        targetsSkyStone.activate();
-        double start = runtime.time();
-        while (!isStopRequested() && !skystone && ( (runtime.time() - start) < vuforiaWaitTime) ) {// was 1 second
-
-            // check all the trackable targets to see which one (if any) is visible.
-            targetVisible = false;
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
-                    targetVisible = true;
-
-                    if (trackable.getName() == "Stone Target") {
-
-                        skystone = true;
-                        telemetry.addLine("\n If statement successful for Stone Target \n");
-                    }
-
-                    break;
-                }
-            }
-
-            if(!targetVisible) {
-                telemetry.addData("Visible Target", "none");
-            }
-            //telemetry.update();
-        }
-        targetsSkyStone.deactivate();
-
-        return skystone;
-    }// OLD DOESM'T HAVE ANY VALUES
-
-    public void vuforiaStoneLocate() {
-
+    public void identifySkystone() {
         OpenGLMatrix pose = null;
         VectorF translation = null;
-        double degreesToTurn = 0;
+        double stoneY;
 
-        telemetry.update();
+        if (((VuforiaTrackableDefaultListener) stoneTarget.getListener()).isVisible()) {
+            telemetry.addData("Visible Target", stoneTarget.getName());
 
-        targetsSkyStone.activate();
+            pose = ((VuforiaTrackableDefaultListener) stoneTarget.getListener()).getPose();
+            if (pose != null) {
 
-        start = runtime.time();
-        while ((runtime.time() - start < vuforiaWaitTime) && opModeIsActive()) {
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
+                stoneY = translation.get(1) / mmPerInch;
+                translation = pose.getTranslation();
+                telemetry.addData(stoneTarget.getName() + "-Translation", translation);
 
-                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
-                    if (pose != null) {
-                        translation = pose.getTranslation();
-                        telemetry.addData(trackable.getName() + "-Translation", translation);
-                        degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
-                        telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
+                skystoneFound = true;
 
-                        if (translation.get(1) >= 100) {
-                            telemetry.addData("Skystone status", "Left");// was RIGHT for camera on robot left
-                            stonePos = "Left";
-                            stoneSelect = 0;
-                        }
-                        if (translation.get(1) < 100 && translation.get(1) >  -100) {
-                            telemetry.addData("Skystone status", "CENTER");
-                            stonePos = "Center";
-                            stoneSelect = 1;
-                        }
-                        if (translation.get(1) <= -100) {
-                            telemetry.addData("Skystone status", "Right");// was LEFT for camera on robot left
-                            stonePos = "Right";
-                            stoneSelect = 2;
-                        }
-                        telemetry.addData("translation of stone", translation.get(1));
-                        telemetry.update();
-                    }
-                }
+                stoneYLocation = stoneY;
+                telemetry.addData("translation of stone INCHES", (translation.get(1) / mmPerInch));
 
             }
-
         }
-        if(stonePos.equals("Unknown") || stoneSelect == -1) /*NOT Visible*/ {
-            telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
+        else {telemetry.addLine("Skystone NOT Visible");}
+
+    }
+
+    public void determineSkystonePosition() {
+
+        if (stoneYLocation <= (-4.0 + cons.adjustVuforiaPhone)) {// was <= -7.0                                                                                  // FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
+            telemetry.addData("Skystone status", "Left");                                                                                                        // was RIGHT for camera on robot left
             stonePos = "Left";
             stoneSelect = 0;
-            telemetry.update();
         }
-
-        telemetry.addData("SkystonePos", stonePos);
-        telemetry.addData("Skystone Select", stoneSelect);
-//        pressAToContinue();
-
-        targetsSkyStone.deactivate();
-
-        if(sideColor == 1) {
-            if(stonePos.equals("Left")) {
-
-                stoneSideways = -15 + Billy.skystoneExtraSideways;// was -14
-                secondStoneBackup = 10 + cons.skystoneExtraBack;// was 8
-            }
-            if(stonePos.equals("Center")) {
-
-                stoneSideways = -5 + Billy.skystoneExtraSideways;// was -6
-                secondStoneBackup = 8 + cons.skystoneExtraBack;
-            }
-            if(stonePos.equals("Right")) {
-
-                stoneSideways = 5 + Billy.skystoneExtraSideways;//
-                secondStoneBackup = 8 + cons.skystoneExtraBack;
-            }
+        if (stoneYLocation < (4.0 + cons.adjustVuforiaPhone) && stoneYLocation > (-4.0 + cons.adjustVuforiaPhone)) {// was < 2.0  && > -6.0       // FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
+            telemetry.addData("Skystone status", "CENTER");
+            stonePos = "Center";
+            stoneSelect = 1;
         }
-
-        if(sideColor == -1) {
-            if(stonePos.equals("Right")) {
-
-                stoneSideways = -14.5 + Billy.skystoneExtraSideways;// was -14
-                secondStoneBackup = 8.5 + cons.skystoneExtraBack;
-            }
-            if(stonePos.equals("Center")) {
-
-                stoneSideways = -6 + Billy.skystoneExtraSideways;
-                secondStoneBackup = 9 + cons.skystoneExtraBack;// was 8
-            }
-            if(stonePos.equals("Left")) {
-
-                stoneSideways = 5 + Billy.skystoneExtraSideways;
-                secondStoneBackup = 8 + cons.skystoneExtraBack;
-            }
+        if (stoneYLocation >= (4.0 + cons.adjustVuforiaPhone)) {  // was >= 2.0                                                                                      // FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
+            telemetry.addData("Skystone status", "Right");                                                                                                      // was LEFT for camera on robot left
+            stonePos = "Right";
+            stoneSelect = 2;
         }
-        telemetry.addData("SkystonePos:", stonePos);
-        telemetry.addData("sideways to Skystone:", stoneSideways);
-//        pressAToContinue();
-
-    }// HAS OLD MiniBot Values
-
-    public void vuforiaStoneLocateInches() {
-
-        OpenGLMatrix pose = null;
-        VectorF translation = null;
-        double degreesToTurn = 0;
-
-        telemetry.update();
-
-        //? Use local variable in place of cons.adjustVuforiaPhone that gets set to cons.adjustVuforiaPhone but then can be set to -1.0 for Blue only to shift camera zones to the left
-
-        targetsSkyStone.activate();
-
-        start = runtime.time();
-        while ((runtime.time() - start < vuforiaWaitTime) && opModeIsActive()) {
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
-
-                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
-                    if (pose != null) {
-                        translation = pose.getTranslation();
-                        telemetry.addData(trackable.getName() + "-Translation", translation);
-                        degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
-                        telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
-
-                        if ((translation.get(1) / mmPerInch) <= (-4.0 + cons.adjustVuforiaPhone)) {// was <= -7.0                                                                                  // FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
-                            telemetry.addData("Skystone status", "Left");                                                                                                        // was RIGHT for camera on robot left
-                            stonePos = "Left";
-                            stoneSelect = 0;
-                        }
-                        if ((translation.get(1) / mmPerInch) < (4.0 + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) > (-4.0 + cons.adjustVuforiaPhone)) {// was < 2.0  && > -6.0       // FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
-                            telemetry.addData("Skystone status", "CENTER");
-                            stonePos = "Center";
-                            stoneSelect = 1;
-                        }
-                        if ((translation.get(1) / mmPerInch) >= (4.0 + cons.adjustVuforiaPhone)) {  // was >= 2.0                                                                                      // FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
-                            telemetry.addData("Skystone status", "Right");                                                                                                      // was LEFT for camera on robot left
-                            stonePos = "Right";
-                            stoneSelect = 2;
-                        }
-                        telemetry.addData("translation of stone INCHES", (translation.get(1) / mmPerInch));
-                        telemetry.update();
-                        stoneYLocation = (translation.get(1) / mmPerInch);
-                    }
-                }
-
-            }
-
-        }
-        if(stonePos.equals("Unknown") || stoneSelect == -1) /*NOT Visible*/ {
+        if(!skystoneFound) /*NOT Visible*/ {
 
             if(sideColor == -1) {
                 telemetry.addData("Skystone status", "Not Visible: Right");// was RIGHT for camera on robot left
@@ -626,6 +503,68 @@ public class BasicAuto extends BasicOpMode {
                 telemetry.update();
             }
         }
+    }
+
+    public void setStoneSideways() {
+
+        if(sideColor == 1) {
+            if(stonePos.equals("Left")) {
+
+                stoneSideways = -9.0 + cons.skystoneExtraSideways;// was -10.0
+                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 13.0
+            }
+            if(stonePos.equals("Center")) {
+
+                stoneSideways = -2.0 + cons.skystoneExtraSideways;// was -3.0
+                secondStoneBackup = 13.0 + cons.skystoneExtraBack;// ws 15.0
+            }
+            if(stonePos.equals("Right")) {
+
+                stoneSideways = 6.0 + cons.skystoneExtraSideways;// was 8.0
+                secondStoneBackup = 13.0 + cons.skystoneExtraBack;// was 14.0
+            }
+        }
+
+        if(sideColor == -1) {
+            if(stonePos.equals("Right")) {
+
+                stoneSideways = -15.0 + cons.skystoneExtraSideways;// was -14.0
+                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 10.0
+            }
+            if(stonePos.equals("Center")) {
+
+                stoneSideways = -7.5 + cons.skystoneExtraSideways;//was -8.0
+                secondStoneBackup = 10.0 + cons.skystoneExtraBack;// was 11.0
+            }
+            if(stonePos.equals("Left")) {
+
+                stoneSideways = -0.5 + cons.skystoneExtraSideways;// was -2.0
+                secondStoneBackup = 10.5 + cons.skystoneExtraBack;// was 7.5
+            }
+        }
+
+    }
+
+    public void vuforiaStoneLocateInches() {
+
+        OpenGLMatrix pose = null;
+        VectorF translation = null;
+        double degreesToTurn = 0;
+
+        //? Use local variable in place of cons.adjustVuforiaPhone that gets set to cons.adjustVuforiaPhone but then can be set to -1.0 for Blue only to shift camera zones to the left
+
+        targetsSkyStone.activate();
+
+        start = runtime.time();
+        while ((runtime.time() - start < vuforiaWaitTime) && opModeIsActive() && !skystoneFound) {
+
+            identifySkystone();
+
+            telemetry.update();
+
+        }
+
+        determineSkystonePosition();
 
         telemetry.addData("SkystonePos", stonePos);
         telemetry.addData("Skystone Select", stoneSelect);
@@ -634,41 +573,8 @@ public class BasicAuto extends BasicOpMode {
 
         targetsSkyStone.deactivate();
 
-        if(sideColor == 1) {
-            if(stonePos.equals("Left")) {
+        setStoneSideways();
 
-                stoneSideways = -9.0 + Billy.skystoneExtraSideways;// was -10.0
-                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 13.0
-            }
-            if(stonePos.equals("Center")) {
-
-                stoneSideways = -2.0 + Billy.skystoneExtraSideways;// was -3.0
-                secondStoneBackup = 13.0 + cons.skystoneExtraBack;// ws 15.0
-            }
-            if(stonePos.equals("Right")) {
-
-                stoneSideways = 6.0 + Billy.skystoneExtraSideways;// was 8.0
-                secondStoneBackup = 13.0 + cons.skystoneExtraBack;// was 14.0
-            }
-        }
-
-        if(sideColor == -1) {
-            if(stonePos.equals("Right")) {
-
-                stoneSideways = -15.0 + Billy.skystoneExtraSideways;// was -14.0
-                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 10.0
-            }
-            if(stonePos.equals("Center")) {
-
-                stoneSideways = -7.5 + Billy.skystoneExtraSideways;//was -8.0
-                secondStoneBackup = 10.0 + cons.skystoneExtraBack;// was 11.0
-            }
-            if(stonePos.equals("Left")) {
-
-                stoneSideways = -0.5 + Billy.skystoneExtraSideways;// was -2.0
-                secondStoneBackup = 10.5 + cons.skystoneExtraBack;// was 7.5
-            }
-        }
         telemetry.addData("SkystonePos:", stonePos);
         telemetry.addData("sideways to Skystone:", stoneSideways);
 //        pressAToContinue();
@@ -677,151 +583,41 @@ public class BasicAuto extends BasicOpMode {
 
     public void vuforiaStoneLIRotate() {
 
-        OpenGLMatrix pose = null;
-        VectorF translation = null;
-        double degreesToTurn = 0;
-
-        telemetry.update();
-
-        //? Use local variable in place of cons.adjustVuforiaPhone that gets set to cons.adjustVuforiaPhone but then can be set to -1.0 for Blue only to shift camera zones to the left
-
         targetsSkyStone.activate();
 
         start = runtime.time();
-        while ((runtime.time() - start < 0.5) && opModeIsActive()) {
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
+        while ((runtime.time() - start < 0.5) && opModeIsActive() && !skystoneFound) {
 
-                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
-                    if (pose != null) {
-                        translation = pose.getTranslation();
-                        telemetry.addData(trackable.getName() + "-Translation", translation);
-                        degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
-                        telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
+            identifySkystone();
 
-                        if ((translation.get(1) / mmPerInch) <= (-4.0 + cons.adjustVuforiaPhone)) {// was <= -7.0                                                                                  // FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
-                            telemetry.addData("Skystone status", "Left");                                                                                                        // was RIGHT for camera on robot left
-                            stonePos = "Left";
-                            stoneSelect = 0;
-                        }
-                        if ((translation.get(1) / mmPerInch) < (4.0 + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) > (-4.0 + cons.adjustVuforiaPhone)) {// was < 2.0  && > -6.0       // FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
-                            telemetry.addData("Skystone status", "CENTER");
-                            stonePos = "Center";
-                            stoneSelect = 1;
-                        }
-                        if ((translation.get(1) / mmPerInch) >= (4.0 + cons.adjustVuforiaPhone)) {  // was >= 2.0                                                                                      // FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
-                            telemetry.addData("Skystone status", "Right");                                                                                                      // was LEFT for camera on robot left
-                            stonePos = "Right";
-                            stoneSelect = 2;
-                        }
-                        telemetry.addData("translation of stone INCHES", (translation.get(1) / mmPerInch));
-                        telemetry.update();
-                        stoneYLocation = (translation.get(1) / mmPerInch);
-                    }
-                }
-
-            }
-
+            telemetry.update();
         }
         start = runtime.time();
-        while ((runtime.time() - start < 0.5) && opModeIsActive()) {
+        while ((runtime.time() - start < 0.5) && opModeIsActive() && !skystoneFound) {
             Billy.setMotorPower(0.15);
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
 
-                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
-                    if (pose != null) {
-                        translation = pose.getTranslation();
-                        telemetry.addData(trackable.getName() + "-Translation", translation);
-                        degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
-                        telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
+            identifySkystone();
 
-                        if ((translation.get(1) / mmPerInch) <= (-4.0 + cons.adjustVuforiaPhone)) {// was <= -7.0                                                                                  // FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
-                            telemetry.addData("Skystone status", "Left");                                                                                                        // was RIGHT for camera on robot left
-                            stonePos = "Left";
-                            stoneSelect = 0;
-                        }
-                        if ((translation.get(1) / mmPerInch) < (4.0 + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) > (-4.0 + cons.adjustVuforiaPhone)) {// was < 2.0  && > -6.0       // FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
-                            telemetry.addData("Skystone status", "CENTER");
-                            stonePos = "Center";
-                            stoneSelect = 1;
-                        }
-                        if ((translation.get(1) / mmPerInch) >= (4.0 + cons.adjustVuforiaPhone)) {  // was >= 2.0                                                                                      // FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
-                            telemetry.addData("Skystone status", "Right");                                                                                                      // was LEFT for camera on robot left
-                            stonePos = "Right";
-                            stoneSelect = 2;
-                        }
-                        telemetry.addData("translation of stone INCHES", (translation.get(1) / mmPerInch));
-                        telemetry.update();
-                        stoneYLocation = (translation.get(1) / mmPerInch);
-                    }
-                }
-
-            }
-
+            telemetry.update();
         }
         Billy.setMotorPower(0);
+
         start = runtime.time();
-        while ((runtime.time() - start < 1) && opModeIsActive()) {
+        while ((runtime.time() - start < 1) && opModeIsActive() && !skystoneFound) {
             Billy.setMotorPower(-0.15);
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    telemetry.addData("Visible Target", trackable.getName());
 
-                    pose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getPose();
-                    if (pose != null) {
-                        translation = pose.getTranslation();
-                        telemetry.addData(trackable.getName() + "-Translation", translation);
-                        degreesToTurn = Math.toDegrees(Math.atan2(translation.get(0), translation.get(1)));
-                        telemetry.addData(trackable.getName() + "-Degrees", degreesToTurn);
+            identifySkystone();
 
-                        if ((translation.get(1) / mmPerInch) <= (-4.0 + cons.adjustVuforiaPhone)) {// was <= -7.0                                                                                  // FRONT camera <= ((-100/mmPerInch) //|\\     was >= ((100 for BACK camera
-                            telemetry.addData("Skystone status", "Left");                                                                                                        // was RIGHT for camera on robot left
-                            stonePos = "Left";
-                            stoneSelect = 0;
-                        }
-                        if ((translation.get(1) / mmPerInch) < (4.0 + cons.adjustVuforiaPhone) && (translation.get(1) /mmPerInch) > (-4.0 + cons.adjustVuforiaPhone)) {// was < 2.0  && > -6.0       // FRONT camera < ((100/mmPerInch) && > ((-100/mmPerInch)
-                            telemetry.addData("Skystone status", "CENTER");
-                            stonePos = "Center";
-                            stoneSelect = 1;
-                        }
-                        if ((translation.get(1) / mmPerInch) >= (4.0 + cons.adjustVuforiaPhone)) {  // was >= 2.0                                                                                      // FRONT camera >= ((100/mmPerInch) //|\\     was <= ((-100 for BACK camera
-                            telemetry.addData("Skystone status", "Right");                                                                                                      // was LEFT for camera on robot left
-                            stonePos = "Right";
-                            stoneSelect = 2;
-                        }
-                        telemetry.addData("translation of stone INCHES", (translation.get(1) / mmPerInch));
-                        telemetry.update();
-                        stoneYLocation = (translation.get(1) / mmPerInch);
-                    }
-                }
-
-            }
-
+            telemetry.update();
         }
         Billy.setMotorPower(0);
-        if(stonePos.equals("Unknown") || stoneSelect == -1) /*NOT Visible*/ {
 
-            if(sideColor == -1) {
-                telemetry.addData("Skystone status", "Not Visible: Right");// was RIGHT for camera on robot left
-                stonePos = "Right";
-                stoneSelect = 2;
-                telemetry.update();
+        determineSkystonePosition();
 
-            }
-            else {
-                telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
-                stonePos = "Left";
-                stoneSelect = 0;
-                telemetry.update();
-            }
-        }
+        telemetry.addData("translation of stone INCHES", stoneYLocation);
+        telemetry.update();
 
-        Billy.setMotorPower(0.15);
-        sleep(500);
-        Billy.setMotorPower(0);
+        Billy.IMUDriveRotate(0, "Return to 0", this);
 
         telemetry.addData("SkystonePos", stonePos);
         telemetry.addData("Skystone Select", stoneSelect);
@@ -830,41 +626,8 @@ public class BasicAuto extends BasicOpMode {
 
         targetsSkyStone.deactivate();
 
-        if(sideColor == 1) {
-            if(stonePos.equals("Left")) {
+        setStoneSideways();
 
-                stoneSideways = -10.0 + Billy.skystoneExtraSideways;// was -13
-                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 13.0 // make 12.0??
-            }
-            if(stonePos.equals("Center")) {
-
-                stoneSideways = -2.0 + Billy.skystoneExtraSideways;// was -3.0
-                secondStoneBackup = 13.0 + cons.skystoneExtraBack;// ws 15.0
-            }
-            if(stonePos.equals("Right")) {
-
-                stoneSideways = 6.0 + Billy.skystoneExtraSideways;// was 8.0
-                secondStoneBackup = 13.0 + cons.skystoneExtraBack;// was 14.0
-            }
-        }
-
-        if(sideColor == -1) {
-            if(stonePos.equals("Right")) {
-
-                stoneSideways = -15.0 + Billy.skystoneExtraSideways;// was -17.0
-                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 10.0
-            }
-            if(stonePos.equals("Center")) {
-
-                stoneSideways = -8.0 + Billy.skystoneExtraSideways;//was -10.0
-                secondStoneBackup = 11.0 + cons.skystoneExtraBack;// was 12.0
-            }
-            if(stonePos.equals("Left")) {
-
-                stoneSideways = -0.5 + Billy.skystoneExtraSideways;// was -2.0
-                secondStoneBackup = 10.5 + cons.skystoneExtraBack;// was 7.5
-            }
-        }
         telemetry.addData("SkystonePos:", stonePos);
         telemetry.addData("sideways to Skystone:", stoneSideways);
 //        pressAToContinue();
@@ -876,17 +639,17 @@ public class BasicAuto extends BasicOpMode {
         if(sideColor == 1) {
             if(stoneSelect == 0) {
 
-                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
+                stoneSideways = -14 + cons.skystoneExtraSideways;// was -12
                 stonePos = "Left";
             }
             if(stoneSelect == 1) {
 
-                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
+                stoneSideways = -6 + cons.skystoneExtraSideways;// was -4
                 stonePos = "Center";
             }
             if(stoneSelect == 2) {
 
-                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
+                stoneSideways = 5 + cons.skystoneExtraSideways;// was 8
                 stonePos = "Right";
             }
         }
@@ -894,17 +657,17 @@ public class BasicAuto extends BasicOpMode {
         if(sideColor == -1) {
             if(stoneSelect == 0) {
 
-                stoneSideways = -14 + Billy.skystoneExtraSideways;// was -12
+                stoneSideways = -14 + cons.skystoneExtraSideways;// was -12
                 stonePos = "Right";
             }
             if(stoneSelect == 1) {
 
-                stoneSideways = -6 + Billy.skystoneExtraSideways;// was -4
+                stoneSideways = -6 + cons.skystoneExtraSideways;// was -4
                 stonePos = "Center";
             }
             if(stoneSelect == 2) {
 
-                stoneSideways = 5 + Billy.skystoneExtraSideways;// was 8
+                stoneSideways = 5 + cons.skystoneExtraSideways;// was 8
                 stonePos = "Left";
             }
         }
@@ -1471,7 +1234,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void getStone2TimeCheck() {
 
-        if(runtime.time() > 15) {// 15 sec is estimate
+        if(runtime.time() > 16) {// 16 sec is guesstimate
 
             getSecondStone = false;
         }
@@ -1572,44 +1335,6 @@ public class BasicAuto extends BasicOpMode {
         if(sideColor == -1) {
 
             Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-8 * sideColor, -180 * sideColor, "Left 10 inches",this);
-
-        }
-
-    }
-
-    public void findSkyStone() {
-        boolean skystoneFound = false;
-        int looped = 0;
-
-        while(looped < 2 && opModeIsActive()) {
-            skystoneFound = vuforiaStoneIdentifyExit();
-
-            if(skystoneFound) {
-
-                telemetry.addLine("SkyStone Found");
-                telemetry.update();
-
-//                grabSkyStone();
-
-                looped = 100;
-            }
-            else {
-
-                telemetry.addLine("Next Stone");
-                telemetry.update();
-
-                nextStone();
-                looped +=1;
-                extraFwd += 8;
-                extraFwdToBlock += 1;
-            }
-        }
-        if(!skystoneFound) {
-
-            telemetry.addLine("Third Stone");
-            telemetry.update();
-
-//            grabSkyStone();
 
         }
 
