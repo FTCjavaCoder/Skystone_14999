@@ -1152,6 +1152,14 @@ public class HardwareBilly
         absRX = Math.abs(RX);
         powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
+        if (g1.left_bumper) {
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        }
+
+        if (g1.right_bumper) {
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 2;
+        }
+
         forwardDirection = ((y * Math.pow(absY, 2) * (1 - absY)) + (y * absY)) * powerLimit;
         rightDirection = ((x * Math.pow(absX, 2) * (1 - absX)) + (x * absX)) * powerLimit;
 //        clockwise = (g1.right_stick_x) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
