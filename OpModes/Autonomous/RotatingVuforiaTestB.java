@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Rotating Vuforia Test Red", group="Autonomous")
-@Disabled
-public class RotatingVuforiaTestR extends BasicAuto {
+@Autonomous(name="Rotating Vuforia Test Blue", group="Autonomous")
+//@Disabled
+public class RotatingVuforiaTestB extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -30,9 +30,9 @@ public class RotatingVuforiaTestR extends BasicAuto {
 
         foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
         insideOutside = 0;// 0 for Inside, 24 for Outside
-        sideColor = -1;// + for Blue, - for Red, KEEP RED
+        sideColor = 1;// + for Blue, - for Red, KEEP RED
 
-        initialize();
+        initializeMiniBot();
 
         waitForStart();
 
@@ -44,19 +44,19 @@ public class RotatingVuforiaTestR extends BasicAuto {
 
         vuforiaStoneLIRotate();
 
-        goToStone();
-
-        takeStone1();
-
-        getStone2();
-
-        takeStone2();
-
-        twoStonePark();
+//        goToStone();
+//
+//        takeStone1();
+//
+//        getStone2();
+//
+//        takeStone2();
+//
+//        twoStonePark();
 
         telemetry.addData("stoneYLocation","(%.2f)", stoneYLocation);
         telemetry.addLine("OpMode Complete");
         telemetry.update();
-        sleep(2000);
+        sleep(4000);
     }
 }

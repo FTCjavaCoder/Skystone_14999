@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -75,7 +74,12 @@ public class BasicAuto extends BasicOpMode {
 
     public double vuforiaWaitTime = 1.5;// was 1
 
+    public double leftBound = 400;// in pixels defaults for TensorFlow
+    public double rightBound = 900;// in pixels defaults for TensorFlow
+
     public boolean drivingMiniBot = false;
+
+    public double detectionRotateSpeed = 0.1;
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
@@ -124,6 +128,12 @@ public class BasicAuto extends BasicOpMode {
 
     public TFObjectDetector tfod;
 
+    public double middleOfStone;
+
+    public double angleWhenFound;
+
+    public double zoneShift;
+
     @Override
     //    public void runOpMode() throws InterruptedException {
     public void runOpMode() {
@@ -153,6 +163,9 @@ public class BasicAuto extends BasicOpMode {
 
         drivingMiniBot = false;
         //Values For Full Robot
+        detectionRotateSpeed = 0.1 * (40.0/60.0);
+        cons.DEGREES_TO_COUNTS = (1440.0/360.0) * (40.0/60.0);
+
         stoneArmInitBlue = 0.6;// for blue oriented servo
         stoneArmInitRed = 0.15;// for red oriented servo
         stoneArmUnderBridgeBlue = 0.6;// for blue oriented servo
@@ -220,35 +233,10 @@ public class BasicAuto extends BasicOpMode {
         }
         else {
 
+            targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
             stoneTarget = targetsSkyStone.get(0);
             stoneTarget.setName("Stone Target");
-//            VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
-//            blueRearBridge.setName("Blue Rear Bridge");
-//            VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
-//            redRearBridge.setName("Red Rear Bridge");
-//            VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
-//            redFrontBridge.setName("Red Front Bridge");
-//            VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
-//            blueFrontBridge.setName("Blue Front Bridge");
-//            VuforiaTrackable red1 = targetsSkyStone.get(5);
-//            red1.setName("Red Perimeter 1");
-//            VuforiaTrackable red2 = targetsSkyStone.get(6);
-//            red2.setName("Red Perimeter 2");
-//            VuforiaTrackable front1 = targetsSkyStone.get(7);
-//            front1.setName("Front Perimeter 1");
-//            VuforiaTrackable front2 = targetsSkyStone.get(8);
-//            front2.setName("Front Perimeter 2");
-//            VuforiaTrackable blue1 = targetsSkyStone.get(9);
-//            blue1.setName("Blue Perimeter 1");
-//            VuforiaTrackable blue2 = targetsSkyStone.get(10);
-//            blue2.setName("Blue Perimeter 2");
-//            VuforiaTrackable rear1 = targetsSkyStone.get(11);
-//            rear1.setName("Rear Perimeter 1");
-//            VuforiaTrackable rear2 = targetsSkyStone.get(12);
-//            rear2.setName("Rear Perimeter 2");
-
-//            allTrackables.addAll(targetsSkyStone);
             allTrackables.add(targetsSkyStone.get(0));
         }
 
@@ -279,6 +267,9 @@ public class BasicAuto extends BasicOpMode {
 
         drivingMiniBot = true;
         //Values For Mini Robot
+        detectionRotateSpeed = 0.1;
+        cons.DEGREES_TO_COUNTS = (1440.0/360.0);
+
         stoneArmInitBlue = 0;// for blue oriented servo
         stoneArmInitRed = 1;// for red oriented servo
         stoneArmUnderBridgeBlue = 0.25;// for blue oriented servo
@@ -321,43 +312,22 @@ public class BasicAuto extends BasicOpMode {
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
 
-        Billy.armServoBlue.setPosition(stoneArmInitBlue);
-        Billy.armServoRed.setPosition(stoneArmInitRed);
+//        Billy.armServoBlue.setPosition(stoneArmInitBlue);
+//        Billy.armServoRed.setPosition(stoneArmInitRed);
 
         if (testModeActive) {
             // DO NOTHING
         }
         else {
 
+//            if (targetsSkyStone != null) {
+                targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
-            VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
-            stoneTarget.setName("Stone Target");
-            VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
-            blueRearBridge.setName("Blue Rear Bridge");
-            VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
-            redRearBridge.setName("Red Rear Bridge");
-            VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
-            redFrontBridge.setName("Red Front Bridge");
-            VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
-            blueFrontBridge.setName("Blue Front Bridge");
-            VuforiaTrackable red1 = targetsSkyStone.get(5);
-            red1.setName("Red Perimeter 1");
-            VuforiaTrackable red2 = targetsSkyStone.get(6);
-            red2.setName("Red Perimeter 2");
-            VuforiaTrackable front1 = targetsSkyStone.get(7);
-            front1.setName("Front Perimeter 1");
-            VuforiaTrackable front2 = targetsSkyStone.get(8);
-            front2.setName("Front Perimeter 2");
-            VuforiaTrackable blue1 = targetsSkyStone.get(9);
-            blue1.setName("Blue Perimeter 1");
-            VuforiaTrackable blue2 = targetsSkyStone.get(10);
-            blue2.setName("Blue Perimeter 2");
-            VuforiaTrackable rear1 = targetsSkyStone.get(11);
-            rear1.setName("Rear Perimeter 1");
-            VuforiaTrackable rear2 = targetsSkyStone.get(12);
-            rear2.setName("Rear Perimeter 2");
+                stoneTarget = targetsSkyStone.get(0);
+                stoneTarget.setName("Stone Target");
 
-            allTrackables.addAll(targetsSkyStone);
+                allTrackables.add(targetsSkyStone.get(0));
+//            }
         }
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
@@ -412,6 +382,51 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
+    public void tensorFlowExit() {
+        OpenGLMatrix pose = null;
+        VectorF translation = null;
+
+        start = runtime.time();
+        while ((runtime.time() - start) < 4 && !skystoneFound && opModeIsActive()) {
+            if (tfod != null) {
+                // getUpdatedRecognitions() will return null if no new information is available since
+                // the last time that call was made.
+                // getRecognitions should always return what's being seen
+                List<Recognition> recognitionList = tfod.getRecognitions();
+                if (recognitionList != null) {
+                    telemetry.addData("# Object Detected", recognitionList.size());
+
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
+                    for (Recognition recognition : recognitionList) {
+
+                        if (recognition.getLabel() == "Skystone") {
+
+                            skystoneFound = true;
+                        }
+
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        telemetry.addData(String.format("  left,right (%d)", i), "%.03f , %.03f",
+                                recognition.getLeft(), recognition.getRight());
+                        telemetry.addData(String.format("  top,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getTop(), recognition.getBottom());
+                        telemetry.addData("Center Pixels", "recog(%d): %.3f",i,
+                                (recognition.getRight()+recognition.getLeft())/2);
+                    }
+                }
+            }
+            telemetry.addLine("--------------------------");
+            telemetry.addLine("Press dpad up to exit");
+            telemetry.update();
+
+        }
+
+
+        if (tfod != null) {
+            tfod.shutdown();
+        }
+    }// ??? Useful ???
+
     public void vuforiaStoneIdentifyLoop() {
 
         OpenGLMatrix pose = null;
@@ -454,9 +469,8 @@ public class BasicAuto extends BasicOpMode {
 
             pose = ((VuforiaTrackableDefaultListener) stoneTarget.getListener()).getPose();
             if (pose != null) {
-
-                stoneY = translation.get(1) / mmPerInch;
                 translation = pose.getTranslation();
+                stoneY = translation.get(1) / mmPerInch;
                 telemetry.addData(stoneTarget.getName() + "-Translation", translation);
 
                 skystoneFound = true;
@@ -498,6 +512,81 @@ public class BasicAuto extends BasicOpMode {
             }
             else {
                 telemetry.addData("Skystone status", "Not Visible: Left");// was RIGHT for camera on robot left
+                stonePos = "Left";
+                stoneSelect = 0;
+                telemetry.update();
+            }
+        }
+    }
+
+    public void tensorFlowIdSkystone() {
+
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            // getRecognitions should always return what's being seen
+            List<Recognition> recognitionList = tfod.getRecognitions();
+            if (recognitionList != null) {
+                telemetry.addData("# Object Detected", recognitionList.size());
+
+                // step through the list of recognitions and display boundary info.
+
+                for (int i = 0;i< recognitionList.size();i++) {
+
+                    middleOfStone = (recognitionList.get(i).getRight() + recognitionList.get(i).getLeft()) / 2;
+
+                    if (recognitionList.get(i).getLabel().equals("Skystone")) {
+                        if(recognitionList.get(i).getWidth() < 10.0/cons.inchesPerPixel)
+                            skystoneFound = true;
+
+                            Billy.angleUnWrap();
+                            angleWhenFound = Billy.robotHeading;
+                    }
+
+                    telemetry.addData(String.format("label (%d)", i), recognitionList.get(i).getLabel());
+                    telemetry.addData(String.format("\tleft,right (%d)", i), "%.03f , %.03f",
+                            recognitionList.get(i).getLeft(), recognitionList.get(i).getRight());
+                    telemetry.addData(String.format("\ttop,bottom (%d)", i), "%.03f , %.03f",
+                            recognitionList.get(i).getTop(), recognitionList.get(i).getBottom());
+                    telemetry.addData("\twidth","(%d) = %.03f", i, recognitionList.get(i).getWidth());
+                    telemetry.addData("\tMiddle Pixels", "recog(%d): %.3f",i, middleOfStone);
+                }
+            }
+        }
+    }
+
+    public void determineSkystonePositionTF() {
+
+        zoneShift = (Math.tan(angleWhenFound) * cons.distanceFromStones) / cons.inchesPerPixel;
+        leftBound -= zoneShift;
+        rightBound -= zoneShift;
+
+        if (middleOfStone <= leftBound) {
+            telemetry.addData("Skystone status", "Left");
+            stonePos = "Left";
+            stoneSelect = 0;
+        }
+        if (middleOfStone > leftBound && middleOfStone < rightBound) {
+            telemetry.addData("Skystone status", "CENTER");
+            stonePos = "Center";
+            stoneSelect = 1;
+        }
+        if (middleOfStone >= rightBound) {
+            telemetry.addData("Skystone status", "Right");
+            stonePos = "Right";
+            stoneSelect = 2;
+        }
+        if(!skystoneFound) /*NOT Visible*/ {
+
+            if(sideColor == -1) {
+                telemetry.addData("Skystone status", "Not Visible: Right");
+                stonePos = "Right";
+                stoneSelect = 2;
+                telemetry.update();
+
+            }
+            else {
+                telemetry.addData("Skystone status", "Not Visible: Left");
                 stonePos = "Left";
                 stoneSelect = 0;
                 telemetry.update();
@@ -586,28 +675,31 @@ public class BasicAuto extends BasicOpMode {
         targetsSkyStone.activate();
 
         start = runtime.time();
-        while ((runtime.time() - start < 0.5) && opModeIsActive() && !skystoneFound) {
+        while ((runtime.time() - start < 1) && opModeIsActive() && !skystoneFound) {
 
             identifySkystone();
 
+            telemetry.addData("Elapsed Time", runtime.time() - start);
             telemetry.update();
         }
         start = runtime.time();
-        while ((runtime.time() - start < 0.5) && opModeIsActive() && !skystoneFound) {
-            Billy.setMotorPower(0.15);
+        while ((runtime.time() - start < 1) && opModeIsActive() && !skystoneFound) {
+            Billy.setMotorPower(0.1);
 
             identifySkystone();
 
+            telemetry.addData("Elapsed Time", runtime.time() - start);
             telemetry.update();
         }
         Billy.setMotorPower(0);
 
         start = runtime.time();
-        while ((runtime.time() - start < 1) && opModeIsActive() && !skystoneFound) {
-            Billy.setMotorPower(-0.15);
+        while ((runtime.time() - start < 2) && opModeIsActive() && !skystoneFound) {
+            Billy.setMotorPower(-0.1);
 
             identifySkystone();
 
+            telemetry.addData("Elapsed Time", runtime.time() - start);
             telemetry.update();
         }
         Billy.setMotorPower(0);
@@ -625,6 +717,60 @@ public class BasicAuto extends BasicOpMode {
 //        pressAToContinue();
 
         targetsSkyStone.deactivate();
+
+        setStoneSideways();
+
+        telemetry.addData("SkystonePos:", stonePos);
+        telemetry.addData("sideways to Skystone:", stoneSideways);
+//        pressAToContinue();
+
+    }
+
+    public void tensorFlowStoneLIRotate() {
+
+        start = runtime.time();
+        while ((runtime.time() - start < 1) && opModeIsActive()/* && !skystoneFound*/) {
+
+            tensorFlowIdSkystone();
+
+            telemetry.addData("Elapsed Time", runtime.time() - start);
+            telemetry.update();
+        }
+        start = runtime.time();
+        while ((runtime.time() - start < 1) && opModeIsActive() && !skystoneFound) {
+            Billy.setMotorPower(0.1);
+
+            tensorFlowIdSkystone();
+
+            telemetry.addData("Elapsed Time", runtime.time() - start);
+            telemetry.update();
+        }
+        Billy.setMotorPower(0);
+
+        start = runtime.time();
+        while ((runtime.time() - start < 2) && opModeIsActive() && !skystoneFound) {
+            Billy.setMotorPower(-0.1);
+
+            tensorFlowIdSkystone();
+
+            telemetry.addData("Elapsed Time", runtime.time() - start);
+            telemetry.update();
+        }
+        Billy.setMotorPower(0);
+
+        determineSkystonePositionTF();
+
+        telemetry.addData("Skystone TF Center", middleOfStone);
+        telemetry.update();
+
+        Billy.IMUDriveRotate(0, "Return to 0", this);
+
+        telemetry.addData("SkystonePos", stonePos);
+        telemetry.addData("Skystone Select", stoneSelect);
+        telemetry.addData("Skystone TF Center", middleOfStone);
+        telemetry.addData("TF Zone Bounds","[L: %.02f, R: %.02f]",  leftBound, rightBound);
+
+//        pressAToContinue();
 
         setStoneSideways();
 

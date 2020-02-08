@@ -150,10 +150,12 @@ public class Weighted_Teleop extends BasicTeleOp {
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
             telemetry.addData("Robot Heading", "( %.2f )", Billy.robotHeading);
+            telemetry.addData("Servos Gripper", "Servo Left (%.2f), Servo Right (%.2f)",
+                    Billy.stoneServoLeft.getPosition(), Billy.stoneServoRight.getPosition());
             telemetry.addData("Slide Pos", "Slide (%d)", Billy.slide.getCurrentPosition());
             telemetry.addData("Slide TargetPos", "Slide (%d)", Billy.slide.getTargetPosition());
             telemetry.addData("Slide Power", "Slide (%.2f)", Billy.slide.getPower());
-            telemetry.addData("Servos", "F Servo Left (%.2f), F Servo Right (%.2f)",
+            telemetry.addData("Servos Foundation", "F Servo Left (%.2f), F Servo Right (%.2f)",
                     Billy.servoFoundationL.getPosition(), Billy.servoFoundationR.getPosition());
             telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
                     forwardDirection, rightDirection, clockwise);

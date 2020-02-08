@@ -29,6 +29,7 @@
 
 package Skystone_14999.OpModes.Test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -52,7 +53,7 @@ import Skystone_14999.OpModes.Autonomous.BasicAuto;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "New TensorFlow Test", group = "Test")
+@Autonomous(name = "New TensorFlow Test", group = "Test")
 
 public class NewTensorFlowTest extends BasicAuto {
 
@@ -141,10 +142,11 @@ public class NewTensorFlowTest extends BasicAuto {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.8;
+        tfodParameters.minimumConfidence = cons.tensorFlowMinimumConfidence;// was 0.8
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-        tfod.setClippingMargins(200,0,0,0);
+        tfod.setClippingMargins(0,0,0,0);
+
     }
 
 }

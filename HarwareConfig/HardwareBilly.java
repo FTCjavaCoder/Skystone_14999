@@ -199,7 +199,7 @@ public class HardwareBilly
 
 //            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
             armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
-            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
+//            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
 
 //            jackStopSensor = hwMap.get(TouchSensor.class, "touch_sensor");
 

@@ -54,6 +54,8 @@ public class Constants {
 
     public double adjustVuforiaPhone = 0;
 
+    public double tensorFlowMinimumConfidence = 0.5;
+
     public final double ROBOT_INCH_TO_MOTOR_DEG = 360 / (3.875 * 3.14159); // units deg/inch - 360 deg. / wheel circumference (Wheel diameter x pi)
     public final int NUMBER_OF_JACK_STAGES = 3;// ASSUMING 3 PAIRS OF PIECES PER SIDE
     public final double MOTOR_DEG_TO_LEAD = 0.315/360; //Replace 0 with the distance between the ridges of the lead screw
@@ -62,7 +64,7 @@ public class Constants {
     // DERIVATION alpha = 2*AL/D; AL = arc length = wheel travel in inches, D = wheel diameter, alpha = wheel angle in radians
     // AL is input so conversion = 2/D * 180/pi (convert to degrees
     // alpha = AL * (360 / (D*pi))
-    public final int DEGREES_TO_COUNTS = 1440 / 360; // units counts/degree - based on 1440 per 1 revolution
+    public double DEGREES_TO_COUNTS = (1440.0/360.0) * (40.0/60.0); // units counts/degree - based on 1440 per 1 revolution
     public final double ROBOT_DEG_TO_WHEEL_INCH = 16.904807 * 3.14159 / 360;//NR wheel center to center 16.904807// units of inch/degree -- Robot rotation circumference [(wheel base (diagonal)] * pi/360 deg
     // DERIVATION AL = theta * RTD/2; AL = arc length = wheel travel in inches, RTD = robot turning diameter, theta = robot angle in radians
     // theta is input so conversion = RTD/2 * pi/180 (convert input in degrees to radians)
@@ -76,6 +78,10 @@ public class Constants {
     public final double adjForward = 0.964;// may simply be the difference between the two robots wheel diameters
     public final double adjRotate = 1.236;//NOT used because of using IMU to rotate to angle
     public final double adjRight = 1.079;//
+
+    public final double inchesPerPixel = 24 / 1280;// was 38 || inches per pixel for Tensor Flow to relate to vuforia zones
+
+    public final double distanceFromStones = (48 - 16) - forwardFirstMove;
 
     public static VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT;// was BACK
     public static final String VUFORIA_KEY = " AUtTfjH/////AAAAGalBbST5Vkv8kqIoszZrsYOCBYcUVlFwYJ2rvrvVgm4ie/idQYx2x++SWi3UMEJnuP7Zww+cqOgyLepotRs9ppGxpCDcintIz0pIixMr+bievjJUDzdn0PyAJ6QUZK3xzoqDkTY1R99qvRORmTTqCx2/rGfYPlcOpdL5oWdhQsUatHyneF/eiWGBincPqBx3JfVwZnscF/B7J+u76YA4VTWLl8bl3iu26IYXMZE0zi7Pk+s9/pRQCCrLcxsvns4ouiSg3n61Z+jv8aS6y9ncwDdg0nm/XwDeiIrworkIPcPTW73LKpzX/63C1HprikXUJ+fm1eAkCfNy06n9SNTq20jxc7NXtGVUoE+WbNGmE4yb ";
@@ -126,6 +132,8 @@ public class Constants {
         pHM.put("skystoneExtraStoneGrab", new ParameterHM(-2, ParameterHM.instanceType.distanceInches));// was 0 and unused to move more or less when pulling stone out
 
         pHM.put("adjustVuforiaPhone", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of phone to adjust values Vuforia uses to determine Left, Center, or Right
+
+        pHM.put("tensorFlowMinimumConfidence", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// For adjusting TensorFlow confidence level
 
     }// Define initial values for HashMap parameters
 
@@ -192,6 +200,9 @@ public class Constants {
             }
             if(s.equals("adjustVuforiaPhone")) {
                 adjustVuforiaPhone = pHM.get(s).value;
+            }
+            if(s.equals("tensorFlowMinimumConfidence")) {
+                tensorFlowMinimumConfidence = pHM.get(s).value;
             }
 
         }
