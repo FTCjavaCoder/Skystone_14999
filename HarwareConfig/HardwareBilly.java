@@ -80,6 +80,8 @@ public class HardwareBilly
     public int jackZoneCTeleOp =0;
     public int countDistance = 0;
 
+    private boolean reduceDrivingPower = false; // << Private property to know if reduced Driving Power should apply
+
     /* local OpMode members. */
     public Orientation angles;
 
@@ -1037,14 +1039,26 @@ public class HardwareBilly
 
     public void drivePowerAll(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
-        forwardDirection = (-g1.left_stick_y) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
-        clockwise = (g1.right_stick_x) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
+        double powerLimit;
 
-        frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
-        frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
-        backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
-        backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -om.cons.TELEOP_DRIVE_POWER_LIMIT, om.cons.TELEOP_DRIVE_POWER_LIMIT));
+        if (g1.right_bumper)
+            reduceDrivingPower = true;
+        if (g1.left_bumper)
+            reduceDrivingPower = false;
+
+        if (reduceDrivingPower)
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 2;
+        else
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
+
+        forwardDirection = (-g1.left_stick_y) * powerLimit;
+        rightDirection = (g1.left_stick_x) * powerLimit;
+        clockwise = (g1.right_stick_x) * powerLimit;
+
+        frontLeft.setPower(Range.clip(-forwardDirection - rightDirection - clockwise, -powerLimit, powerLimit));
+        frontRight.setPower(Range.clip(forwardDirection - rightDirection - clockwise, -powerLimit, powerLimit));
+        backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -powerLimit, powerLimit));
+        backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -powerLimit, powerLimit));
     }
 
 //    public void rotatePowerRightStick(Gamepad g1, Gamepad g2) {
@@ -1058,10 +1072,21 @@ public class HardwareBilly
     public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
         double maxPower;
+        double powerLimit;
 
-        forwardDirection = (-g1.left_stick_y) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
-        clockwise = (g1.right_stick_x) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
+        if (g1.right_bumper)
+            reduceDrivingPower = true;
+        if (g1.left_bumper)
+            reduceDrivingPower = false;
+
+        if (reduceDrivingPower)
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 2;
+        else
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
+
+        forwardDirection = (-g1.left_stick_y) * powerLimit;
+        rightDirection = (g1.left_stick_x) * powerLimit;
+        clockwise = (g1.right_stick_x) * powerLimit;
 
         maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
@@ -1079,10 +1104,21 @@ public class HardwareBilly
     public void drivePowerAllLeftStickScaledSquared(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
         double maxPower;
+        double powerLimit;
 
-        forwardDirection = (-g1.left_stick_y * Math.abs(g1.left_stick_y)) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
-        rightDirection = (g1.left_stick_x * Math.abs(g1.left_stick_x)) * om.cons.TELEOP_DRIVE_POWER_LIMIT;
-        clockwise = (g1.right_stick_x * Math.abs(g1.right_stick_x)) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
+        if (g1.right_bumper)
+            reduceDrivingPower = true;
+        if (g1.left_bumper)
+            reduceDrivingPower = false;
+
+        if (reduceDrivingPower)
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 2;
+        else
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
+
+        forwardDirection = (-g1.left_stick_y * Math.abs(g1.left_stick_y)) * powerLimit;
+        rightDirection = (g1.left_stick_x * Math.abs(g1.left_stick_x)) * powerLimit;
+        clockwise = (g1.right_stick_x * Math.abs(g1.right_stick_x)) * powerLimit;
 
         maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
@@ -1110,7 +1146,16 @@ public class HardwareBilly
         y = g1.left_stick_y;
         absX = Math.abs(x);
         absY = Math.abs(y);
-        powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
+
+        if (g1.right_bumper)
+            reduceDrivingPower = true;
+        if (g1.left_bumper)
+            reduceDrivingPower = false;
+
+        if (reduceDrivingPower)
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 2;
+        else
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
         counterclockwiseDirection = (-g1.left_trigger * g1.left_trigger) * powerLimit;
         clockwiseDirection = (g1.right_trigger * g1.right_trigger) * powerLimit;
@@ -1150,12 +1195,21 @@ public class HardwareBilly
         absX = Math.abs(x);
         absY = Math.abs(y);
         absRX = Math.abs(RX);
-        powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
+
+        if (g1.right_bumper)
+            reduceDrivingPower = true;
+        if (g1.left_bumper)
+            reduceDrivingPower = false;
+
+        if (reduceDrivingPower)
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 2;
+        else
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
         forwardDirection = ((y * Math.pow(absY, 2) * (1 - absY)) + (y * absY)) * powerLimit;
         rightDirection = ((x * Math.pow(absX, 2) * (1 - absX)) + (x * absX)) * powerLimit;
 //        clockwise = (g1.right_stick_x) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
-        clockwise = ((RX * Math.pow(absRX, 2) * (1 - absRX)) + (RX * absRX)) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
+        clockwise = ((RX * Math.pow(absRX, 2) * (1 - absRX)) + (RX * absRX)) * powerLimit;
 
         maxPower = Math.abs(forwardDirection) + Math.abs(rightDirection) + Math.abs(clockwise);
 
