@@ -4,6 +4,7 @@ package Skystone_14999.HarwareConfig;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import TestOpModesOffline.BNO055IMU;
 //import TestOpModesOffline.JustLoggingAccelerationIntegrator;
@@ -16,6 +17,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorREVColorDistance;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -55,6 +57,8 @@ public class HardwareBilly
     public Servo    stoneServoArm   = null;
 
     public TouchSensor jackStopSensor = null;
+
+//    public ColorSensor lightSensor = null;
 
     int targetPos[] = new int[4];
 

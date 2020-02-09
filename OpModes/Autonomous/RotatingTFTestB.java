@@ -45,7 +45,8 @@ public class RotatingTFTestB extends BasicAuto {
         insideOutside = 0;// 0 for Inside, 24 for Outside
         sideColor = 1;// + for Blue, - for Red, KEEP RED
 
-        initializeMiniBot();
+//        initializeMiniBot();
+        initialize();
 
         waitForStart();
 

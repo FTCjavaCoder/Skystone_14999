@@ -44,7 +44,7 @@ public class Constants {
 
 //    public final double TURN_POWER =  0.40;
 
-    public double forwardFirstMove = 13;
+    public double forwardFirstMove = 21;// was 13
     public double skystoneExtraBack = 8;
 
     public double doRotateMethod = 0;
@@ -55,6 +55,9 @@ public class Constants {
     public double adjustVuforiaPhone = 0;
 
     public double tensorFlowMinimumConfidence = 0.5;
+
+    public double sideGrabSkystone = 13;
+    public double sidePullGrabSkystone = 6;
 
     public final double ROBOT_INCH_TO_MOTOR_DEG = 360 / (3.875 * 3.14159); // units deg/inch - 360 deg. / wheel circumference (Wheel diameter x pi)
     public final int NUMBER_OF_JACK_STAGES = 3;// ASSUMING 3 PAIRS OF PIECES PER SIDE
@@ -95,13 +98,13 @@ public class Constants {
 
         pHM.put("drivePowerLimit", new ParameterHM( 1.0, ParameterHM.instanceType.powerLimit));// was 0.75
 
-        pHM.put("drivePowerMinimum", new ParameterHM( 0.1, ParameterHM.instanceType.powerLimit));//was 0.2
+        pHM.put("drivePowerMinimum", new ParameterHM( 0.066, ParameterHM.instanceType.powerLimit));// was 0.1
 
         pHM.put("rotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.75
 
-        pHM.put("powerGain", new ParameterHM(0.2, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("powerGain", new ParameterHM(0.1, ParameterHM.instanceType.powerLimit));// was 0.2
 
-        pHM.put("rotatePowerGain", new ParameterHM(0.02, ParameterHM.instanceType.powerLimit));// was 0.05
+        pHM.put("rotatePowerGain", new ParameterHM(0.01, ParameterHM.instanceType.powerLimit));// was 0.02
 
         pHM.put("IMURotateTol", new ParameterHM(1.0, ParameterHM.instanceType.rotationDegrees));// was 2.0
 
@@ -121,7 +124,7 @@ public class Constants {
 
         pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
 
-        pHM.put("forwardFirstMove", new ParameterHM(13, ParameterHM.instanceType.distanceInches));// For forward before Vuforia in 2 stone (was forwardFirstMove)
+        pHM.put("forwardFirstMove", new ParameterHM(21, ParameterHM.instanceType.distanceInches));// was 13 For forward before Vuforia in 2 stone
 
         pHM.put("skystoneExtraBack", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
 
@@ -134,6 +137,10 @@ public class Constants {
         pHM.put("adjustVuforiaPhone", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of phone to adjust values Vuforia uses to determine Left, Center, or Right
 
         pHM.put("tensorFlowMinimumConfidence", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// For adjusting TensorFlow confidence level
+
+        pHM.put("sideGrabSkystone", new ParameterHM(14, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
+
+        pHM.put("sidePullGrabSkystone", new ParameterHM(10, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
 
     }// Define initial values for HashMap parameters
 
@@ -203,6 +210,12 @@ public class Constants {
             }
             if(s.equals("tensorFlowMinimumConfidence")) {
                 tensorFlowMinimumConfidence = pHM.get(s).value;
+            }
+            if(s.equals("sideGrabSkystone")) {
+                sideGrabSkystone = pHM.get(s).value;
+            }
+            if(s.equals("sidePullGrabSkystone")) {
+                sidePullGrabSkystone = pHM.get(s).value;
             }
 
         }

@@ -145,8 +145,7 @@ public class NewTensorFlowTest extends BasicAuto {
         tfodParameters.minimumConfidence = cons.tensorFlowMinimumConfidence;// was 0.8
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-        tfod.setClippingMargins(0,0,0,0);
-
+        tfod.setClippingMargins(0,(640/4),0,0);
     }
 
 }
