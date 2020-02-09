@@ -2,10 +2,10 @@ package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-//import TestOpModesOffline.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.LightSensor;
+//import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -22,6 +22,7 @@ import java.util.List;
 
 import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.BasicOpMode;
+//import TestOpModesOffline.Telemetry;
 
 @Autonomous(name="BasicAuto", group="Autonomous")
 @Disabled
@@ -1404,7 +1405,7 @@ public class BasicAuto extends BasicOpMode {
 //        pressAToContinue();
 
 //        Billy.IMUDriveRotate(-90 * sideColor, "Rotate 90 degrees CCW",this);
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -stoneSideways, -90, "Forward to align with stone",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -stoneSideways, -90 * sideColor, "Forward to align with stone",this);
 
 //        pressAToContinue();
 
@@ -1721,6 +1722,39 @@ public class BasicAuto extends BasicOpMode {
                 haveRedFoundation = false;
             }
         }
+    }
+
+    public void pullFoundationSideways() {
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 12 * sideColor, 0, "Right 12 inches", this);
+
+        Billy.IMUDriveRotate((-90 * sideColor), "Rotate to 90 degrees CCW",this);
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 8, -90 * sideColor, "Forward 8 inches at 90 CCW with Foundation", this);
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -20 * sideColor, -90 * sideColor, "Right 20 inches at 90 CCW with Foundation", this);
+
+        // release foundation from gripper
+        Billy.servoFoundationL.setPosition(0.10);
+        Billy.servoFoundationR.setPosition(0.90);
+
+        if(testModeActive) {
+            if(sideColor == 1) {
+
+                haveBlueFoundation = false;
+            }
+            if(sideColor == -1) {
+
+                haveRedFoundation = false;
+            }
+        }
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -5, -90 * sideColor, "Backward 20 inches at 90 CCW with Foundation", this);
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -10 * sideColor, -90 * sideColor, "Left 55 20 at 90 CCW with Foundation", this);
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -40, -90 * sideColor, "Backward 25 inches at 90 CCW with Foundation", this);
+
     }
 
     public void awayFromFoundationOneMove() {
