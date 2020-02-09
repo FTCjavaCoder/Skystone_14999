@@ -38,7 +38,7 @@ public class DelayParkRed extends BasicAuto {
 
         Billy.initIMU(this);
 
-        sleep(20000);// 20 seconds
+        sleep((long)(cons.delayForPark * 1000));// 20 seconds base
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,2, 0,"Forward 2 inches",this);
 

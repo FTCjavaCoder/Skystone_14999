@@ -59,6 +59,8 @@ public class Constants {
     public double sideGrabSkystone = 13;
     public double sidePullGrabSkystone = 6;
 
+    public double delayForPark = 20;
+
     public final double ROBOT_INCH_TO_MOTOR_DEG = 360 / (3.875 * 3.14159); // units deg/inch - 360 deg. / wheel circumference (Wheel diameter x pi)
     public final int NUMBER_OF_JACK_STAGES = 3;// ASSUMING 3 PAIRS OF PIECES PER SIDE
     public final double MOTOR_DEG_TO_LEAD = 0.315/360; //Replace 0 with the distance between the ridges of the lead screw
@@ -142,6 +144,8 @@ public class Constants {
 
         pHM.put("sidePullGrabSkystone", new ParameterHM(10, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
 
+        pHM.put("delayForPark", new ParameterHM(20, ParameterHM.instanceType.distanceInches));// Time to delay for parking program (seconds)
+
     }// Define initial values for HashMap parameters
 
     public void initParameters() {
@@ -216,6 +220,9 @@ public class Constants {
             }
             if(s.equals("sidePullGrabSkystone")) {
                 sidePullGrabSkystone = pHM.get(s).value;
+            }
+            if(s.equals("delayForPark")) {
+                delayForPark = pHM.get(s).value;
             }
 
         }
