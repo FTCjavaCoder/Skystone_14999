@@ -85,13 +85,13 @@ public class FullDrive_StickControl extends BasicTeleOp {
             }
 
             // SERVOS FOUNDATION
-            if(gamepad1.dpad_up) {
+            if(gamepad1.y) {
 
                 Billy.servoFoundationL.setPosition(0.10);
 
                 Billy.servoFoundationR.setPosition(0.90);
             }
-            if(gamepad1.dpad_down) {
+            if(gamepad1.a) {
 
                 Billy.servoFoundationL.setPosition(0.80);
 
