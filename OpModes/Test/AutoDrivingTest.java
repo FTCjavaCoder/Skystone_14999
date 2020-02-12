@@ -42,6 +42,7 @@ public class AutoDrivingTest extends BasicAuto {
 
         Billy.initIMU(this);
 
+        pressAToContinue();
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 60, 0, "IMU Forward 60 Inches", this);
 
         pressAToContinue();

@@ -112,9 +112,9 @@ public class Constants {
 
         pHM.put("IMUDistanceTol", new ParameterHM(1.0, ParameterHM.instanceType.distanceInches));// new
 
-        pHM.put("steeringPowerGain", new ParameterHM(0.1/* * (2.0/3.0)*/, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("steeringPowerGain", new ParameterHM(0.1 * (2.0/3.0), ParameterHM.instanceType.powerLimit));// new
 
-        pHM.put("steeringPowerLimit", new ParameterHM(0.5/* * (2.0/3.0)*/, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("steeringPowerLimit", new ParameterHM(0.5 * (2.0/3.0), ParameterHM.instanceType.powerLimit));// new
 
         pHM.put("teleOpDrivePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.55
 

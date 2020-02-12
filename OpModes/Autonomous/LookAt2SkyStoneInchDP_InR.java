@@ -31,6 +31,8 @@ public class LookAt2SkyStoneInchDP_InR extends BasicAuto {
         insideOutside = 0;// 0 for Inside, 24 for Outside
         sideColor = -1;// + for Blue, - for Red, KEEP BLUE
 
+        extraRedDistance = 8;// probably more like 4 or 6
+
         initialize();
 
         waitForStart();
