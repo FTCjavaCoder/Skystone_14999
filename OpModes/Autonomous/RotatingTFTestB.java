@@ -1,6 +1,7 @@
 package Skystone_14999.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -9,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Rotating TensorFlow Test Blue", group="TensorFlow")
-//@Disabled
+@Disabled
 public class RotatingTFTestB extends BasicAuto {
 
     @Override

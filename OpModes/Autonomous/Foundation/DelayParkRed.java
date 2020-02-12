@@ -42,7 +42,7 @@ public class DelayParkRed extends BasicAuto {
 
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,2, 0,"Forward 2 inches",this);
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-50, 0,"Left 50 inches",this);
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-16, 0,"Left 16 inches",this);
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();

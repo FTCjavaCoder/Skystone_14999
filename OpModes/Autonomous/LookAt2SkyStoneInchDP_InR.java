@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Look At 2 SkyStone Inch DP In Blue", group="Skystone Auto")
+@Autonomous(name="Look At 2 SkyStone Inch DP In Red", group="Skystone Auto")
 
-public class LookAt2SkyStoneInchDP_InB extends BasicAuto {
+public class LookAt2SkyStoneInchDP_InR extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -29,7 +29,7 @@ public class LookAt2SkyStoneInchDP_InB extends BasicAuto {
 
         foundationPosChange = 0;// 0 for moved, 26 for unmoved Foundation.
         insideOutside = 0;// 0 for Inside, 24 for Outside
-        sideColor = 1;// + for Blue, - for Red, KEEP BLUE
+        sideColor = -1;// + for Blue, - for Red, KEEP BLUE
 
         initialize();
 

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 @Autonomous(name="Rotating Vuforia Test Blue", group="Autonomous")
-//@Disabled
+@Disabled
 public class RotatingVuforiaTestB extends BasicAuto {
 
     @Override

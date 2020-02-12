@@ -112,9 +112,9 @@ public class Constants {
 
         pHM.put("IMUDistanceTol", new ParameterHM(1.0, ParameterHM.instanceType.distanceInches));// new
 
-        pHM.put("steeringPowerGain", new ParameterHM(0.1, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("steeringPowerGain", new ParameterHM(0.1/* * (2.0/3.0)*/, ParameterHM.instanceType.powerLimit));// new
 
-        pHM.put("steeringPowerLimit", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// new
+        pHM.put("steeringPowerLimit", new ParameterHM(0.5/* * (2.0/3.0)*/, ParameterHM.instanceType.powerLimit));// new
 
         pHM.put("teleOpDrivePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.55
 
@@ -140,9 +140,9 @@ public class Constants {
 
         pHM.put("tensorFlowMinimumConfidence", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// For adjusting TensorFlow confidence level
 
-        pHM.put("sideGrabSkystone", new ParameterHM(14, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
+        pHM.put("sideGrabSkystone", new ParameterHM(11, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
 
-        pHM.put("sidePullGrabSkystone", new ParameterHM(10, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
+        pHM.put("sidePullGrabSkystone", new ParameterHM(6, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
 
         pHM.put("delayForPark", new ParameterHM(20, ParameterHM.instanceType.distanceInches));// Time to delay for parking program (seconds)
 
