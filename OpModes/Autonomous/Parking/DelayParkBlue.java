@@ -1,4 +1,4 @@
-package Skystone_14999.OpModes.Autonomous.Foundation;
+package Skystone_14999.OpModes.Autonomous.Parking;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 

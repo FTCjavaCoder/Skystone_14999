@@ -1,4 +1,3 @@
-
 package Skystone_14999.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -51,10 +50,10 @@ public class HardwareBilly
     public Servo  stoneServoLeft    = null;
     public Servo  stoneServoRight   = null;
     public Servo  armServoBlue    = null;
+    public Servo  rackServoBlue = null;
     public Servo  armServoRed   = null;
-    public Servo servoCapstoneRelease   = null;
-
-    public Servo    stoneServoArm   = null;
+    public Servo  rackServoRed = null;
+    public Servo  servoCapstoneRelease   = null;
 
     public TouchSensor jackStopSensor = null;
 
@@ -138,7 +137,9 @@ public class HardwareBilly
             servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
 
             armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
+            rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
             armServoRed = hwMap.get(Servo.class, "red_arm_servo");
+//            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
 
             stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
             stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");

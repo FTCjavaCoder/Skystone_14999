@@ -1,19 +1,15 @@
 package Skystone_14999.OpModes.Autonomous.Foundation;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
-@Autonomous(name="Foundation Inside", group="Foundation")
-@Disabled
-public class FoundationInside extends BasicAuto {
+@Autonomous(name="Foundation Sideways Blue", group="Foundation")
+
+public class FoundationSidewaysBlue extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -30,7 +26,8 @@ public class FoundationInside extends BasicAuto {
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
-        foundationInOut = 0;// 0 for Inside, 22 for Outside
+        sideColor = 1;
+        foundationInOut = 22;// 0 for Inside, 22 for Outside
 
         initialize();
 
@@ -40,11 +37,9 @@ public class FoundationInside extends BasicAuto {
 
         Billy.initIMU(this);
 
-        grabFoundation();
+        grabFoundationSideways();
 
-        pullFoundation();
-
-        awayFromFoundation();
+        pullFoundationSideways();
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();

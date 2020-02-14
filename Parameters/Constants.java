@@ -56,8 +56,9 @@ public class Constants {
 
     public double tensorFlowMinimumConfidence = 0.5;
 
-    public double sideGrabSkystone = 13;
-    public double sidePullGrabSkystone = 6;
+    public double sideGrabSkystone = 13.0;
+    public double sidePullSkystone = 6.0;
+    public double sideGrab2Skystone = 6.0;
 
     public double delayForPark = 20;
 
@@ -134,7 +135,7 @@ public class Constants {
 
         pHM.put("skystoneExtraSideways", new ParameterHM(0, ParameterHM.instanceType.distanceInches));//
 
-        pHM.put("skystoneExtraStoneGrab", new ParameterHM(-2, ParameterHM.instanceType.distanceInches));// was 0 and unused to move more or less when pulling stone out
+        pHM.put("skystoneExtraStoneGrab", new ParameterHM(-2.0, ParameterHM.instanceType.distanceInches));// was 0 and unused to move more or less when pulling stone out
 
         pHM.put("adjustVuforiaPhone", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of phone to adjust values Vuforia uses to determine Left, Center, or Right
 
@@ -142,7 +143,9 @@ public class Constants {
 
         pHM.put("sideGrabSkystone", new ParameterHM(11, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
 
-        pHM.put("sidePullGrabSkystone", new ParameterHM(6, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
+        pHM.put("sidePullSkystone", new ParameterHM(6.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
+
+        pHM.put("sideGrab2Skystone", new ParameterHM(6.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
 
         pHM.put("delayForPark", new ParameterHM(20, ParameterHM.instanceType.distanceInches));// Time to delay for parking program (seconds)
 
@@ -218,8 +221,11 @@ public class Constants {
             if(s.equals("sideGrabSkystone")) {
                 sideGrabSkystone = pHM.get(s).value;
             }
-            if(s.equals("sidePullGrabSkystone")) {
-                sidePullGrabSkystone = pHM.get(s).value;
+            if(s.equals("sidePullSkystone")) {
+                sidePullSkystone = pHM.get(s).value;
+            }
+            if(s.equals("sideGrab2Skystone")) {
+                sideGrab2Skystone = pHM.get(s).value;
             }
             if(s.equals("delayForPark")) {
                 delayForPark = pHM.get(s).value;
