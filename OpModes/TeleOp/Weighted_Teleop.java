@@ -96,10 +96,10 @@ public class Weighted_Teleop extends BasicTeleOp {
 
             if (gamepad1.b) {
 
-                Billy.rackServoBlue.setPosition(0);
-                Billy.rackServoRed.setPosition(1);
-                Billy.armServoBlue.setPosition(0.85);
-                Billy.armServoRed.setPosition(0.15);
+                Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
+                Billy.rackServoRed.setPosition(Billy.rackInitRed);
+                Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
+                Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
 
             }
 
