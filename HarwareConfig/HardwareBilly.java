@@ -86,8 +86,8 @@ public class HardwareBilly
     private boolean reduceDrivingPower = false; // << Private property to know if reduced Driving Power should apply
 
 
-    public double stoneArmInitBlue = 1;// for blue oriented servo is 1
-    public double stoneArmInitRed = 0;// for Red oriented servo is 0
+    public double stoneArmInitBlue = 0.85;// for blue oriented servo is 1
+    public double stoneArmInitRed = 0.15;// for Red oriented servo is 0
     public double rackInitBlue = 0;//
     public double rackInitRed = 1;//
 
