@@ -1,5 +1,6 @@
 package Skystone_14999.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -10,7 +11,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="FullDrive Scaled Stick Control", group="TeleOp")
-
+@Disabled
 public class FullDrive_Scaled_StickControl extends BasicTeleOp {
 
     @Override

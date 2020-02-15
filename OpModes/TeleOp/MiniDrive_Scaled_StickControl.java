@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
  */
 
 @TeleOp(name="MiniDrive Scaled Stick Control", group="TeleOp")
-//@Disabled
+@Disabled
 public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
 
     @Override

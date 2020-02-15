@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="FullDrive Stick Control", group="TeleOp")
-
+@Disabled
 public class FullDrive_StickControl extends BasicTeleOp {
 
     @Override

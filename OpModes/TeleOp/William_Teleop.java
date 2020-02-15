@@ -1,5 +1,6 @@
 package Skystone_14999.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="William's Teleop", group="TeleOp")
-
+@Disabled
 public class William_Teleop extends BasicTeleOp {
 
     @Override

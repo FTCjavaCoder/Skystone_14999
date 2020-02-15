@@ -123,7 +123,7 @@ public class Weighted_Teleop extends BasicTeleOp {
             }
             if (gamepad2.dpad_left) {
 
-                capstoneServoPosition = 0.15;
+                capstoneServoPosition = 0;// was 0.15
                 Billy.servoCapstoneRelease.setPosition(capstoneServoPosition);//
             }
 
