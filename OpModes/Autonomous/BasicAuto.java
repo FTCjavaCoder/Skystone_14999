@@ -71,9 +71,6 @@ public class BasicAuto extends BasicOpMode {
     public double stoneArmDownBlue;// was 0.05 and 0
     public double rackOutBlue;//
 
-    public double rackInitBlue;//
-    public double rackInitRed;//
-
     public double stoneArmUnderBridgeRed;// for red oriented servo
     public double stoneArmDownRed;// was 0.7
     public double rackOutRed;// untested
@@ -173,8 +170,6 @@ public class BasicAuto extends BasicOpMode {
         detectionRotateSpeed = 0.1 * (40.0/60.0);
         cons.DEGREES_TO_COUNTS = (1440.0/360.0) * (40.0/60.0);
 
-        rackInitBlue = 0;//
-        rackInitRed = 1;//
         stoneArmUnderBridgeBlue = 0.85;// for blue oriented servo
         stoneArmDownBlue = 0.20;// for blue oriented servo
         rackOutBlue = 0.75;//
@@ -232,10 +227,10 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationR.setPosition(0.20);
 
         Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
-        Billy.rackServoBlue.setPosition(rackInitBlue);
+        Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
 
         Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
-        Billy.rackServoRed.setPosition(rackInitRed);
+        Billy.rackServoRed.setPosition(Billy.rackInitRed);
 
         Billy.stoneServoLeft.setPosition(1);
         Billy.stoneServoRight.setPosition(1);
@@ -1420,8 +1415,8 @@ public class BasicAuto extends BasicOpMode {
 //        pressAToContinue();
 
         //release skystone with servo arm
-        if(sideColor == 1){Billy.armServoBlue.setPosition(stoneArmUnderBridgeBlue); Billy.rackServoBlue.setPosition(rackInitBlue);}
-        if(sideColor == -1){Billy.armServoRed.setPosition(stoneArmUnderBridgeRed); Billy.rackServoRed.setPosition(rackInitRed);}
+        if(sideColor == 1){Billy.armServoBlue.setPosition(stoneArmUnderBridgeBlue); Billy.rackServoBlue.setPosition(Billy.rackInitBlue);}
+        if(sideColor == -1){Billy.armServoRed.setPosition(stoneArmUnderBridgeRed); Billy.rackServoRed.setPosition(Billy.rackInitRed);}
         sleep(500);
 
         if(testModeActive) {
@@ -1502,8 +1497,8 @@ public class BasicAuto extends BasicOpMode {
                                                                             // was 35 reduced to not touch first Skystone
 //        pressAToContinue();
         //release skystone with servo arm
-        if(sideColor == 1){Billy.armServoBlue.setPosition(stoneArmUnderBridgeBlue); Billy.rackServoBlue.setPosition(rackInitBlue);}
-        if(sideColor == -1){Billy.armServoRed.setPosition(stoneArmUnderBridgeRed); Billy.rackServoRed.setPosition(rackInitRed);}
+        if(sideColor == 1){Billy.armServoBlue.setPosition(stoneArmUnderBridgeBlue); Billy.rackServoBlue.setPosition(Billy.rackInitBlue);}
+        if(sideColor == -1){Billy.armServoRed.setPosition(stoneArmUnderBridgeRed); Billy.rackServoRed.setPosition(Billy.rackInitRed);}
         sleep(500);
 
         if(testModeActive) {
