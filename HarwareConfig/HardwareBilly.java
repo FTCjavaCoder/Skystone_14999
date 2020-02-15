@@ -85,6 +85,10 @@ public class HardwareBilly
 
     private boolean reduceDrivingPower = false; // << Private property to know if reduced Driving Power should apply
 
+
+    public double stoneArmInitBlue = 1;// for blue oriented servo is 1
+    public double stoneArmInitRed = 0;// for Red oriented servo is 0
+
     /* local OpMode members. */
     public Orientation angles;
 
@@ -139,7 +143,7 @@ public class HardwareBilly
             armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
             rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
             armServoRed = hwMap.get(Servo.class, "red_arm_servo");
-//            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
+            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
 
             stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
             stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
@@ -164,7 +168,6 @@ public class HardwareBilly
             // and named "imu".
             imu = hwMap.get(BNO055IMU.class, "imu");
             imu.initialize(parameters);
-
         }
 
     }

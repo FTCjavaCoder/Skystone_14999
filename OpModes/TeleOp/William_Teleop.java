@@ -26,9 +26,6 @@ public class William_Teleop extends BasicTeleOp {
 
         Billy.initIMU(this);
 
-        Billy.armServoBlue.setPosition(0.6);
-        Billy.armServoRed.setPosition(0.15);
-
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 

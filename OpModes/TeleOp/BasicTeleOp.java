@@ -98,6 +98,9 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.servoFoundationL.setPosition(0.80);
         Billy.servoFoundationR.setPosition(0.20);
 
+        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
+        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
+
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
         telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);

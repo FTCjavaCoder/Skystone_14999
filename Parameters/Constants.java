@@ -143,7 +143,7 @@ public class Constants {
 
         pHM.put("sideGrabSkystone", new ParameterHM(11, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
 
-        pHM.put("sidePullSkystone", new ParameterHM(6.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
+        pHM.put("sidePullSkystone", new ParameterHM(8.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
 
         pHM.put("sideGrab2Skystone", new ParameterHM(6.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
 

@@ -9,9 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
-@Autonomous(name="Delay Park Red", group="Park")
+@Autonomous(name="Servo Park Blue", group="Park")
 @Disabled
-public class DelayParkRed extends BasicAuto {
+public class ServoParkBlue extends BasicAuto {
 
     @Override
     public void runOpMode() {
@@ -39,11 +39,7 @@ public class DelayParkRed extends BasicAuto {
 
         Billy.initIMU(this);
 
-        sleep((long)(cons.delayForPark * 1000));// 20 seconds base
 
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack,2, 0,"Forward 2 inches",this);
-
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft,-16, 0,"Left 16 inches",this);
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();

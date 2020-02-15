@@ -67,18 +67,17 @@ public class BasicAuto extends BasicOpMode {
 
     public double extraRedDistance = 0;// added because of relative difference of starting position of robot on Red
 
-    public double stoneArmUnderBridgeBlue = 0.6;// for blue oriented servo
-    public double stoneArmDownBlue = 0;// was 0.05
-    public double rackOutBlue = 0.75;//
+    public double stoneArmUnderBridgeBlue;// for blue oriented servo
+    public double stoneArmDownBlue;// was 0.05 and 0
+    public double rackOutBlue;//
 
-    public double stoneArmInitBlue = 0.6;// for blue oriented servo was 0
-    public double rackInitBlue = 0;//
-    public double stoneArmInitRed = 0.15;// for red oriented servo was 1
-    public double rackInitRed = 1;//
+    public double rackInitBlue;//
+    public double rackInitRed;//
 
-    public double stoneArmUnderBridgeRed = 0.15;// for red oriented servo
-    public double stoneArmDownRed = 0.7;// was 0.7
-    public double rackOutRed = 0.5;// unknown
+    public double stoneArmUnderBridgeRed;// for red oriented servo
+    public double stoneArmDownRed;// was 0.7
+    public double rackOutRed;// untested
+//THIS IS JUST TO DECLARE THE VARIABLES YOU WILL ALSO NEED TO CHANGE THE VALUES IN THE INITIALIZE METHOD
 
     public double vuforiaWaitTime = 1.5;// was 1
 
@@ -164,7 +163,7 @@ public class BasicAuto extends BasicOpMode {
 
             readOrWriteHashMapOffline();
         }
-        else{
+        else {
 
             readOrWriteHashMap();
         }
@@ -174,12 +173,14 @@ public class BasicAuto extends BasicOpMode {
         detectionRotateSpeed = 0.1 * (40.0/60.0);
         cons.DEGREES_TO_COUNTS = (1440.0/360.0) * (40.0/60.0);
 
-        stoneArmInitBlue = 0.6;// for blue oriented servo
-        stoneArmInitRed = 0.15;// for red oriented servo
-        stoneArmUnderBridgeBlue = 0.6;// for blue oriented servo
-        stoneArmDownBlue = 0.05;// for blue oriented servo
-        stoneArmUnderBridgeRed = 0.15;// for red oriented servo
-        stoneArmDownRed = 0.7;// for red oriented servo (was 0.5, could adjust servo horn)
+        rackInitBlue = 0;//
+        rackInitRed = 1;//
+        stoneArmUnderBridgeBlue = 0.85;// for blue oriented servo
+        stoneArmDownBlue = 0.20;// for blue oriented servo
+        rackOutBlue = 0.75;//
+        stoneArmUnderBridgeRed = 0.30;// for red oriented servo
+        stoneArmDownRed = 0.80;// for red oriented servo untested
+        rackOutRed = 0.25;// untested
 
         Billy.init(hardwareMap, testModeActive);
 
@@ -230,11 +231,11 @@ public class BasicAuto extends BasicOpMode {
         Billy.servoFoundationL.setPosition(0.80);
         Billy.servoFoundationR.setPosition(0.20);
 
-        Billy.armServoBlue.setPosition(stoneArmInitBlue);
+        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
         Billy.rackServoBlue.setPosition(rackInitBlue);
 
-        Billy.armServoRed.setPosition(stoneArmInitRed);
-//        Billy.rackServoRed.setPosition(rackInitRed);
+        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
+        Billy.rackServoRed.setPosition(rackInitRed);
 
         Billy.stoneServoLeft.setPosition(1);
         Billy.stoneServoRight.setPosition(1);
@@ -281,8 +282,8 @@ public class BasicAuto extends BasicOpMode {
         detectionRotateSpeed = 0.1;
         cons.DEGREES_TO_COUNTS = (1440.0/360.0);
 
-        stoneArmInitBlue = 1;// for blue oriented servo was 0
-        stoneArmInitRed = 1;// for red oriented servo
+        Billy.stoneArmInitBlue = 1;// for blue oriented servo was 0
+        Billy.stoneArmInitRed = 1;// for red oriented servo
         stoneArmUnderBridgeBlue = 1;// for blue oriented servo was 0.25
         stoneArmDownBlue = 0.4;// for blue oriented servo
         stoneArmUnderBridgeRed = 0.75;// for red oriented servo
@@ -323,7 +324,7 @@ public class BasicAuto extends BasicOpMode {
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
 
-        Billy.armServoBlue.setPosition(stoneArmInitBlue);
+        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
 //        Billy.armServoRed.setPosition(stoneArmInitRed);
 
         if (testModeActive) {
@@ -1410,6 +1411,10 @@ public class BasicAuto extends BasicOpMode {
 
 //        pressAToContinue();
 
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, (-(cons.sidePullSkystone - 6)), -180 * sideColor, "Back 2 inches",this);
+
+//        pressAToContinue();
+
         Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, ((47 + extraRedDistance) - stoneSideways) * sideColor, -180 * sideColor, "Right 52+ inches",this);
                                                                             // was 52
 //        pressAToContinue();
@@ -1486,6 +1491,10 @@ public class BasicAuto extends BasicOpMode {
 //        pressAToContinue();
 
         Billy.IMUDriveRotate( -180 * sideColor, "Rotate 90 degrees CCW",this);
+
+//        pressAToContinue();
+
+        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, (-(cons.sidePullSkystone - 6)), -180 * sideColor, "Back 2 inches",this);
 
 //        pressAToContinue();
 
