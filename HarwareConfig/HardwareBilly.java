@@ -1217,7 +1217,7 @@ public class HardwareBilly
             reduceDrivingPower = false;
 
         if (reduceDrivingPower)
-            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 2;
+            powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT / 3;// was /2 one half
         else
             powerLimit = om.cons.TELEOP_DRIVE_POWER_LIMIT;
 
