@@ -34,7 +34,7 @@ public class BasicTeleOp extends BasicOpMode {
 
     public double capstoneServoPosition = 0;
 
-    public double manualGripperIncrement = 0.01;
+    public double manualGripperIncrement = 0.05;// was 0.01 and 0.005
 
     public int telemetryOption = 1;
 
