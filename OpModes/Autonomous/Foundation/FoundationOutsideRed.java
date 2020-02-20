@@ -1,6 +1,7 @@
 package Skystone_14999.OpModes.Autonomous.Foundation;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Foundation Outside Red", group="Foundation")
-
+@Disabled
 public class FoundationOutsideRed extends BasicAuto {
 
     @Override

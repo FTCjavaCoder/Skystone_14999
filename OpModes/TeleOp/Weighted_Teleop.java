@@ -26,6 +26,8 @@ public class Weighted_Teleop extends BasicTeleOp {
 
         Billy.initIMU(this);
 
+        initServosAfterStart();
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -45,7 +47,7 @@ public class Weighted_Teleop extends BasicTeleOp {
             //
             if (gamepad2.right_bumper) {
 
-                servoStonePos = Billy.stoneServoRight.getPosition() + 0.005;// was 0.05 with 300 millisecond sleep
+                servoStonePos = Billy.stoneServoRight.getPosition() + manualGripperIncrement;// was 0.05 with 300 millisecond sleep
                 Range.clip(servoStonePos, 0.15, 1);
                 Billy.setServoPos(servoStonePos);
 //                sleep(300);
@@ -53,7 +55,7 @@ public class Weighted_Teleop extends BasicTeleOp {
 
             if (gamepad2.left_bumper) {
 
-                servoStonePos = Billy.stoneServoRight.getPosition() - 0.005;// was 0.05 with 300 millisecond sleep
+                servoStonePos = Billy.stoneServoRight.getPosition() - manualGripperIncrement;// was 0.05 with 300 millisecond sleep
                 Range.clip(servoStonePos, 0.15, 1);
                 Billy.setServoPos(servoStonePos);
 //                sleep(300);
@@ -103,7 +105,6 @@ public class Weighted_Teleop extends BasicTeleOp {
 
             }
 
-            // SERVOS FOUNDATION
             if(gamepad1.dpad_left) {
 
                 Billy.armServoBlue.setPosition(1);

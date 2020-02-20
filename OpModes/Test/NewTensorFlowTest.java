@@ -30,6 +30,7 @@
 package Skystone_14999.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -54,7 +55,7 @@ import Skystone_14999.OpModes.Autonomous.BasicAuto;
  * is explained below.
  */
 @Autonomous(name = "New TensorFlow Test", group = "Test")
-
+@Disabled
 public class NewTensorFlowTest extends BasicAuto {
 
     @Override

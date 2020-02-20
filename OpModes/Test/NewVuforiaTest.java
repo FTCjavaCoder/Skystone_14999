@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="New Vuforia Test", group="Test")
-//@Disabled
+@Disabled
 public class NewVuforiaTest extends BasicAuto {
 
     @Override

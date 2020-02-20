@@ -928,13 +928,16 @@ public class HardwareBilly
 
     public void moveJack(double height, double jackPowerLimit, String step, BasicOpMode om) {
 //        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-        int countDistance = (int) ( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
+        int countDistance = (int) -( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
 //        int startPosL;
 //        int startPosR;
-        int jackZoneC = countDistance;// remove: = countDistance
+        int jackZoneC;// remove: = countDistance
 
 //        startPosL = jack.getCurrentPosition();
 //        startPosR = jackRight.getCurrentPosition();
+
+        jackPowerLimit = jackPowerLimit * jackDirection;
+
         jack.setPower(jackPowerLimit);
         jack.setTargetPosition(countDistance);
 
@@ -942,11 +945,11 @@ public class HardwareBilly
 
         while((jackZoneC > om.cons.MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
 
-//            jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
+            jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
 
             om.telemetry.addData("Jack: ", step);
-//            om.telemetry.addData("Motor Commands: ", "Jack Center (%d)", jack.getTargetPosition());
-//            om.telemetry.addData("Motor Counts: ", "Jack Center (%d)", jack.getCurrentPosition());
+            om.telemetry.addData("Motor Commands: ", "Jack (%d)", jack.getTargetPosition());
+            om.telemetry.addData("Motor Counts: ", "Jack (%d)", jack.getCurrentPosition());
             om.telemetry.addData("Move Tolerance: ", om.cons.MOVE_TOL);
             om.telemetry.update();
 
@@ -959,7 +962,9 @@ public class HardwareBilly
 
     public void moveJackTeleOp(double height, double jackPowerLimit, String step, BasicOpMode om) {
 //        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-        countDistance = (int) ( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
+        countDistance = (int) -( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
+
+        jackPowerLimit = jackPowerLimit * jackDirection;
 
         jack.setPower(jackPowerLimit);
         jack.setTargetPosition(countDistance);

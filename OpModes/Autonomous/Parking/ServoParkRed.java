@@ -10,7 +10,7 @@ import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Servo Park Red", group="Park")
-@Disabled
+
 public class ServoParkRed extends BasicAuto {
 
     @Override
@@ -28,7 +28,7 @@ public class ServoParkRed extends BasicAuto {
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
         //all above lines need to be all autonomous OpMode's runOpMode before initialization
 
-        sideColor = 1;
+        sideColor = -1;
         foundationInOut = 22;// 0 for Inside, 22 for Outside
 
         initialize();
@@ -39,7 +39,9 @@ public class ServoParkRed extends BasicAuto {
 
         Billy.initIMU(this);
 
+        sleep(3000);
 
+        Billy.armServoRed.setPosition(stoneArmDownRed);
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();

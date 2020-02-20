@@ -13,7 +13,7 @@ import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Auto Driving Test", group="Test")
-//@Disabled
+@Disabled
 public class AutoDrivingTest extends BasicAuto {
 
     @Override

@@ -34,6 +34,8 @@ public class BasicTeleOp extends BasicOpMode {
 
     public double capstoneServoPosition = 0;
 
+    public double manualGripperIncrement = 0.01;
+
     public int telemetryOption = 1;
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
@@ -93,15 +95,15 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.jack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
-        Billy.stoneServoRight.setPosition(Billy.stoneServoRight.getPosition());
-        Billy.servoFoundationL.setPosition(0.80);
-        Billy.servoFoundationR.setPosition(0.20);
-
-        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
-        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
-        Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
-        Billy.rackServoRed.setPosition(Billy.rackInitRed);
+//        Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
+//        Billy.stoneServoRight.setPosition(Billy.stoneServoRight.getPosition());
+//        Billy.servoFoundationL.setPosition(0.80);
+//        Billy.servoFoundationR.setPosition(0.20);
+//
+//        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
+//        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
+//        Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
+//        Billy.rackServoRed.setPosition(Billy.rackInitRed);
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
@@ -166,6 +168,20 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.setMotorPower(0);
         Billy.jack.setPower(0);
         Billy.slide.setPower(0);
+    }
+
+    public void initServosAfterStart() {
+
+        Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
+        Billy.stoneServoRight.setPosition(Billy.stoneServoRight.getPosition());
+        Billy.servoFoundationL.setPosition(0.80);
+        Billy.servoFoundationR.setPosition(0.20);
+
+        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
+        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
+        Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
+        Billy.rackServoRed.setPosition(Billy.rackInitRed);
+
     }
 
     public void multiTelemetry(int option) {

@@ -39,8 +39,8 @@ public class Constants {
     public double TELEOP_DRIVE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
     public double TELEOP_ROTATE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
 
-    public double JACK_POWER_LIMIT = 0.75;
-    public double SLIDE_POWER_LIMIT = 0.6;// was 0.6
+    public double JACK_POWER_LIMIT = 1.0;
+    public double SLIDE_POWER_LIMIT = 0.40;// was 0.6
 
 //    public final double TURN_POWER =  0.40;
 
@@ -145,7 +145,7 @@ public class Constants {
 
         pHM.put("sidePullSkystone", new ParameterHM(8.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
 
-        pHM.put("sideGrab2Skystone", new ParameterHM(6.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab
+        pHM.put("sideGrab2Skystone", new ParameterHM(7.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
 
         pHM.put("delayForPark", new ParameterHM(20, ParameterHM.instanceType.distanceInches));// Time to delay for parking program (seconds)
 

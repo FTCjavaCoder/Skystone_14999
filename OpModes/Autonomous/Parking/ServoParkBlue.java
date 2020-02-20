@@ -10,7 +10,7 @@ import Skystone_14999.HarwareConfig.HardwareBilly;
 import Skystone_14999.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Servo Park Blue", group="Park")
-@Disabled
+
 public class ServoParkBlue extends BasicAuto {
 
     @Override
@@ -39,7 +39,9 @@ public class ServoParkBlue extends BasicAuto {
 
         Billy.initIMU(this);
 
+        sleep(3000);
 
+        Billy.armServoBlue.setPosition(stoneArmDownBlue);
 
         telemetry.addLine("OpMode Complete");
         telemetry.update();
