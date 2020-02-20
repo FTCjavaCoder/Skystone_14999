@@ -150,8 +150,8 @@ public class Weighted_Teleop extends BasicTeleOp {
 //                setJackHeightPos += 5;
 //                setJackHeightPos = Range.clip(setJackHeightPos, 0, 30);
 //            }
-
-            Billy.moveJackInOpMode(this);
+//
+//            Billy.moveJackInOpMode(this);
 
             Billy.angleUnWrap();
 
